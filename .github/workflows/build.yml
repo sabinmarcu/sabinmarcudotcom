@@ -24,6 +24,19 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: yarn install
-    - run: yarn run clean
-    - run: yarn run build
+    - name: Setup
+      run: yarn install
+      run: yarn run clean
+    - name: Build
+      run: yarn run build
+      - uses: EndBug/add-and-commit@v4
+        with:
+          add: 'docs'
+          author_name: Sabin Marcu
+          author_email: sabinmarcu@gmail.com
+          force: true
+          message: 'chore: CI Rebuild'
+          tag: "v1.0.0"
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
