@@ -86,6 +86,7 @@ export const Container = styled.section(
     box-sizing: border-box;
     min-height: 100vh;
     font-size: 1rem;
+    font-family: 'Lato';
   `,
 );
 
