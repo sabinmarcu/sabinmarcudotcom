@@ -1,4 +1,4 @@
-[](https://github.com/sabinmarcu/sabinmarcu.com/workflows/build/badge.svg)
+![Build Site](https://github.com/sabinmarcu/sabinmarcu.com/workflows/Build%20Site/badge.svg)
 
 <!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
 <p align="center">
