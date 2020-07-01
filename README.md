@@ -1,3 +1,5 @@
+[https://github.com/sabinmarcu/sabinmarcu.com/workflows/build/badge.svg]()
+
 <!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
 <p align="center">
   <a href="https://www.gatsbyjs.org">
