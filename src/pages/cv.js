@@ -1,26 +1,23 @@
-import React from 'react';
-import { graphql } from 'gatsby';
+import React from "react";
+import { graphql } from "gatsby";
 
-import { Background } from '../components/background';
+import "../components/layout.css";
+import { Background } from "../components/background";
 
 import {
   Container,
   Header,
   TwoColumns,
   MainColumn,
-  SecondaryColumn,
-} from '../components/cv/style';
-import { CV as colors } from '../style/colors';
+  SecondaryColumn
+} from "../components/cv/style";
+import { CV as colors } from "../style/colors";
 
-import { CVContext } from '../components/cv/core';
-import { AccountSection, TitleSection } from '../components/cv/account';
-import { EducationSection } from '../components/cv/education';
+import { CVContext } from "../components/cv/core";
+import { AccountSection, TitleSection } from "../components/cv/account";
+import { EducationSection } from "../components/cv/education";
 
-export const CVPage = ({
-  data: {
-    gcms,
-  },
-}) => (
+export const CVPage = ({ data: { gcms } }) => (
   <CVContext.Provider value={gcms}>
     <Background opacity={0.2} color={colors.main} />
     <Container>
@@ -103,5 +100,4 @@ export const query = graphql`
       }
     }
   }
-
 `;
