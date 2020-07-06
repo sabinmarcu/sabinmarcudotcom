@@ -158,7 +158,6 @@ export const Pill = styled.div(
   `
     display: inline-flex;
     align-items: center;
-    background: #fff;
     margin: 0.1rem;
     > span {
       padding: 0.5rem;
@@ -176,6 +175,7 @@ export const Pill = styled.div(
       width: 100%;
     `
     : `
+      background: #fff;
       justify-content: center;
       border: solid 1px ${colors.border};
       border-radius: 0.8rem;
