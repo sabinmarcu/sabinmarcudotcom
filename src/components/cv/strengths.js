@@ -1,4 +1,11 @@
-import React, { useMemo, useCallback } from 'react';
+/** @jsx jsx */
+import { jsx } from '@emotion/core';
+
+import React, {
+  useState,
+  useCallback,
+  useMemo,
+} from 'react';
 
 import { Icon } from '@mdi/react';
 import {
@@ -6,6 +13,11 @@ import {
   mdiStarHalfFull,
   mdiStarOutline,
 } from '@mdi/js';
+
+import {
+  InputGroup,
+  Input,
+} from 'sancho';
 
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { useCV } from './core';
@@ -26,12 +38,25 @@ export const StrengthsSection = ({ title = 'Strengths ' }) => {
     () => setShowStars((s) => !s),
     [setShowStars],
   );
+  const [filter, setFilter] = useState('');
+  const filterHandler = useCallback(
+    ({ target: { value } }) => setFilter(value.toLowerCase()),
+    [setFilter],
+  );
+
+  const filteredSkills = skills
+    .filter(({
+      name,
+      category,
+    }) => name.toLowerCase().includes(filter)
+      || category.toLowerCase().includes(filter));
+
   const groupedSkills = useMemo(
     () => {
-      if (!skills) {
+      if (!filteredSkills) {
         return null;
       }
-      return skills.reduce(
+      return filteredSkills.reduce(
         (prev, { category, ...rest }) => ({
           ...prev,
           [category]: [...(prev[category] || []), {
@@ -51,6 +76,7 @@ export const StrengthsSection = ({ title = 'Strengths ' }) => {
         {},
       );
     },
+    [filteredSkills],
   );
   if (!groupedSkills) {
     return null;
@@ -63,30 +89,62 @@ export const StrengthsSection = ({ title = 'Strengths ' }) => {
           <Icon path={showStars ? mdiStar : mdiStarOutline} size="1em" />
         </DetailsItemIconRaw>
       </Heading>
+      {showStars && (
+        <InputGroup label="Filter Skills">
+          <Input
+            placeholder="React"
+            value={filter}
+            onChange={filterHandler}
+            css={{ background: 'white' }}
+          />
+        </InputGroup>
+      )}
       <PillList>
-        {Object.entries(groupedSkills).map(([category, s]) => (
-          <PillGroup key={category} oneline={showStars}>
-            {s.map(({ id, name, stars }) => (
-              <>
-                <Pill key={id}>
+        {Object
+          .entries(groupedSkills)
+          .filter(([key]) => key !== 'dictlang')
+          .map(([category, s]) => (
+            <PillGroup key={category}>
+              {s.map(({ id, name, stars }) => (
+                <Pill key={id} oneLine={showStars}>
                   <span>{name}</span>
                   {showStars && (
-                  <>
+                  <div>
                     <PillSeparator />
                       {stars.map(([key, star]) => (
-                        <DetailsItemIconRaw faded key={key}>
-                          <Icon path={star} size="1rem" />
+                        <DetailsItemIconRaw key={key} padding="0">
+                          <Icon path={star} size="1.2rem" />
                         </DetailsItemIconRaw>
                       ))}
-                  </>
+                  </div>
                   )}
                 </Pill>
-                <span />
-              </>
-            ))}
-          </PillGroup>
-        ))}
+              ))}
+            </PillGroup>
+          ))}
       </PillList>
+      {groupedSkills.dictlang && groupedSkills.dictlang.length > 0 && (
+        <>
+          <Heading section title>Languages</Heading>
+          <PillList>
+            <PillGroup>
+              {groupedSkills.dictlang.map(({ id, name, stars }) => (
+                <Pill key={id} oneLine>
+                  <span>{name}</span>
+                  <div>
+                    <PillSeparator />
+                    {stars.map(([key, star]) => (
+                      <DetailsItemIconRaw key={key} padding="0">
+                        <Icon path={star} size="1.2rem" />
+                      </DetailsItemIconRaw>
+                    ))}
+                  </div>
+                </Pill>
+              ))}
+            </PillGroup>
+          </PillList>
+        </>
+      )}
     </>
   );
 };

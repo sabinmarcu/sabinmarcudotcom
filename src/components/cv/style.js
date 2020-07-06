@@ -34,6 +34,9 @@ export const Heading = styled.h1(
         color: colors.main,
         borderBottom: `solid 4px ${colors.main}`,
         paddingBottom: '0.3rem',
+        '&:not(:first-of-type)': {
+          marginTop: '1rem',
+        },
       };
     }
     if (accent) {
@@ -74,10 +77,10 @@ export const DetailsItemIconRaw = styled.span(
     display: flex;
     flex-flow: row;
     align-items: center;
-    padding-right: .4rem;
   `,
-  ({ faded }) => ({
+  ({ faded, padding = 0.4 }) => ({
     color: colors[faded ? 'faded' : 'accent'],
+    paddingRight: `${padding}rem`,
   }),
   ({ onClick }) => (onClick ? 'cursor: pointer' : ''),
 );
@@ -146,35 +149,41 @@ export const PillList = styled.div`
   flex-flow: column nowrap;
 `;
 
-export const PillGroup = styled.div(
-  `
-    padding: 0.3rem 0;
-    overflow: hidden;
-  `,
-  ({ oneline }) => (oneline
-    ? `
-      & > span { 
-        flex: 0 0 100%;
-        display: block;
-      }
-    `
-    : ''),
-);
-
-export const Pill = styled.div`
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  border: solid 1px ${colors.border};
-  border-radius: 0.8rem;
-  background: #fff;
-  margin: 0.1rem;
-  span:first-of-type {
-    padding: 0.5rem;
-  }
+export const PillGroup = styled.div`
+  padding: 0.3rem 0;
+  overflow: hidden;
 `;
 
-export const PillSeparator = styled.div`
+export const Pill = styled.div(
+  `
+    display: inline-flex;
+    align-items: center;
+    background: #fff;
+    margin: 0.1rem;
+    > span {
+      padding: 0.5rem;
+    }
+    > div {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      justify-content: center;
+    }
+  `,
+  ({ oneLine }) => (oneLine
+    ? `
+      justify-content: space-between;
+      width: 100%;
+    `
+    : `
+      justify-content: center;
+      border: solid 1px ${colors.border};
+      border-radius: 0.8rem;
+    `),
+);
+
+export const PillSeparator = styled.span`
+  display: block;
   margin: 0 0.3rem;
   height: 100%;
   width: 1px;

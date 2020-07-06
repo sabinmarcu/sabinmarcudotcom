@@ -1,9 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 
-import {
-  useState,
-  useEffect,
-} from 'react';
+import { useState, useEffect } from 'react';
 
 let _shouldLog = process.env.NODE_ENV === 'development';
 export const enableLog = () => { _shouldLog = true; };
@@ -69,7 +66,7 @@ export const useLocalStorage = (
         try {
           logState('⚙ LocalStorage Get', key, val);
           setValue(JSON.parse(val));
-        } catch {
+        } catch (e) {
           logState('❌ Could not parse LS data', key, val);
           setValue(defaultValue);
         }
