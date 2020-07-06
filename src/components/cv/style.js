@@ -4,6 +4,9 @@ import { CV as layout } from '../../style/layout';
 
 export const Heading = styled.h1(
   `
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     font-size: 1.4rem;  
     margin-bottom: 0.5rem;
     quotes: "“" "”" "‘" "’";
@@ -73,9 +76,10 @@ export const DetailsItemIconRaw = styled.span(
     align-items: center;
     padding-right: .4rem;
   `,
-  {
-    color: colors.accent,
-  },
+  ({ faded }) => ({
+    color: colors[faded ? 'faded' : 'accent'],
+  }),
+  ({ onClick }) => (onClick ? 'cursor: pointer' : ''),
 );
 
 export const Container = styled.section(
@@ -121,20 +125,58 @@ export const IntervalWrapper = styled.div(
   },
 );
 
-export const List = styled.section(
-  `
-    display: grid;
-    & > * {
-      border-top: dotted 1px #ccc;
-      &:first-child {
-        border-top: none;
-      }
+export const List = styled.section`
+  display: grid;
+  & > * {
+    border-top: dotted 1px ${colors.border};
+    &:first-child {
+      border-top: none;
     }
-  `,
-);
+  }
+`;
 
 export const ListItem = styled.article(
   `
     padding: ${layout.maxWidth * 0.02}px 0;
   `,
 );
+
+export const PillList = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+`;
+
+export const PillGroup = styled.div(
+  `
+    padding: 0.3rem 0;
+    overflow: hidden;
+  `,
+  ({ oneline }) => (oneline
+    ? `
+      & > span { 
+        flex: 0 0 100%;
+        display: block;
+      }
+    `
+    : ''),
+);
+
+export const Pill = styled.div`
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border: solid 1px ${colors.border};
+  border-radius: 0.8rem;
+  background: #fff;
+  margin: 0.1rem;
+  span:first-of-type {
+    padding: 0.5rem;
+  }
+`;
+
+export const PillSeparator = styled.div`
+  margin: 0 0.3rem;
+  height: 100%;
+  width: 1px;
+  background: ${colors.border};
+`;

@@ -1,21 +1,26 @@
-import React from "react";
-import { graphql } from "gatsby";
+import React from 'react';
+import { graphql } from 'gatsby';
 
-import "../components/layout.css";
-import { Background } from "../components/background";
+import { setPrefix } from '../hooks/useLocalStorage';
+
+import '../components/layout.css';
+import { Background } from '../components/background';
 
 import {
   Container,
   Header,
   TwoColumns,
   MainColumn,
-  SecondaryColumn
-} from "../components/cv/style";
-import { CV as colors } from "../style/colors";
+  SecondaryColumn,
+} from '../components/cv/style';
+import { CV as colors } from '../style/colors';
 
-import { CVContext } from "../components/cv/core";
-import { AccountSection, TitleSection } from "../components/cv/account";
-import { EducationSection } from "../components/cv/education";
+import { CVContext } from '../components/cv/core';
+import { AccountSection, TitleSection } from '../components/cv/account';
+import { EducationSection } from '../components/cv/education';
+import { StrengthsSection } from '../components/cv/strengths';
+
+setPrefix('app:cv');
 
 export const CVPage = ({ data: { gcms } }) => (
   <CVContext.Provider value={gcms}>
@@ -31,6 +36,7 @@ export const CVPage = ({ data: { gcms } }) => (
         </MainColumn>
         <SecondaryColumn>
           <EducationSection />
+          <StrengthsSection />
         </SecondaryColumn>
       </TwoColumns>
     </Container>
@@ -78,6 +84,8 @@ export const query = graphql`
         id
         name
         ability
+        category
+        featured
       }
       accounts(first: 1) {
         name
