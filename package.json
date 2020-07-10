@@ -53,6 +53,7 @@
     "start": "npm run develop",
     "start:dev": "ENABLE_GATSBY_REFRESH_ENDPOINT=1 npm run start",
     "refresh": "curl -d '' http://localhost:8000/__refresh",
+    "refresh:dev": "while true; do yarn refresh; sleep 5; done",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"

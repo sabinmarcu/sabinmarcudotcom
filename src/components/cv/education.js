@@ -1,7 +1,7 @@
 import React from 'react';
 import { useCV } from './core';
 import { Heading, List } from './style';
-import { ExperienceItem } from './components';
+import { PositionItem } from './components';
 
 export const EducationSection = () => {
   const { educations } = useCV();
@@ -15,7 +15,7 @@ export const EducationSection = () => {
         {educations.map(({
           id, institution, degree, start, end,
         }) => (
-          <ExperienceItem
+          <PositionItem
             key={id}
             {...{
               position: degree,

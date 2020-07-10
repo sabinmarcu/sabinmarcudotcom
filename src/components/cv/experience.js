@@ -1,15 +1,10 @@
 import React, { useMemo } from 'react';
-import marked from 'marked';
 import { useCV } from './core';
 import { ExperienceItem } from './components';
 import {
   Heading,
   List,
-  ListItem,
-  Description,
 } from './style';
-
-console.log(marked);
 
 const diffTime = (a, b) => Math.sign(new Date(a) - new Date(b));
 export const ExperienceSection = () => {
@@ -24,7 +19,9 @@ export const ExperienceSection = () => {
           || positions.sort(
             ({ to: toa }, { to: tob }) => diffTime(toa, tob),
           )[0],
-        positions,
+        positions: positions.sort(
+          ({ to: toa }, { to: tob }) => diffTime(tob, toa),
+        ),
         ...rest,
       })).sort(({ time: timea }, { time: timeb }) => {
         if (!timea.to && !timeb.to) {
@@ -44,34 +41,8 @@ export const ExperienceSection = () => {
     <>
       <Heading section title>Experience</Heading>
       <List>
-        {filteredWorkExperiences.map(({
-          id, name, positions, description,
-        }) => (
-          <ListItem key={id}>
-            <List plain>
-              {
-                positions.map(({
-                  id: positionId, to, from, name: positionName,
-                }) => (
-                  <ExperienceItem
-                    key={positionId}
-                    {...{
-                      position: positionName,
-                      company: name,
-                      interval: { start: from, end: to },
-                    }}
-                  />
-                ))
-              }
-            </List>
-            {description && (
-              <Description
-                dangerouslySetInnerHTML={
-                  { __html: marked(description.markdown) }
-                }
-              />
-            )}
-          </ListItem>
+        {filteredWorkExperiences.map(({ id, ...rest }) => (
+          <ExperienceItem key={id} {...{ ...rest, id }} />
         ))}
       </List>
     </>
