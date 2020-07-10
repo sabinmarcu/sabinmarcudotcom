@@ -128,20 +128,31 @@ export const IntervalWrapper = styled.div(
   },
 );
 
-export const List = styled.section`
-  display: grid;
-  & > * {
-    border-top: dotted 1px ${colors.border};
-    &:first-child {
-      border-top: none;
-    }
-  }
-`;
+export const ListItem = styled.article();
 
-export const ListItem = styled.article(
+export const List = styled.section(
   `
-    padding: ${layout.maxWidth * 0.02}px 0;
+    display: grid;
   `,
+  ({ plain }) => (
+    !plain
+      ? {
+        [ListItem]: {
+          padding: `${layout.maxWidth * 0.02}px 0`,
+        },
+        '> *': {
+          borderTop: `dotted 1px ${colors.border}`,
+          ':first-child': {
+            borderTop: 'none',
+          },
+        },
+      }
+      : {
+        [ListItem]: {
+          padding: `${layout.maxWidth * 0.01}px 0`,
+        },
+      }
+  ),
 );
 
 export const PillList = styled.div`
@@ -188,4 +199,9 @@ export const PillSeparator = styled.span`
   height: 100%;
   width: 1px;
   background: ${colors.border};
+`;
+
+export const Description = styled.p`
+  color: ${colors.faded};
+  font-size: 1.2rem;
 `;

@@ -25,8 +25,8 @@ export const DetailsItem = ({ icon, children }) => (
 
 export const ExperienceItem = ({ position, company, interval }) => (
   <ListItem>
-    <Heading large>{position}</Heading>
-    <Heading accent>{company}</Heading>
+    {position && <Heading large>{position}</Heading>}
+    {company && <Heading accent>{company}</Heading>}
     <Interval {...interval} />
   </ListItem>
 );
@@ -36,7 +36,9 @@ export const Interval = ({ start, end }) => {
   const intervalString = useMemo(
     () => [
       moment(start).format(intervalFormat),
-      moment(end).format(intervalFormat),
+      end
+        ? moment(end).format(intervalFormat)
+        : 'Present',
     ].join(' - '),
     [start, end],
   );

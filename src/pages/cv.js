@@ -19,6 +19,7 @@ import { CVContext } from '../components/cv/core';
 import { AccountSection, TitleSection } from '../components/cv/account';
 import { EducationSection } from '../components/cv/education';
 import { StrengthsSection } from '../components/cv/strengths';
+import { ExperienceSection } from '../components/cv/experience';
 
 setPrefix('app:cv');
 
@@ -32,7 +33,7 @@ export const CVPage = ({ data: { gcms } }) => (
       </Header>
       <TwoColumns>
         <MainColumn>
-          {/* <Heading section title>Experience</Heading> */}
+          <ExperienceSection />
         </MainColumn>
         <SecondaryColumn>
           <EducationSection />
@@ -49,6 +50,11 @@ export const query = graphql`
   query {
     gcms {
       workExperiences {
+        id
+        name
+        description {
+          markdown
+        }
         projects {
           from
           to
@@ -67,12 +73,10 @@ export const query = graphql`
             ability
           }
         }
-        name
         location {
           latitude
           longitude
         }
-        id
         positions {
           name
           id
