@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { rem } from 'polished';
 import { CV as colors } from '../../style/colors';
 import { CV as layout } from '../../style/layout';
 
@@ -7,8 +8,8 @@ export const Heading = styled.h1(
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 1.4rem;  
-    margin-bottom: 0.5rem;
+    font-size: ${rem(22)};  
+    margin-bottom: ${rem(6)};
     quotes: "“" "”" "‘" "’";
   `,
   ({
@@ -18,13 +19,13 @@ export const Heading = styled.h1(
     if (large) {
       styles = {
         ...styles,
-        fontSize: '1.6rem',
+        fontSize: rem(26),
       };
     }
     if (title) {
       styles = {
         ...styles,
-        fontSize: '2.6rem',
+        fontSize: rem(41),
         textTransform: 'uppercase',
       };
     }
@@ -33,9 +34,9 @@ export const Heading = styled.h1(
         ...styles,
         color: colors.main,
         borderBottom: `solid 4px ${colors.main}`,
-        paddingBottom: '0.3rem',
+        paddingBottom: rem(5),
         '&:not(:first-of-type)': {
-          marginTop: '1rem',
+          marginTop: rem(16),
         },
       };
     }
@@ -58,7 +59,7 @@ export const HeaderDetails = styled.section`
 `;
 
 export const DetailsItemRaw = styled.div`
-  padding-right: 1.7rem;
+  padding-right: ${rem(27)};
   font-size: inherit;
   font-weight: bold;
   display: flex;
@@ -78,9 +79,9 @@ export const DetailsItemIconRaw = styled.span(
     flex-flow: row;
     align-items: center;
   `,
-  ({ faded, padding = 0.4 }) => ({
+  ({ faded, padding = 6 }) => ({
     color: colors[faded ? 'faded' : 'accent'],
-    paddingRight: `${padding}rem`,
+    paddingRight: rem(parseInt(padding, 10)),
   }),
   ({ onClick }) => (onClick ? 'cursor: pointer' : ''),
 );
@@ -89,10 +90,10 @@ export const Container = styled.section(
   layout,
   `
     margin: 0 auto;
-    padding: 20px;
+    padding: ${rem(20)};
     box-sizing: border-box;
     min-height: 100vh;
-    font-size: 1rem;
+    font-size: ${rem(16)};
     font-family: 'Lato';
   `,
 );
@@ -124,7 +125,7 @@ export const TwoColumns = styled.section(
 export const IntervalWrapper = styled.div(
   {
     color: colors.faded,
-    fontSize: '1.2rem',
+    fontSize: rem(16),
   },
 );
 
@@ -161,7 +162,7 @@ export const PillList = styled.div`
 `;
 
 export const PillGroup = styled.div`
-  padding: 0.3rem 0;
+  padding: ${rem(2)} 0;
   overflow: hidden;
 `;
 
@@ -169,9 +170,9 @@ export const Pill = styled.div(
   `
     display: inline-flex;
     align-items: center;
-    margin: 0.1rem;
+    margin: ${rem(2)};
     > span {
-      padding: 0.5rem;
+      padding: ${rem(6)};
     }
     > div {
       display: flex;
@@ -189,13 +190,13 @@ export const Pill = styled.div(
       background: #fff;
       justify-content: center;
       border: solid 1px ${colors.border};
-      border-radius: 0.8rem;
+      border-radius: ${rem(12)};
     `),
 );
 
 export const PillSeparator = styled.span`
   display: block;
-  margin: 0 0.3rem;
+  margin: 0 ${rem(5)};
   height: 100%;
   width: 1px;
   background: ${colors.border};
@@ -203,5 +204,5 @@ export const PillSeparator = styled.span`
 
 export const Description = styled.p`
   color: ${colors.faded};
-  font-size: 1.2rem;
+  font-size: ${rem(20)};
 `;
