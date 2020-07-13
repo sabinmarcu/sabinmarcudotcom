@@ -16,18 +16,19 @@ export const useScrollToPageId = (id, type = 'unknown') => {
     () => makePageId(id, type),
     [id, type],
   );
-  const element = useMemo(
-    () => document.getElementById(pageId),
-    [pageId],
-  );
   const handler = useCallback(
     (e) => {
+      const doc = typeof document === 'undefined' ? null : document;
+      if (!doc) {
+        return;
+      }
+      const element = doc.getElementById(pageId);
       if (element) {
         e.preventDefault();
         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     },
-    [element],
+    [pageId],
   );
   return handler;
 };
