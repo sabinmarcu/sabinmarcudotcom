@@ -2,6 +2,9 @@ import styled from '@emotion/styled';
 import { rem } from 'polished';
 import { CV as colors } from '../../style/colors';
 import { CV as layout } from '../../style/layout';
+import { clickState, accentState } from '../../style/mixins';
+
+const accentMixin = accentState(colors);
 
 export const Heading = styled.h1(
   `
@@ -13,9 +16,25 @@ export const Heading = styled.h1(
     quotes: "“" "”" "‘" "’";
   `,
   ({
-    title, accent, section, large,
+    title,
+    section,
+    large,
+    compact,
+    inline,
   }) => {
     let styles = {};
+    if (compact) {
+      styles = {
+        ...styles,
+        fontSize: rem(18),
+      };
+    }
+    if (inline) {
+      styles = {
+        ...styles,
+        justifyContent: 'flex-start',
+      };
+    }
     if (large) {
       styles = {
         ...styles,
@@ -40,11 +59,10 @@ export const Heading = styled.h1(
         },
       };
     }
-    if (accent) {
-      styles.color = colors.accent;
-    }
     return styles;
   },
+  accentMixin,
+  clickState,
 );
 
 export const Header = styled.header`
@@ -100,11 +118,7 @@ export const Container = styled.section(
 
 export const MainColumn = styled.section();
 
-export const SecondaryColumn = styled.aside(
-  `
-    display: grid;
-  `,
-);
+export const SecondaryColumn = styled.aside();
 
 export const TwoColumns = styled.section(
   `
@@ -142,7 +156,7 @@ export const List = styled.section(
           padding: `${layout.maxWidth * 0.02}px 0`,
         },
         '> *': {
-          borderTop: `dotted 1px ${colors.border}`,
+          borderTop: `dashed 1px ${colors.border}`,
           ':first-child': {
             borderTop: 'none',
           },
@@ -156,15 +170,25 @@ export const List = styled.section(
   ),
 );
 
-export const PillList = styled.div`
-  display: flex;
-  flex-flow: column nowrap;
-`;
+export const PillList = styled.div(
+  {
+    flexFlow: 'column nowrap',
+    fontSize: rem(16),
+    fontWeight: 'normal',
+  },
+  ({ inline }) => (inline
+    ? {
+      display: 'inline-flex',
+      padding: `0 ${rem(10)}`,
+    }
+    : { display: 'flex' }
+  ),
+);
 
-export const PillGroup = styled.div`
+export const PillGroup = styled.div(`
   padding: ${rem(2)} 0;
   overflow: hidden;
-`;
+`);
 
 export const Pill = styled.div(
   `
@@ -192,6 +216,7 @@ export const Pill = styled.div(
       border: solid 1px ${colors.border};
       border-radius: ${rem(12)};
     `),
+  clickState,
 );
 
 export const PillSeparator = styled.span`

@@ -11,8 +11,28 @@ export const usePageId = (id, type = 'unknown') => useMemo(
   [id, type],
 );
 
-export const useScrollToPageId = (id, type = 'unknown') => useCallback(
-  () => document.getElementById(makePageId(id, type))
-    .scrollIntoView({ behavior: ' smooth' }),
-  [id, type],
-);
+export const useScrollToPageId = (id, type = 'unknown') => {
+  const pageId = useMemo(
+    () => makePageId(id, type),
+    [id, type],
+  );
+  const element = useMemo(
+    () => document.getElementById(pageId),
+    [pageId],
+  );
+  const handler = useCallback(
+    (e) => {
+      if (element) {
+        e.preventDefault();
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    },
+    [element],
+  );
+  return handler;
+};
+
+export const contentTypes = {
+  PROJECT: 'project',
+  EXPERIENCE: 'experience',
+};

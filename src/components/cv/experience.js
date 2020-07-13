@@ -33,7 +33,7 @@ export const ExperienceSection = () => {
         if (!timeb.to) {
           return 1;
         }
-        return diffTime(timea.to, timeb.to);
+        return diffTime(timeb.to, timea.to);
       }),
     [workExperiences],
   );
