@@ -2,6 +2,7 @@ import {
   useRef, useEffect, FC, LegacyRef,
 } from 'react';
 import styled from '@emotion/styled';
+import { useMatchMedia } from '../hooks/useMatchMedia';
 
 type CanvasProps = {
   opacity?: number,
@@ -159,6 +160,10 @@ export const makeRenderer = (
     stop: () => {
       isRendering = false;
     },
+    renderOnce: () => {
+      render();
+      isRendering = false;
+    },
     canvas,
   };
 };
@@ -196,6 +201,7 @@ Partial<RendererProps> & CanvasProps
   opacity,
 }) => {
   const ref = useRef<HTMLCanvasElement>();
+  const renderOnce = useMatchMedia(['prefers-reduced-motion', 'reduce']);
   useEffect(
     () => {
       if (ref.current) {
@@ -208,12 +214,16 @@ Partial<RendererProps> & CanvasProps
           color,
           edge,
         });
+        if (renderOnce) {
+          renderer.renderOnce();
+          return undefined;
+        }
         renderer.start();
         return renderer.stop;
       }
       return undefined;
     },
-    [ref],
+    [ref, renderOnce],
   );
   return (
     <Canvas ref={ref as LegacyRef<HTMLCanvasElement>} {...{ opacity }} />
