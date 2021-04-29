@@ -1,5 +1,5 @@
 import { useCV } from '../core';
-import { Heading } from '../Heading';
+import { Heading } from '../components/Heading';
 
 export const TitleSection = () => {
   const { accounts: [account] } = useCV();

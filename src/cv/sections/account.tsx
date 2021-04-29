@@ -9,8 +9,8 @@ import {
 } from '@mdi/js';
 
 import { useCV } from '../core';
-import { DetailsItem } from '../DetailsItem';
-import { HeaderDetails } from '../Header';
+import { DetailsItem } from '../components/DetailsItem';
+import { HeaderDetails } from '../components/Header';
 
 export const AccountSection = () => {
   const { accounts: [account] } = useCV();

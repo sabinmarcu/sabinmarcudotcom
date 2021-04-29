@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { useCV } from '../core';
-import { ExperienceItem } from '../ExperienceItem';
-import { Heading } from '../Heading';
-import { List } from '../List';
+import { ExperienceItem } from '../components/ExperienceItem';
+import { Heading } from '../components/Heading';
+import { List } from '../components/List';
 
 const diffTime = (
   a: number,

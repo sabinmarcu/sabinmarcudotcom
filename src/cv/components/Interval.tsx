@@ -4,9 +4,9 @@ import styled from '@emotion/styled';
 import { mdiCalendarBlank } from '@mdi/js';
 import { rem } from 'polished';
 import { FC, useMemo } from 'react';
-import { colors } from './common';
+import { colors } from '../common';
 import { DetailsItemIconRaw, DetailsItemRaw } from './DetailsItem';
-import { IntervalType } from './types';
+import { IntervalType } from '../types';
 
 export const IntervalWrapper = styled.div(
   {

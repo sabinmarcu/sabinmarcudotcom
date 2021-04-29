@@ -3,7 +3,7 @@ import { ClickStateProps } from '../../style/mixins';
 import { Heading } from './Heading';
 import { Interval } from './Interval';
 import { ListItem } from './List';
-import { IntervalType } from './types';
+import { IntervalType } from '../types';
 
 type Common = {
   interval: IntervalType,

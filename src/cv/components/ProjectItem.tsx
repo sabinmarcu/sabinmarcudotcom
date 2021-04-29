@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Project } from '../../config/schema';
-import { ContentTypes, usePageId } from './core';
+import { ContentTypes, usePageId } from '../core';
 import { ListItem } from './List';
 import { PageLink } from './PageLink';
 import { PositionItem } from './PositionItem';

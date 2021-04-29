@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { colors, layout } from './common';
+import { colors, layout } from '../common';
 
 export const ListItem = styled.article();
 

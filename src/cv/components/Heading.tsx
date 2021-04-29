@@ -7,7 +7,7 @@ import {
   ClickStateProps,
 } from '../../style/mixins';
 import { makeStylerSet } from '../../utils/styles';
-import { accentMixin, colors } from './common';
+import { accentMixin, colors } from '../common';
 
 export type HeadingProps = Partial<{
   isTitle: boolean,

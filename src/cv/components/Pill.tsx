@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { rem } from 'polished';
 import { clickState, ClickStateProps } from '../../style/mixins';
-import { colors } from './common';
+import { colors } from '../common';
 
 export const PillList = styled.div<Partial<{
   inline: boolean,

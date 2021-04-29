@@ -1,7 +1,7 @@
 import { useCV } from '../core';
-import { Heading } from '../Heading';
-import { List } from '../List';
-import { ProjectItem } from '../ProjectItem';
+import { Heading } from '../components/Heading';
+import { List } from '../components/List';
+import { ProjectItem } from '../components/ProjectItem';
 
 export const ProjectsSection = () => {
   const { projects } = useCV();

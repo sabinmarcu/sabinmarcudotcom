@@ -13,16 +13,16 @@ import {
 
 import { TextField } from '@material-ui/core';
 
-import { useLocalStorage } from '../../../hooks/useLocalStorage';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { useCV } from '../core';
-import { Heading } from '../Heading';
-import { DetailsItemIconRaw } from '../DetailsItem';
+import { Heading } from '../components/Heading';
+import { DetailsItemIconRaw } from '../components/DetailsItem';
 import {
   Pill,
   PillGroup,
   PillList,
   PillSeparator,
-} from '../Pill';
+} from '../components/Pill';
 import { EnhancedSkill } from '../types';
 
 export const StrengthsSection = ({ title = 'Strengths ' }) => {

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { rem } from 'polished';
-import { layout } from './common';
+import { layout } from '../common';
 
 export const Container = styled.section(
   layout,

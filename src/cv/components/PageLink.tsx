@@ -1,5 +1,5 @@
 import { createElement, ElementType, FC } from 'react';
-import { ContentTypes, makePageId, useScrollToPageId } from './core';
+import { ContentTypes, makePageId, useScrollToPageId } from '../core';
 
 export const PageLink: FC<{
   as: ElementType<any>,

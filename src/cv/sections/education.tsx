@@ -1,7 +1,7 @@
 import { useCV } from '../core';
-import { Heading } from '../Heading';
-import { List } from '../List';
-import { PositionItem } from '../PositionItem';
+import { Heading } from '../components/Heading';
+import { List } from '../components/List';
+import { PositionItem } from '../components/PositionItem';
 
 export const EducationSection = () => {
   const { educations } = useCV();

@@ -1,7 +1,7 @@
 import marked from 'marked';
 import { FC } from 'react';
 import { WorkExperience } from '../../config/schema';
-import { ContentTypes, usePageId } from './core';
+import { ContentTypes, usePageId } from '../core';
 import { Heading } from './Heading';
 import { List, ListItem } from './List';
 import { PageLink } from './PageLink';

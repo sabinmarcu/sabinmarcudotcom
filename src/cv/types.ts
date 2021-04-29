@@ -1,4 +1,4 @@
-import { Skill } from '../../config/schema';
+import { Skill } from '../config/schema';
 
 export type IntervalType = {
   start: string,

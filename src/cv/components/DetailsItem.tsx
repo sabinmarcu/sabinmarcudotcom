@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { rem } from 'polished';
 import { FC } from 'react';
 import { Icon } from '@mdi/react';
-import { colors } from './common';
+import { colors } from '../common';
 
 export const DetailsItemRaw = styled.div`
   padding-right: ${rem(27)};

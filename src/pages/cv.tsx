@@ -6,18 +6,21 @@ import { Background } from '../components/background';
 
 import { CV as colors } from '../style/colors';
 
-import { CVContext } from '../components/cv/core';
-import { AccountSection } from '../components/cv/sections/account';
-import { EducationSection } from '../components/cv/sections/education';
-import { StrengthsSection } from '../components/cv/sections/strengths';
-import { ExperienceSection } from '../components/cv/sections/experience';
-import { ProjectsSection } from '../components/cv/sections/projects';
+import { CVContext } from '../cv/core';
+import { AccountSection } from '../cv/sections/account';
+import { EducationSection } from '../cv/sections/education';
+import { StrengthsSection } from '../cv/sections/strengths';
+import { ExperienceSection } from '../cv/sections/experience';
+import { ProjectsSection } from '../cv/sections/projects';
 import { Query } from '../config/schema';
-import { Header } from '../components/cv/Header';
-import { TitleSection } from '../components/cv/sections/title';
+import { Header } from '../cv/components/Header';
+import { TitleSection } from '../cv/sections/title';
 import {
-  Container, MainColumn, SecondaryColumn, TwoColumns,
-} from '../components/cv/Layout';
+  Container,
+  MainColumn,
+  SecondaryColumn,
+  TwoColumns,
+} from '../cv/components/Layout';
 
 type GCMSType = {
   gcms: Query

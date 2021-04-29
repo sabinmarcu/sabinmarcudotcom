@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { layout } from './common';
+import { layout } from '../common';
 
 export const Header = styled.header`
   display: flex;

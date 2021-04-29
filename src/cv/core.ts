@@ -4,7 +4,7 @@ import {
   useMemo,
   useCallback,
 } from 'react';
-import { Query } from '../../config/schema';
+import { Query } from '../config/schema';
 
 export const CVContext = createContext<Query>({} as Query);
 export const useCV = () => useContext(CVContext);
