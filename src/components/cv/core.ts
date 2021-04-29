@@ -1,17 +1,31 @@
 import {
-  createContext, useContext, useMemo, useCallback,
+  createContext,
+  useContext,
+  useMemo,
+  useCallback,
 } from 'react';
+import { Query } from '../../config/schema';
 
-export const CVContext = createContext({});
+export const CVContext = createContext<Query>({} as Query);
 export const useCV = () => useContext(CVContext);
 
-export const makePageId = (id, type = 'unknown') => `link-${type}-${id}`;
-export const usePageId = (id, type = 'unknown') => useMemo(
+export const makePageId = (
+  id: string,
+  type: ContentTypes,
+) => `link-${type}-${id}`;
+
+export const usePageId = (
+  id: string,
+  type: ContentTypes,
+) => useMemo(
   () => makePageId(id, type),
   [id, type],
 );
 
-export const useScrollToPageId = (id, type = 'unknown') => {
+export const useScrollToPageId = (
+  id: string,
+  type: ContentTypes,
+) => {
   const pageId = useMemo(
     () => makePageId(id, type),
     [id, type],
@@ -33,7 +47,7 @@ export const useScrollToPageId = (id, type = 'unknown') => {
   return handler;
 };
 
-export const contentTypes = {
-  PROJECT: 'project',
-  EXPERIENCE: 'experience',
-};
+export enum ContentTypes {
+  PROJECT,
+  EXPERIENCE,
+}

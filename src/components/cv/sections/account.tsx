@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
   mdiAt,
   mdiPhone,
@@ -10,30 +8,9 @@ import {
   mdiGithub,
 } from '@mdi/js';
 
-import {
-  Heading,
-  HeaderDetails,
-} from './style';
-
-import {
-  DetailsItem,
-} from './components';
-
-import { useCV } from './core';
-
-
-export const TitleSection = () => {
-  const { accounts: [account] } = useCV();
-  if (!account) {
-    return null;
-  }
-  return (
-    <>
-      <Heading title>{account.name}</Heading>
-      {account.tagline && <Heading large accent>{account.tagline}</Heading>}
-    </>
-  );
-};
+import { useCV } from '../core';
+import { DetailsItem } from '../DetailsItem';
+import { HeaderDetails } from '../Header';
 
 export const AccountSection = () => {
   const { accounts: [account] } = useCV();

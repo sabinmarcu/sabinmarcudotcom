@@ -1,12 +1,17 @@
-import React, { useMemo } from 'react';
-import { useCV } from './core';
-import { ExperienceItem } from './components';
-import {
-  Heading,
-  List,
-} from './style';
+import { useMemo } from 'react';
+import { useCV } from '../core';
+import { ExperienceItem } from '../ExperienceItem';
+import { Heading } from '../Heading';
+import { List } from '../List';
 
-const diffTime = (a, b) => Math.sign(new Date(a) - new Date(b));
+const diffTime = (
+  a: number,
+  b: number,
+) => Math.sign(
+  +(new Date(a))
+  - +(new Date(b)),
+);
+
 export const ExperienceSection = () => {
   const { workExperiences } = useCV();
   if (!workExperiences) {
@@ -39,7 +44,7 @@ export const ExperienceSection = () => {
   );
   return (
     <>
-      <Heading section title>Experience</Heading>
+      <Heading section isTitle>Experience</Heading>
       <List>
         {filteredWorkExperiences.map(({ id, ...rest }) => (
           <ExperienceItem key={id} {...{ ...rest, id }} />

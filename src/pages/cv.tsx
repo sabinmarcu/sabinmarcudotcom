@@ -1,30 +1,31 @@
-import React from 'react';
-import { graphql } from 'gatsby';
-
-import { setPrefix } from '../hooks/useLocalStorage';
+import { graphql, PageProps } from 'gatsby';
 
 import '../components/layout.css';
+import { FC } from 'react';
 import { Background } from '../components/background';
 
-import {
-  Container,
-  Header,
-  TwoColumns,
-  MainColumn,
-  SecondaryColumn,
-} from '../components/cv/style';
 import { CV as colors } from '../style/colors';
 
 import { CVContext } from '../components/cv/core';
-import { AccountSection, TitleSection } from '../components/cv/account';
-import { EducationSection } from '../components/cv/education';
-import { StrengthsSection } from '../components/cv/strengths';
-import { ExperienceSection } from '../components/cv/experience';
-import { ProjectsSection } from '../components/cv/projects';
+import { AccountSection } from '../components/cv/sections/account';
+import { EducationSection } from '../components/cv/sections/education';
+import { StrengthsSection } from '../components/cv/sections/strengths';
+import { ExperienceSection } from '../components/cv/sections/experience';
+import { ProjectsSection } from '../components/cv/sections/projects';
+import { Query } from '../config/schema';
+import { Header } from '../components/cv/Header';
+import { TitleSection } from '../components/cv/sections/title';
+import {
+  Container, MainColumn, SecondaryColumn, TwoColumns,
+} from '../components/cv/Layout';
 
-setPrefix('app:cv');
+type GCMSType = {
+  gcms: Query
+};
 
-export const CVPage = ({ data: { gcms } }) => (
+export const CVPage: FC<PageProps<GCMSType>> = (
+  { data: { gcms } },
+) => (
   <CVContext.Provider value={gcms}>
     <Background opacity={0.2} color={colors.main} />
     <Container>

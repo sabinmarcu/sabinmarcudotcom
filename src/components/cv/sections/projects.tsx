@@ -1,10 +1,7 @@
-import React from 'react';
-import { useCV } from './core';
-import { ProjectItem } from './components';
-import {
-  Heading,
-  List,
-} from './style';
+import { useCV } from '../core';
+import { Heading } from '../Heading';
+import { List } from '../List';
+import { ProjectItem } from '../ProjectItem';
 
 export const ProjectsSection = () => {
   const { projects } = useCV();
@@ -13,7 +10,7 @@ export const ProjectsSection = () => {
   }
   return (
     <>
-      <Heading section title>Projects</Heading>
+      <Heading section isTitle>Projects</Heading>
       <List>
         {projects.map(({ id, ...rest }) => (
           <ProjectItem key={id} {...{ ...rest, id }} />

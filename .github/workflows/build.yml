@@ -32,6 +32,8 @@ jobs:
       run: yarn run clean
     - name: Build
       run: yarn run build
+      env:
+        GRAPHCMS_URL: ${{ secrets.GRAPHCMS_URL }}
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:

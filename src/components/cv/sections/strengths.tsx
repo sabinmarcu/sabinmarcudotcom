@@ -1,8 +1,4 @@
-/** @jsx jsx */
-import { jsx } from '@emotion/core';
-
-// eslint-disable-next-line no-unused-vars
-import React, {
+import {
   useState,
   useCallback,
   useMemo,
@@ -15,22 +11,19 @@ import {
   mdiStarOutline,
 } from '@mdi/js';
 
-import {
-  InputGroup,
-  Input,
-} from 'sancho';
+import { TextField } from '@material-ui/core';
 
-import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { useCV } from './core';
+import { useLocalStorage } from '../../../hooks/useLocalStorage';
+import { useCV } from '../core';
+import { Heading } from '../Heading';
+import { DetailsItemIconRaw } from '../DetailsItem';
 import {
-  Heading,
-  PillList,
-  PillGroup,
   Pill,
+  PillGroup,
+  PillList,
   PillSeparator,
-  DetailsItemIconRaw,
-} from './style';
-
+} from '../Pill';
+import { EnhancedSkill } from '../types';
 
 export const StrengthsSection = ({ title = 'Strengths ' }) => {
   const { skills } = useCV();
@@ -52,13 +45,13 @@ export const StrengthsSection = ({ title = 'Strengths ' }) => {
     }) => name.toLowerCase().includes(filter)
       || category.toLowerCase().includes(filter));
 
-  const groupedSkills = useMemo(
+  const groupedSkills: Record<string, EnhancedSkill[]> = useMemo(
     () => {
       if (!filteredSkills) {
         return null;
       }
       return filteredSkills.reduce(
-        (prev, { category, ...rest }) => ({
+        (prev: any, { category, ...rest }) => ({
           ...prev,
           [category]: [...(prev[category] || []), {
             ...rest,
@@ -84,21 +77,22 @@ export const StrengthsSection = ({ title = 'Strengths ' }) => {
   }
   return (
     <>
-      <Heading section title>
+      <Heading section isTitle>
         {title}
         <DetailsItemIconRaw onClick={toggleStars}>
           <Icon path={showStars ? mdiStar : mdiStarOutline} size="1em" />
         </DetailsItemIconRaw>
       </Heading>
       {showStars && (
-        <InputGroup label="Filter Skills">
-          <Input
-            placeholder="React"
-            value={filter}
-            onChange={filterHandler}
-            css={{ background: 'white' }}
-          />
-        </InputGroup>
+        <TextField
+          label="Filter Skills"
+          placeholder="React"
+          value={filter}
+          onChange={filterHandler}
+          fullWidth
+          variant="outlined"
+          style={{ background: 'white', margin: '10px 0' }}
+        />
       )}
       <PillList>
         {Object
@@ -126,7 +120,7 @@ export const StrengthsSection = ({ title = 'Strengths ' }) => {
       </PillList>
       {groupedSkills.dictlang && groupedSkills.dictlang.length > 0 && (
         <>
-          <Heading section title>Languages</Heading>
+          <Heading section isTitle>Languages</Heading>
           <PillList>
             <PillGroup>
               {groupedSkills.dictlang.map(({ id, name, stars }) => (

@@ -1,7 +1,7 @@
-import React from 'react';
-import { useCV } from './core';
-import { Heading, List } from './style';
-import { PositionItem } from './components';
+import { useCV } from '../core';
+import { Heading } from '../Heading';
+import { List } from '../List';
+import { PositionItem } from '../PositionItem';
 
 export const EducationSection = () => {
   const { educations } = useCV();
@@ -10,7 +10,7 @@ export const EducationSection = () => {
   }
   return (
     <>
-      <Heading section title>Education</Heading>
+      <Heading section isTitle>Education</Heading>
       <List>
         {educations.map(({
           id, institution, degree, start, end,

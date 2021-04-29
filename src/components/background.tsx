@@ -1,8 +1,30 @@
-import React, { useRef, useEffect } from 'react';
+import {
+  useRef, useEffect, FC, LegacyRef,
+} from 'react';
 import styled from '@emotion/styled';
 
+type CanvasProps = {
+  opacity?: number,
+};
+
+type RendererProps = {
+  every: number,
+  variance: number,
+  size: number,
+  speed: number,
+  tolerance: number,
+  color: string,
+  edge: boolean,
+};
+
+type PointType = {
+  x: number,
+  y: number,
+  impulse: number,
+};
+
 export const makeRenderer = (
-  ref,
+  ref: HTMLCanvasElement,
   {
     every,
     variance,
@@ -11,14 +33,14 @@ export const makeRenderer = (
     tolerance,
     color,
     edge,
-  } = {},
+  }: RendererProps = {} as RendererProps,
 ) => {
   const canvas = ref;
 
   const ctx = canvas.getContext('2d');
-  let realSpeed;
+  let realSpeed: number;
 
-  let points;
+  let points: PointType[];
 
   const update = () => {
     canvas.width = window.innerWidth;
@@ -46,7 +68,10 @@ export const makeRenderer = (
   update();
   window.addEventListener('resize', update);
 
-  const fillGrad = (x, y) => {
+  const fillGrad = (x: number, y: number) => {
+    if (!ctx) {
+      return;
+    }
     const grd = ctx.createLinearGradient(0, 0, x, y);
     grd.addColorStop(0, 'rgba(256, 256, 256, 0.8)');
     grd.addColorStop(0.3, 'rgba(256, 256, 256, 0)');
@@ -60,7 +85,7 @@ export const makeRenderer = (
 
   let isRendering = true;
   const render = () => {
-    if (!isRendering) {
+    if (!isRendering || !ctx) {
       return;
     }
 
@@ -138,7 +163,9 @@ export const makeRenderer = (
   };
 };
 
-const Canvas = styled.canvas(
+const Canvas = styled.canvas<{
+  opacity?: number,
+}>(
   `
     position: fixed;
     left: 0;
@@ -153,7 +180,9 @@ const Canvas = styled.canvas(
   }),
 );
 
-export const Background = ({
+export const Background: FC<
+Partial<RendererProps> & CanvasProps
+> = ({
   every = 150,
   variance = 50,
   size = 4,
@@ -163,7 +192,7 @@ export const Background = ({
   edge = false,
   opacity,
 }) => {
-  const ref = useRef();
+  const ref = useRef<HTMLCanvasElement>();
   useEffect(
     () => {
       if (ref.current) {
@@ -184,7 +213,7 @@ export const Background = ({
     [ref],
   );
   return (
-    <Canvas ref={ref} {...{ opacity }} />
+    <Canvas ref={ref as LegacyRef<HTMLCanvasElement>} {...{ opacity }} />
   );
 };
 

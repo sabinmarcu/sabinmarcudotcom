@@ -1,0 +1,51 @@
+import styled from '@emotion/styled';
+import { rem } from 'polished';
+import { FC } from 'react';
+import { Icon } from '@mdi/react';
+import { colors } from './common';
+
+export const DetailsItemRaw = styled.div`
+  padding-right: ${rem(27)};
+  font-size: inherit;
+  font-weight: bold;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: flex-start;
+  color: inherit;
+  a, a:link, a:visited {
+    color: inherit;
+    text-decoration: none;
+  }
+`;
+
+export const DetailsItemIconRaw = styled.span<Partial<{
+  faded: boolean,
+  padding: string | number,
+}>>(
+  `
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+  `,
+  ({ faded, padding = 6 }) => ({
+    color: colors[faded ? 'faded' : 'accent'],
+    paddingRight: rem(typeof padding === 'string'
+      ? parseInt(padding, 10)
+      : padding),
+  }),
+  ({ onClick }) => (onClick ? 'cursor: pointer' : ''),
+);
+
+export const DetailsItem: FC<{
+  icon: string,
+}> = ({ icon, children }) => (
+  <DetailsItemRaw>
+    {icon && (
+      <DetailsItemIconRaw>
+        <Icon path={icon} size="1.2rem" />
+      </DetailsItemIconRaw>
+    )}
+    {children}
+  </DetailsItemRaw>
+);
