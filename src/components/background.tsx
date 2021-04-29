@@ -174,6 +174,9 @@ const Canvas = styled.canvas<{
     height: 100vh;
     opacity: 0.3;
     z-index: -1;
+    @media print {
+      display: none;
+    }
   `,
   ({ opacity = 0.3 }) => ({
     opacity,

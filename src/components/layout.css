@@ -190,6 +190,11 @@ html {
   box-sizing: border-box;
   overflow-y: scroll;
 }
+@media print {
+  html {
+    font-size: 10px;
+  }
+}
 * {
   box-sizing: inherit;
 }

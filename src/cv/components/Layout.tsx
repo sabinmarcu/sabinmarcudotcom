@@ -19,14 +19,16 @@ export const SecondaryColumn = styled.aside();
 export const TwoColumns = styled.section(
   `
     display: grid;
-    grid-template-columns: 2fr minmax(${layout.maxWidth * 0.35}px, 1fr);
-    grid-gap: ${layout.maxWidth * 0.05}px;
+    grid-template-columns: 2fr minmax(${rem(layout.maxWidth * 0.35)}, 1fr);
+    grid-gap: ${rem(layout.maxWidth * 0.05)};
   `,
   {
-    [`@media (max-width: ${layout.maxWidth * 0.5}px)`]: {
-      gridTemplateColumns: '1fr',
-      [SecondaryColumn as any]: {
-        gridRow: '1/2',
+    '@media not print': {
+      [`@media (max-width: ${rem(layout.maxWidth * 0.5)})`]: {
+        gridTemplateColumns: '1fr',
+        [SecondaryColumn as any]: {
+          gridRow: '1/2',
+        },
       },
     },
   },

@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { rem } from 'polished';
 import { colors, layout } from '../common';
 
 export const ListItem = styled.article();
@@ -13,7 +14,7 @@ export const List = styled.section<Partial<{
     !plain
       ? {
         [ListItem as any]: {
-          padding: `${layout.maxWidth * 0.02}px 0`,
+          padding: `${rem(layout.maxWidth * 0.02)} 0`,
         },
         '> *': {
           borderTop: `dashed 1px ${colors.border}`,
@@ -24,7 +25,7 @@ export const List = styled.section<Partial<{
       }
       : {
         [ListItem as any]: {
-          padding: `${layout.maxWidth * 0.01}px 0`,
+          padding: `${rem(layout.maxWidth * 0.01)} 0`,
         },
       }
   ),
