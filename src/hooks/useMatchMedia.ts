@@ -1,5 +1,8 @@
 import {
-  useDebugValue, useEffect, useMemo, useState,
+  useDebugValue,
+  useEffect,
+  useMemo,
+  useState,
 } from 'react';
 
 export const useMatchMedia = (
@@ -23,7 +26,13 @@ export const useMatchMedia = (
     [mediaQueries],
   );
   const matchMedia = useMemo(
-    () => window.matchMedia(queries.join(', ')),
+    () => {
+      const wnd = typeof window === 'undefined' ? null : window;
+      if (!wnd) {
+        return undefined;
+      }
+      return wnd.matchMedia(queries.join(', '));
+    },
     [queries],
   );
   useEffect(
