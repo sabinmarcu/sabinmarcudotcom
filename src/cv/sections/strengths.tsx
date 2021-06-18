@@ -24,10 +24,16 @@ import {
   PillSeparator,
 } from '../components/Pill';
 import { EnhancedSkill } from '../types';
+import { useMatchMedia } from '../../hooks/useMatchMedia';
 
 export const StrengthsSection = ({ title = 'Strengths ' }) => {
   const { skills } = useCV();
+  const isPrint = useMatchMedia('!print');
   const [showStars, setShowStars] = useLocalStorage('showStars', false);
+  const shouldShowStars = useMemo(
+    () => !isPrint && showStars,
+    [isPrint, showStars],
+  );
   const toggleStars = useCallback(
     () => setShowStars((s) => !s),
     [setShowStars],
@@ -79,11 +85,14 @@ export const StrengthsSection = ({ title = 'Strengths ' }) => {
     <>
       <Heading section isTitle>
         {title}
-        <DetailsItemIconRaw onClick={toggleStars}>
-          <Icon path={showStars ? mdiStar : mdiStarOutline} size="1em" />
-        </DetailsItemIconRaw>
+        {!isPrint
+          && (
+          <DetailsItemIconRaw onClick={toggleStars}>
+            <Icon path={showStars ? mdiStar : mdiStarOutline} size="1em" />
+          </DetailsItemIconRaw>
+          )}
       </Heading>
-      {showStars && (
+      {shouldShowStars && (
         <TextField
           label="Filter Skills"
           placeholder="React"
@@ -101,9 +110,9 @@ export const StrengthsSection = ({ title = 'Strengths ' }) => {
           .map(([category, s]) => (
             <PillGroup key={category}>
               {s.map(({ id, name, stars }) => (
-                <Pill key={id} oneLine={showStars}>
+                <Pill key={id} oneLine={shouldShowStars}>
                   <span>{name}</span>
-                  {showStars && (
+                  {shouldShowStars && (
                   <div>
                     <PillSeparator />
                       {stars.map(([key, star]) => (

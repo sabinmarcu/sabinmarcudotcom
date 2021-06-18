@@ -15,6 +15,9 @@ export const useMatchMedia = (
       if (query.startsWith('(') && query.endsWith(')')) {
         return query;
       }
+      if (query.startsWith('!')) {
+        return query.substr(1);
+      }
       return `(${query})`;
     }),
     [mediaQueries],
