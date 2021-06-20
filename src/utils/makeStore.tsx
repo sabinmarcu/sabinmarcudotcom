@@ -5,7 +5,7 @@ import {
   useContext,
   useMemo,
 } from 'react';
-import { capitalize } from './text';
+import { capitalize, PrefixType, prefix } from './text';
 
 type HandlerParams<INPUT, OPTIONS> = {
   defaultValue?: INPUT | undefined,
@@ -20,13 +20,26 @@ type ProviderFactory<T, INPUT, OPTIONS> = (
   }
 ) => FC;
 
-type HookFuncType<T> = (input: T) => any;
+type HookFuncType<T, R extends any = any> = (input: T) => R;
+type HOCType<
+  T,
+  K extends keyof any,
+  V extends HookFuncType<T>,
+> = <P extends { [key in K]: ReturnType<V> }>(
+  ComposedComponent: ComponentType<P>,
+) => FC<Omit<P, K>>;
+
+export type HOCProp<
+  T extends HOCType<any, string, any>,
+> = T extends HOCType<any, infer K, infer V>
+  ? { [key in K]: ReturnType<V> }
+  : never;
 
 export const makeStore = <
   T extends {} = any,
   INPUT extends any = T,
   OPTIONS extends {} = {},
->() => <HookKeys extends string, StoreName extends string>(
+>() => <Selectors extends Record<string, HookFuncType<T>>, StoreName extends string>(
     {
       defaultValue,
       defaultOptions = {} as OPTIONS,
@@ -38,7 +51,7 @@ export const makeStore = <
       defaultValue?: INPUT,
       defaultOptions?: OPTIONS,
       handler: HandlerType<T, INPUT, OPTIONS>,
-      selectors: Record<HookKeys, HookFuncType<T>>,
+      selectors: Selectors,
     },
   ) => {
   const StoreContext = createContext<T | undefined>(undefined);
@@ -61,46 +74,44 @@ export const makeStore = <
     return Provider;
   };
   const DefaultProvider = makeProvider({ defaultValue, ...defaultOptions });
-  const hooks = Object.entries<HookFuncType<T>>(selectors || {} as typeof selectors)
+  const hooks = Object.entries<HookFuncType<T>>(selectors)
     .reduce<{
-    [key in keyof typeof selectors as `use${Capitalize<key>}`]: HookFuncType<T>
+    [K in keyof typeof selectors as PrefixType<'use', K & string>]:() => ReturnType<typeof selectors[K]>
   }>(
-    (prev, [key, hook]) => ({
-      ...prev,
-      [`use${key[0].toUpperCase()}${key.substr(1)}`]: () => {
-        const store = useStore();
-        if (store) {
-          return hook(store);
-        }
-        return undefined;
-      },
-    }),
-    {} as any,
-  );
+      (prev, [key, hook]) => ({
+        ...prev,
+        [prefix('use', key)]: () => {
+          const store = useStore();
+          if (store) {
+            return hook(store);
+          }
+          return undefined;
+        },
+      }),
+      {} as any);
   const hocs = Object.entries<HookFuncType<T>>(selectors || {} as typeof selectors)
     .reduce<{
-    [K in keyof typeof selectors as `with${Capitalize<K>}`]: <P extends { [key in K]: any }>(
-    ComposedComponent: ComponentType<P>,
-    ) => FC<Omit<P, StoreName>>
+    [K in keyof typeof selectors as PrefixType<'with', K & string>]: HOCType<T, K & string, typeof selectors[K]>
   }>(
-      (prev, [key, hook]) => {
-        const propName = [key] as const;
-        return ({
-          ...prev,
-          [`with${key[0].toUpperCase()}${key.substr(1)}`]: <P extends { [key in typeof propName[number] ]: any }>(
-            ComposedComponent: ComponentType<P>,
-          ): FC<Omit<P, StoreName>> => (props) => {
-            const store = useStore();
-            const data = useMemo(
-              () => (store ? hook(store) : undefined),
-              [store],
-            );
-            return <ComposedComponent {...{ ...props, [key]: data } as P} />;
-          },
-        });
-      },
-      {} as any,
-      );
+    (prev, [key, hook]) => {
+      const Hoc: HOCType<T, typeof key, typeof selectors[typeof key]> = (
+        ComposedComponent,
+      ) => (props) => {
+        const store = useStore();
+        const data = useMemo(
+          () => (store ? hook(store) : undefined),
+          [store],
+        );
+        return <ComposedComponent {...{ ...props, [key]: data } as any} />;
+      };
+
+      return ({
+        ...prev,
+        [prefix('with', key)]: Hoc,
+      });
+    },
+    {} as any,
+  );
   const withStore = <P extends { [key in StoreName]: string }>(
     ComposedComponent: ComponentType<P>,
   ): FC<Omit<P, StoreName>> => (props) => {
