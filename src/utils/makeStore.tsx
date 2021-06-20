@@ -57,7 +57,6 @@ export const makeStore = <
     },
   ) => {
   const StoreContext = createContext<T | undefined>(undefined);
-  const useStore = () => useContext<T | undefined>(StoreContext);
   const useStoreProvider = handler;
   const makeProvider: ProviderFactory<T, INPUT, OPTIONS> = (
     params,
@@ -83,6 +82,8 @@ export const makeStore = <
     return Provider;
   };
   const DefaultProvider = makeProvider({ defaultValue, ...defaultOptions });
+
+  const useStore = () => useContext<T | undefined>(StoreContext);
   const hooks = Object.entries<HookFuncType<T>>(selectors)
     .reduce<{
     [K in keyof typeof selectors as PrefixType<'use', K & string>]:() => ReturnType<typeof selectors[K]>
@@ -99,6 +100,13 @@ export const makeStore = <
         },
       }),
       {} as any);
+
+  const withStore = <P extends { [key in StoreName]: string }>(
+    ComposedComponent: ComponentType<P>,
+  ): FC<Omit<P, StoreName>> => (props) => {
+      const store = useStore();
+      return <ComposedComponent {...{ ...props, [name]: store } as P} />;
+    };
   const hocs = Object.entries<HookFuncType<T>>(selectors || {} as typeof selectors)
     .reduce<{
     [K in keyof typeof selectors as PrefixType<'with', K & string>]: HOCWrapperType<T, K & string, typeof selectors[K]>
@@ -133,20 +141,15 @@ export const makeStore = <
     },
     {} as any,
   );
-  const withStore = <P extends { [key in StoreName]: string }>(
-    ComposedComponent: ComponentType<P>,
-  ): FC<Omit<P, StoreName>> => (props) => {
-      const store = useStore();
-      return <ComposedComponent {...{ ...props, [name]: store } as P} />;
-    };
+
   return {
     Context: StoreContext,
     Provider: DefaultProvider,
     makeProvider,
     useStore,
     hooks,
-    hocs,
     withStore,
+    hocs,
     name,
   };
 };
