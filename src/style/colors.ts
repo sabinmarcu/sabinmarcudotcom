@@ -3,6 +3,7 @@ export const CVDark: Colors = {
   secondary: '#1f789c',
   text: '#ccc',
   background: '#222',
+  paper: '#444',
   faded: '#666',
   border: '#444',
 };
@@ -12,6 +13,7 @@ export const CVLight: Colors = {
   secondary: '#72243D',
   text: '#000',
   background: '#fff',
+  paper: '#eee',
   faded: '#888',
   border: '#ccc',
 };
@@ -21,15 +23,17 @@ export const DefaultDark: Colors = {
   secondary: '#1f789c',
   text: '#ccc',
   background: '#222',
+  paper: '#444',
   faded: '#666',
   border: '#444',
 };
 
 export const DefaultLight: Colors = {
-  primary: 'rebeccapurple',
+  primary: '#663399',
   secondary: '#72243D',
   text: '#000',
   background: '#fff',
+  paper: '#eee',
   faded: '#888',
   border: '#ccc',
 };
@@ -45,5 +49,6 @@ export type Colors = {
   text: string,
   faded: string,
   background: string,
+  paper: string,
   border: string,
 };

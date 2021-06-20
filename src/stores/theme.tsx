@@ -1,4 +1,5 @@
-import { useMemo } from 'react';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core';
+import { FC, useMemo } from 'react';
 import { useMatchMedia } from '../hooks/useMatchMedia';
 import { Colors } from '../style/colors';
 import { DefaultTheme, InputTheme, Theme } from '../style/themes';
@@ -40,9 +41,47 @@ const store = makeStore<Theme, InputTheme, Options>()({
 });
 
 export default store;
-export const { Provider, Update } = store;
+export const { Update } = store;
 export const { useTheme, useThemeColors, useThemeLayout } = store.hooks;
 export const { withTheme, withThemeColors, withThemeLayout } = store.hocs;
 export type ThemeProp = HOCProp<typeof withTheme>;
 export type ThemeColorsProp = HOCProp<typeof withThemeColors>;
 export type ThemeLayoutProp = HOCProp<typeof withThemeLayout>;
+
+const { Provider: SiteThemeProvider } = store;
+const MUIThemeCustomizer: FC = ({ children }) => {
+  const colors = useThemeColors();
+  const muiTheme = useMemo(
+    () => createMuiTheme({
+      palette: {
+        primary: {
+          main: colors.primary,
+        },
+        secondary: {
+          main: colors.secondary,
+        },
+        background: {
+          default: colors.background,
+          paper: colors.background,
+        },
+        text: {
+          primary: colors.text,
+          secondary: colors.faded,
+        },
+      },
+    }),
+    [colors],
+  );
+  return (
+    <ThemeProvider theme={muiTheme}>
+      {children}
+    </ThemeProvider>
+  );
+};
+export const Provider: FC = ({ children }) => (
+  <SiteThemeProvider>
+    <MUIThemeCustomizer>
+      {children}
+    </MUIThemeCustomizer>
+  </SiteThemeProvider>
+);

@@ -2,6 +2,8 @@ import {
   useState,
   useCallback,
   useMemo,
+  FC,
+  ComponentProps,
 } from 'react';
 
 import { Icon } from '@mdi/react';
@@ -25,6 +27,14 @@ import {
 } from '../components/Pill';
 import { EnhancedSkill } from '../types';
 import { useMatchMedia } from '../../hooks/useMatchMedia';
+import { useThemeColors } from '../../stores/theme';
+
+const StyledTextField: FC<ComponentProps<typeof TextField>> = (props) => {
+  const colors = useThemeColors();
+  return (
+    <TextField {...props} style={{...props.style, background: colors.background }}/>
+  )
+}
 
 export const StrengthsSection = ({ title = 'Strengths ' }) => {
   const { skills } = useCV();
@@ -93,14 +103,14 @@ export const StrengthsSection = ({ title = 'Strengths ' }) => {
           )}
       </Heading>
       {shouldShowStars && (
-        <TextField
+        <StyledTextField
           label="Filter Skills"
           placeholder="React"
           value={filter}
           onChange={filterHandler}
           fullWidth
           variant="outlined"
-          style={{ background: 'white', margin: '10px 0' }}
+          style={{ margin: '10px 0' }}
         />
       )}
       <PillList>
