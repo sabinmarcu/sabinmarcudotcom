@@ -26,7 +26,7 @@ export const List = withTheme(
         }
         : {
           [ListItem as any]: {
-            padding: `${rem(maxWidth * 0.01)} 0`,
+            padding: `${rem(maxWidth * 0.01)} 0 !important`,
           },
         }
     ),

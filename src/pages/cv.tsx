@@ -2,7 +2,6 @@ import { graphql, PageProps } from 'gatsby';
 
 import '../components/layout.css';
 import { FC } from 'react';
-import { Background } from '../components/background';
 
 import { CVContext } from '../cv/core';
 import { AccountSection } from '../cv/sections/account';
@@ -20,8 +19,7 @@ import {
   TwoColumns,
   Wrapper,
 } from '../cv/components/Layout';
-
-import { Provider as ThemeProvider } from '../stores/theme';
+import { Update as UpdateTheme } from '../stores/theme';
 import { CVTheme } from '../style/themes';
 
 type GCMSType = {
@@ -31,29 +29,27 @@ type GCMSType = {
 export const CVPage: FC<PageProps<GCMSType>> = (
   { data: { gcms } },
 ) => (
-  <ThemeProvider preferSystemTheme value={CVTheme}>
-    <Wrapper>
-      <CVContext.Provider value={gcms}>
-        <Background opacity={0.2} />
-        <Container>
-          <Header>
-            <TitleSection />
-            <AccountSection />
-          </Header>
-          <TwoColumns>
-            <MainColumn>
-              <ExperienceSection />
-              <ProjectsSection />
-            </MainColumn>
-            <SecondaryColumn>
-              <EducationSection />
-              <StrengthsSection />
-            </SecondaryColumn>
-          </TwoColumns>
-        </Container>
-      </CVContext.Provider>
-    </Wrapper>
-  </ThemeProvider>
+  <Wrapper>
+    <UpdateTheme value={CVTheme} preferSystemTheme />
+    <CVContext.Provider value={gcms}>
+      <Container>
+        <Header>
+          <TitleSection />
+          <AccountSection />
+        </Header>
+        <TwoColumns>
+          <MainColumn>
+            <ExperienceSection />
+            <ProjectsSection />
+          </MainColumn>
+          <SecondaryColumn>
+            <EducationSection />
+            <StrengthsSection />
+          </SecondaryColumn>
+        </TwoColumns>
+      </Container>
+    </CVContext.Provider>
+  </Wrapper>
 );
 
 export default CVPage;

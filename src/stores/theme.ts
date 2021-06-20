@@ -40,7 +40,7 @@ const store = makeStore<Theme, InputTheme, Options>()({
 });
 
 export default store;
-export const { Provider } = store;
+export const { Provider, Update } = store;
 export const { useTheme, useThemeColors, useThemeLayout } = store.hooks;
 export const { withTheme, withThemeColors, withThemeLayout } = store.hocs;
 export type ThemeProp = HOCProp<typeof withTheme>;

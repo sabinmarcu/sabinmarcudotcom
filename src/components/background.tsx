@@ -4,7 +4,8 @@ import {
 import styled from '@emotion/styled';
 import { useMatchMedia } from '../hooks/useMatchMedia';
 import {
-  useThemeColors,
+  ThemeColorsProp,
+  useThemeColors, withThemeColors,
 } from '../stores/theme';
 
 type CanvasProps = {
@@ -183,23 +184,33 @@ export const makeRenderer = (
   };
 };
 
-const Canvas = styled.canvas<{
-  opacity?: number,
-}>(
+const CanvasWrapper = withThemeColors(
+  styled.div<ThemeColorsProp>(
+    `
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      @media print {
+        display: none;
+      }
+      & ~ * {
+        position: relative;
+      }
+    `,
+    ({ themeColors: { background } }) => ({
+      background,
+    }),
+  ),
+);
+
+const Canvas = styled.canvas<CanvasProps>(
   `
-    position: fixed;
-    left: 0;
-    top: 0;
     width: 100vw;
     height: 100vh;
     opacity: 0.3;
-    z-index: 0;
-    @media print {
-      display: none;
-    }
-    & ~ * {
-      position: relative;
-    }
   `,
   ({ opacity = 0.3 }) => ({
     opacity,
@@ -275,7 +286,9 @@ export const Background = ({
     ],
   );
   return (
-    <Canvas ref={ref as LegacyRef<HTMLCanvasElement>} {...{ opacity }} />
+    <CanvasWrapper>
+      <Canvas ref={ref as LegacyRef<HTMLCanvasElement>} {...{ opacity }} />
+    </CanvasWrapper>
   );
 };
 
