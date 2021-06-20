@@ -4,7 +4,10 @@ import {
   useMemo,
   useCallback,
 } from 'react';
+import smoothscroll from 'smoothscroll-polyfill';
 import { Query } from '../config/schema';
+
+smoothscroll.polyfill();
 
 export const CVContext = createContext<Query>({} as Query);
 export const useCV = () => useContext(CVContext);
