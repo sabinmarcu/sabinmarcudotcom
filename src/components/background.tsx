@@ -181,9 +181,12 @@ const Canvas = styled.canvas<{
     width: 100vw;
     height: 100vh;
     opacity: 0.3;
-    z-index: -1;
+    z-index: 0;
     @media print {
       display: none;
+    }
+    & ~ * {
+      position: relative;
     }
   `,
   ({ opacity = 0.3 }) => ({
