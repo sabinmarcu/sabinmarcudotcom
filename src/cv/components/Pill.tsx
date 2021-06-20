@@ -26,7 +26,7 @@ export const PillGroup = styled.div(`
 `);
 
 export const Pill = withThemeColors(
-  styled.div<
+  styled.span<
   Partial<{
     oneLine: boolean,
   } & ClickStateProps> & ThemeColorsProp

@@ -109,8 +109,17 @@ export const StrengthsSection = ({ title = 'Strengths ' }) => {
           .filter(([key]) => key !== 'dictlang')
           .map(([category, s]) => (
             <PillGroup key={category}>
-              {s.map(({ id, name, stars }) => (
-                <Pill key={id} oneLine={shouldShowStars}>
+              {s.map(({
+                id,
+                name,
+                stars,
+                ability,
+              }) => (
+                <Pill
+                  key={id}
+                  oneLine={shouldShowStars}
+                  title={`${name}: ${ability}/5`}
+                >
                   <span>{name}</span>
                   {shouldShowStars && (
                   <div>
@@ -132,8 +141,13 @@ export const StrengthsSection = ({ title = 'Strengths ' }) => {
           <Heading section isTitle>Languages</Heading>
           <PillList>
             <PillGroup>
-              {groupedSkills.dictlang.map(({ id, name, stars }) => (
-                <Pill key={id} oneLine>
+              {groupedSkills.dictlang.map(({
+                id,
+                name,
+                stars,
+                ability,
+              }) => (
+                <Pill key={id} oneLine title={`${name}: ${ability}/5`}>
                   <span>{name}</span>
                   <div>
                     <PillSeparator />
