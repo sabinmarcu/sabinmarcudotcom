@@ -1,9 +1,11 @@
 import styled from '@emotion/styled';
 import { rem } from 'polished';
-import { ThemeLayoutProp, withThemeLayout } from '../../stores/theme';
+import {
+  ThemeColorsProp, ThemeLayoutProp, withThemeColors, withThemeLayout,
+} from '../../stores/theme';
 
-export const Container = withThemeLayout<ThemeLayoutProp>(
-  styled.section(
+export const Container = withThemeLayout(
+  styled.section<ThemeLayoutProp>(
     ({ themeLayout: layout }) => layout,
     `
     margin: 0 auto;
@@ -35,5 +37,16 @@ export const TwoColumns = withThemeLayout(
         },
       },
     }),
+  ),
+);
+
+export const Wrapper = withThemeColors(
+  styled.section<ThemeColorsProp>(
+    ({ themeColors: { background, text } }) => `
+      width: 100vw;
+      overflow-x: hidden;
+      background: ${background};
+      color: ${text};
+    `,
   ),
 );

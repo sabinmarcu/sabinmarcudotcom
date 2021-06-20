@@ -45,13 +45,13 @@ export const Pill = withThemeColors(
         justify-content: center;
       }
     `,
-    ({ oneLine, themeColors: { border } }) => (oneLine
+    ({ oneLine, themeColors: { border, background } }) => (oneLine
       ? `
         justify-content: space-between;
         width: 100%;
       `
       : `
-        background: #fff;
+        background: ${background};
         justify-content: center;
         border: solid 1px ${border};
         border-radius: ${rem(12)};

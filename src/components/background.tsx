@@ -3,10 +3,12 @@ import {
 } from 'react';
 import styled from '@emotion/styled';
 import { useMatchMedia } from '../hooks/useMatchMedia';
-import { Theme, withTheme } from '../stores/theme';
+import {
+  useThemeColors,
+} from '../stores/theme';
 
 type CanvasProps = {
-  opacity?: number,
+  opacity: number,
 };
 
 type RendererProps = {
@@ -189,51 +191,49 @@ const Canvas = styled.canvas<{
   }),
 );
 
-export const Background = withTheme(
-  ({
-    every = 150,
-    variance = 50,
-    size = 4,
-    speed = 1.5,
-    tolerance = 50,
-    color = '#444444',
-    edge = false,
-    opacity,
-    theme: { main: themeColor },
-  }: Partial<RendererProps> & CanvasProps & Theme) => {
-    const ref = useRef<HTMLCanvasElement>();
-    const renderOnce = useMatchMedia(['prefers-reduced-motion', 'reduce']);
-    const renderColor = useMemo(
-      () => themeColor || color,
-      [themeColor, color],
-    );
-    useEffect(
-      () => {
-        if (ref.current) {
-          const renderer = makeRenderer(ref.current, {
-            every,
-            variance,
-            size,
-            speed,
-            tolerance,
-            color: renderColor,
-            edge,
-          });
-          if (renderOnce) {
-            renderer.renderOnce();
-            return undefined;
-          }
-          renderer.start();
-          return renderer.stop;
+export const Background = ({
+  every = 150,
+  variance = 50,
+  size = 4,
+  speed = 1.5,
+  tolerance = 50,
+  color = '#444444',
+  edge = false,
+  opacity = 0.3,
+}: Partial<RendererProps> & CanvasProps) => {
+  const ref = useRef<HTMLCanvasElement>();
+  const renderOnce = useMatchMedia(['prefers-reduced-motion', 'reduce']);
+  const themeColors = useThemeColors();
+  const renderColor = useMemo(
+    () => themeColors?.primary || color,
+    [themeColors, color],
+  );
+  useEffect(
+    () => {
+      if (ref.current) {
+        const renderer = makeRenderer(ref.current, {
+          every,
+          variance,
+          size,
+          speed,
+          tolerance,
+          color: renderColor,
+          edge,
+        });
+        if (renderOnce) {
+          renderer.renderOnce();
+          return undefined;
         }
-        return undefined;
-      },
-      [ref, renderOnce],
-    );
-    return (
-      <Canvas ref={ref as LegacyRef<HTMLCanvasElement>} {...{ opacity }} />
-    );
-  },
-);
+        renderer.start();
+        return renderer.stop;
+      }
+      return undefined;
+    },
+    [ref, renderOnce],
+  );
+  return (
+    <Canvas ref={ref as LegacyRef<HTMLCanvasElement>} {...{ opacity }} />
+  );
+};
 
 export default Background;

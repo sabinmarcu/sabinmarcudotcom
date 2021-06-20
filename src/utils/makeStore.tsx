@@ -18,20 +18,22 @@ type ProviderFactory<T, INPUT, OPTIONS> = (
     name?: string,
     handler?: HandlerType<T, INPUT, OPTIONS>
   }
-) => FC;
+) => FC<OPTIONS>;
 
 type HookFuncType<T, R extends any = any> = (input: T) => R;
-type HOCType<
+type HOCPropType<T, K extends keyof any, V extends HookFuncType<T>> = { [key in K]: ReturnType<V> };
+type HOCType<P, K extends keyof any> = FC<Omit<P, K>>;
+type HOCWrapperType<
   T,
   K extends keyof any,
   V extends HookFuncType<T>,
-> = <P extends { [key in K]: ReturnType<V> }>(
+> = <P extends HOCPropType<T, K, V>>(
   ComposedComponent: ComponentType<P>,
-) => FC<Omit<P, K>>;
+) => HOCType<P, K>;
 
 export type HOCProp<
-  T extends HOCType<any, string, any>,
-> = T extends HOCType<any, infer K, infer V>
+  T extends HOCWrapperType<any, string, any>,
+> = T extends HOCWrapperType<any, infer K, infer V>
   ? { [key in K]: ReturnType<V> }
   : never;
 
@@ -56,7 +58,7 @@ export const makeStore = <
   ) => {
   const StoreContext = createContext<T | undefined>(undefined);
   const useStore = () => useContext<T | undefined>(StoreContext);
-  const useStoreProvider = (params: HandlerParams<INPUT, OPTIONS>) => handler(params);
+  const useStoreProvider = handler;
   const makeProvider: ProviderFactory<T, INPUT, OPTIONS> = (
     params,
     options,
@@ -66,8 +68,15 @@ export const makeStore = <
       handler: overrideHandler,
     } = options || {};
     const useProvider = overrideHandler || useStoreProvider;
-    const Provider: FC = ({ children }) => {
-      const value = useProvider(params);
+    const Provider: FC<OPTIONS> = ({ children, ...renderOptions }) => {
+      const renderParams = useMemo(
+        () => ({
+          ...params,
+          ...renderOptions,
+        }),
+        [renderOptions],
+      );
+      const value = useProvider(renderParams);
       return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;
     };
     Provider.displayName = [title, name, 'Provider'].filter(Boolean).map(capitalize).join('');
@@ -82,32 +91,44 @@ export const makeStore = <
         ...prev,
         [prefix('use', key)]: () => {
           const store = useStore();
-          if (store) {
-            return hook(store);
-          }
-          return undefined;
+          const value = useMemo(
+            () => (store ? hook(store) : undefined),
+            [store],
+          );
+          return value;
         },
       }),
       {} as any);
   const hocs = Object.entries<HookFuncType<T>>(selectors || {} as typeof selectors)
     .reduce<{
-    [K in keyof typeof selectors as PrefixType<'with', K & string>]: HOCType<T, K & string, typeof selectors[K]>
+    [K in keyof typeof selectors as PrefixType<'with', K & string>]: HOCWrapperType<T, K & string, typeof selectors[K]>
   }>(
     (prev, [key, hook]) => {
-      const Hoc: HOCType<T, typeof key, typeof selectors[typeof key]> = (
+      const hocName = prefix('with', key);
+
+      const HocWrapper: HOCWrapperType<T, typeof key, typeof selectors[typeof key]> = (
         ComposedComponent,
-      ) => (props) => {
-        const store = useStore();
-        const data = useMemo(
-          () => (store ? hook(store) : undefined),
-          [store],
-        );
-        return <ComposedComponent {...{ ...props, [key]: data } as any} />;
+      ) => {
+        const StoreHOC: HOCType<
+        HOCPropType<T, typeof key, typeof selectors[typeof key]>,
+        typeof key
+        > = (props) => {
+          const store = useStore();
+          const data = useMemo(
+            () => (store ? hook(store) : undefined),
+            [store],
+          );
+          return <ComposedComponent {...{ ...props, [key]: data } as any} />;
+        };
+        if (ComposedComponent.displayName) {
+          StoreHOC.displayName = `${hocName} (${ComposedComponent.displayName})`;
+        }
+        return StoreHOC;
       };
 
       return ({
         ...prev,
-        [prefix('with', key)]: Hoc,
+        [hocName]: HocWrapper,
       });
     },
     {} as any,

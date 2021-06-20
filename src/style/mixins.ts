@@ -1,4 +1,4 @@
-import { Colors } from './colors';
+import { ThemeColorsProp } from '../stores/theme';
 
 export type ClickStateProps = { onClick?: any };
 
@@ -10,7 +10,10 @@ export const clickState = ({ onClick }: ClickStateProps) => (
 
 export type AccentStateProps = { accent?: boolean };
 
-export const accentState = (colors: Colors) => ({ accent }: AccentStateProps) => (
+export const accentState = ({
+  accent,
+  themeColors: colors,
+}: AccentStateProps & ThemeColorsProp) => (
   accent
     ? { color: colors.secondary }
     : {}

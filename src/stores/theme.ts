@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
-import { Colors, CV as CVColors } from '../style/colors';
+import { useMatchMedia } from '../hooks/useMatchMedia';
+import { Colors, CVLight, CVDark } from '../style/colors';
 import { Layout, CV as CVLayout } from '../style/layout';
 import { HOCProp, makeStore } from '../utils/makeStore';
 
@@ -19,23 +20,31 @@ export type InputTheme = {
 };
 
 export type Options = {
-  useLocalTheme?: boolean,
+  preferSystemTheme?: boolean,
 };
 
 const defaultTheme = {
-  colors: CVColors,
+  colors: {
+    light: CVLight,
+    dark: CVDark,
+  },
   layout: CVLayout,
 };
 
 const store = makeStore<Theme, InputTheme, Options>()({
   name: 'theme',
   defaultValue: defaultTheme,
-  handler: ({ defaultValue }) => {
+  handler: ({ defaultValue, preferSystemTheme }) => {
+    const globalDarkTheme = useMatchMedia(['prefers-color-scheme', 'dark']);
     const theme = useMemo(() => {
       const newTheme = { ...(defaultValue || defaultTheme) };
       let colors: Colors;
       if ('light' in newTheme.colors) {
-        colors = newTheme.colors.light;
+        if (preferSystemTheme && globalDarkTheme) {
+          colors = newTheme.colors.dark;
+        } else {
+          colors = newTheme.colors.light;
+        }
       } else {
         colors = newTheme.colors;
       }
@@ -43,7 +52,7 @@ const store = makeStore<Theme, InputTheme, Options>()({
         colors,
         layout: newTheme.layout,
       };
-    }, [defaultValue]);
+    }, [defaultValue, globalDarkTheme, preferSystemTheme]);
     return theme;
   },
   selectors: {

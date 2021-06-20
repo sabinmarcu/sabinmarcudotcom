@@ -5,9 +5,9 @@ import {
   clickState,
   AccentStateProps,
   ClickStateProps,
+  accentState,
 } from '../../style/mixins';
 import { makeStylerSet } from '../../utils/styles';
-import { accentMixin } from '../common';
 import { ThemeColorsProp, withThemeColors } from '../../stores/theme';
 
 export type HeadingProps = Partial<{
@@ -43,7 +43,7 @@ const makeStyles = combineStylers(
   makeStyler(
     ({ themeColors: { primary } }) => ({
       color: primary,
-      borderBottom: `solid 4px ${primary}`,
+      borderBottom: 'solid 4px currentColor',
       paddingBottom: rem(5),
       '&:not(:first-of-type)': {
         marginTop: rem(16),
@@ -64,7 +64,7 @@ export const Heading = withThemeColors(
       quotes: "“" "”" "‘" "’";
     `,
     makeStyles,
-    accentMixin,
+    accentState,
     clickState,
   ),
 );

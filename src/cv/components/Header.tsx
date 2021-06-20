@@ -1,12 +1,16 @@
 import styled from '@emotion/styled';
 import { rem } from 'polished';
-import { layout } from '../common';
+import { ThemeLayoutProp, withThemeLayout } from '../../stores/theme';
 
-export const Header = styled.header`
-  display: flex;
-  flex-flow: column nowrap;
-  margin-bottom: ${rem(layout.maxWidth * 0.05)};
-`;
+export const Header = withThemeLayout(
+  styled.header<ThemeLayoutProp>(
+    ({ themeLayout: { maxWidth } }) => `
+      display: flex;
+      flex-flow: column nowrap;
+      margin-bottom: ${rem(maxWidth * 0.05)};
+    `,
+  ),
+);
 
 export const HeaderDetails = styled.section`
   display: flex;

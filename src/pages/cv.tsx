@@ -4,8 +4,6 @@ import '../components/layout.css';
 import { FC } from 'react';
 import { Background } from '../components/background';
 
-import { CV as colors } from '../style/colors';
-
 import { CVContext } from '../cv/core';
 import { AccountSection } from '../cv/sections/account';
 import { EducationSection } from '../cv/sections/education';
@@ -20,6 +18,7 @@ import {
   MainColumn,
   SecondaryColumn,
   TwoColumns,
+  Wrapper,
 } from '../cv/components/Layout';
 
 import { Provider as ThemeProvider } from '../stores/theme';
@@ -31,26 +30,28 @@ type GCMSType = {
 export const CVPage: FC<PageProps<GCMSType>> = (
   { data: { gcms } },
 ) => (
-  <ThemeProvider>
-    <CVContext.Provider value={gcms}>
-      <Background opacity={0.2} color={colors.main} />
-      <Container>
-        <Header>
-          <TitleSection />
-          <AccountSection />
-        </Header>
-        <TwoColumns>
-          <MainColumn>
-            <ExperienceSection />
-            <ProjectsSection />
-          </MainColumn>
-          <SecondaryColumn>
-            <EducationSection />
-            <StrengthsSection />
-          </SecondaryColumn>
-        </TwoColumns>
-      </Container>
-    </CVContext.Provider>
+  <ThemeProvider preferSystemTheme>
+    <Wrapper>
+      <CVContext.Provider value={gcms}>
+        <Background opacity={0.2} />
+        <Container>
+          <Header>
+            <TitleSection />
+            <AccountSection />
+          </Header>
+          <TwoColumns>
+            <MainColumn>
+              <ExperienceSection />
+              <ProjectsSection />
+            </MainColumn>
+            <SecondaryColumn>
+              <EducationSection />
+              <StrengthsSection />
+            </SecondaryColumn>
+          </TwoColumns>
+        </Container>
+      </CVContext.Provider>
+    </Wrapper>
   </ThemeProvider>
 );
 
