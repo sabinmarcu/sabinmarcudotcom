@@ -1,5 +1,5 @@
 import {
-  useRef, useEffect, LegacyRef, useMemo,
+  useRef, useEffect, LegacyRef, useMemo, useState,
 } from 'react';
 import styled from '@emotion/styled';
 import { useMatchMedia } from '../hooks/useMatchMedia';
@@ -29,7 +29,9 @@ type PointType = {
 
 export const makeRenderer = (
   ref: HTMLCanvasElement,
-  {
+  props: RendererProps = {} as RendererProps,
+) => {
+  let {
     every,
     variance,
     size,
@@ -37,8 +39,7 @@ export const makeRenderer = (
     tolerance,
     color,
     edge,
-  }: RendererProps = {} as RendererProps,
-) => {
+  } = props;
   const canvas = ref;
 
   const ctx = canvas.getContext('2d');
@@ -155,7 +156,18 @@ export const makeRenderer = (
     requestAnimationFrame(render);
   };
 
+  const updateProps = (newProps: RendererProps) => {
+    every = typeof newProps.every !== 'undefined' ? newProps.every : every;
+    variance = typeof newProps.variance !== 'undefined' ? newProps.variance : variance;
+    size = typeof newProps.size !== 'undefined' ? newProps.size : size;
+    speed = typeof newProps.speed !== 'undefined' ? newProps.speed : speed;
+    tolerance = typeof newProps.tolerance !== 'undefined' ? newProps.tolerance : tolerance;
+    color = typeof newProps.color !== 'undefined' ? newProps.color : color;
+    edge = typeof newProps.edge !== 'undefined' ? newProps.edge : edge;
+  };
+
   return {
+    update: updateProps,
     start: () => {
       isRendering = true;
       render();
@@ -211,10 +223,11 @@ export const Background = ({
     () => themeColors?.primary || color,
     [themeColors, color],
   );
+  const [renderer, setRenderer] = useState<ReturnType<typeof makeRenderer>>();
   useEffect(
     () => {
       if (ref.current) {
-        const renderer = makeRenderer(ref.current, {
+        const newRenderer = makeRenderer(ref.current, {
           every,
           variance,
           size,
@@ -224,15 +237,42 @@ export const Background = ({
           edge,
         });
         if (renderOnce) {
-          renderer.renderOnce();
+          newRenderer.renderOnce();
           return undefined;
         }
-        renderer.start();
-        return renderer.stop;
+        newRenderer.start();
+        setRenderer(newRenderer);
+        return newRenderer.stop;
       }
       return undefined;
     },
     [ref, renderOnce],
+  );
+  useEffect(
+    () => {
+      if (renderer) {
+        renderer.update({
+          every,
+          variance,
+          size,
+          speed,
+          tolerance,
+          color: renderColor,
+          edge,
+        });
+      }
+    },
+    [
+      renderer,
+      every,
+      variance,
+      size,
+      speed,
+      tolerance,
+      renderColor,
+      edge,
+      opacity,
+    ],
   );
   return (
     <Canvas ref={ref as LegacyRef<HTMLCanvasElement>} {...{ opacity }} />
