@@ -1,43 +1,20 @@
 import { useMemo } from 'react';
 import { useMatchMedia } from '../hooks/useMatchMedia';
-import { Colors, CVLight, CVDark } from '../style/colors';
-import { Layout, CV as CVLayout } from '../style/layout';
+import { Colors } from '../style/colors';
+import { CVTheme, InputTheme, Theme } from '../style/themes';
 import { HOCProp, makeStore } from '../utils/makeStore';
-
-export type DualColors = {
-  light: Colors,
-  dark: Colors,
-};
-
-export type Theme = {
-  colors: Colors,
-  layout: Layout,
-};
-
-export type InputTheme = {
-  colors: Colors | DualColors,
-  layout: Layout,
-};
 
 export type Options = {
   preferSystemTheme?: boolean,
 };
 
-const defaultTheme = {
-  colors: {
-    light: CVLight,
-    dark: CVDark,
-  },
-  layout: CVLayout,
-};
-
 const store = makeStore<Theme, InputTheme, Options>()({
   name: 'theme',
-  defaultValue: defaultTheme,
+  defaultValue: CVTheme,
   handler: ({ defaultValue, preferSystemTheme }) => {
     const globalDarkTheme = useMatchMedia(['prefers-color-scheme', 'dark']);
     const theme = useMemo(() => {
-      const newTheme = { ...(defaultValue || defaultTheme) };
+      const newTheme = { ...(defaultValue || CVTheme) };
       let colors: Colors;
       if ('light' in newTheme.colors) {
         if (preferSystemTheme && globalDarkTheme) {

@@ -16,6 +16,11 @@ export const CVLight: Colors = {
   border: '#ccc',
 };
 
+export type DualColors = {
+  light: Colors,
+  dark: Colors,
+};
+
 export type Colors = {
   primary: string,
   secondary: string,
