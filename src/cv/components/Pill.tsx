@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { rem } from 'polished';
+import { Theme, withTheme } from '../../stores/theme';
 import { clickState, ClickStateProps } from '../../style/mixins';
 import { colors } from '../common';
 
@@ -25,35 +26,39 @@ export const PillGroup = styled.div(`
   overflow: hidden;
 `);
 
-export const Pill = styled.div<Partial<{
-  oneLine: boolean,
-} & ClickStateProps>>(
-  `
-    display: inline-flex;
-    align-items: center;
-    margin: ${rem(2)};
-    > span {
-      padding: ${rem(6)};
-    }
-    > div {
-      display: flex;
-      flex-flow: row nowrap;
-      align-items: center;
-      justify-content: center;
-    }
-  `,
-  ({ oneLine }) => (oneLine
-    ? `
-      justify-content: space-between;
-      width: 100%;
+export const Pill = withTheme(
+  styled.div<
+  Partial<{
+    oneLine: boolean,
+  } & ClickStateProps> & Theme
+  >(
     `
-    : `
-      background: #fff;
-      justify-content: center;
-      border: solid 1px ${colors.border};
-      border-radius: ${rem(12)};
-    `),
-  clickState,
+      display: inline-flex;
+      align-items: center;
+      margin: ${rem(2)};
+      > span {
+        padding: ${rem(6)};
+      }
+      > div {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
+      }
+    `,
+    ({ oneLine, theme: { border } }) => (oneLine
+      ? `
+        justify-content: space-between;
+        width: 100%;
+      `
+      : `
+        background: #fff;
+        justify-content: center;
+        border: solid 1px ${border};
+        border-radius: ${rem(12)};
+      `),
+    clickState,
+  ),
 );
 
 export const PillSeparator = styled.span`

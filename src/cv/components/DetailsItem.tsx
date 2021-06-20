@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { rem } from 'polished';
 import { FC } from 'react';
 import { Icon } from '@mdi/react';
-import { colors } from '../common';
+import { Theme, withTheme } from '../../stores/theme';
 
 export const DetailsItemRaw = styled.div`
   padding-right: ${rem(27)};
@@ -19,22 +19,24 @@ export const DetailsItemRaw = styled.div`
   }
 `;
 
-export const DetailsItemIconRaw = styled.span<Partial<{
-  faded: boolean,
-  padding: string | number,
-}>>(
-  `
-    display: flex;
-    flex-flow: row;
-    align-items: center;
-  `,
-  ({ faded, padding = 6 }) => ({
-    color: colors[faded ? 'faded' : 'accent'],
-    paddingRight: rem(typeof padding === 'string'
-      ? parseInt(padding, 10)
-      : padding),
-  }),
-  ({ onClick }) => (onClick ? 'cursor: pointer' : ''),
+export const DetailsItemIconRaw = withTheme(
+  styled.span<Partial<{
+    faded: boolean,
+    padding: string | number,
+  }> & Theme>(
+    `
+      display: flex;
+      flex-flow: row;
+      align-items: center;
+    `,
+    ({ faded, padding = 6, theme: colors }) => ({
+      color: colors[faded ? 'faded' : 'accent'],
+      paddingRight: rem(typeof padding === 'string'
+        ? parseInt(padding, 10)
+        : padding),
+    }),
+    ({ onClick }) => (onClick ? 'cursor: pointer' : ''),
+  ),
 );
 
 export const DetailsItem: FC<{

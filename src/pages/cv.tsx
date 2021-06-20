@@ -22,6 +22,8 @@ import {
   TwoColumns,
 } from '../cv/components/Layout';
 
+import { Provider as ThemeProvider } from '../stores/theme';
+
 type GCMSType = {
   gcms: Query
 };
@@ -29,25 +31,27 @@ type GCMSType = {
 export const CVPage: FC<PageProps<GCMSType>> = (
   { data: { gcms } },
 ) => (
-  <CVContext.Provider value={gcms}>
-    <Background opacity={0.2} color={colors.main} />
-    <Container>
-      <Header>
-        <TitleSection />
-        <AccountSection />
-      </Header>
-      <TwoColumns>
-        <MainColumn>
-          <ExperienceSection />
-          <ProjectsSection />
-        </MainColumn>
-        <SecondaryColumn>
-          <EducationSection />
-          <StrengthsSection />
-        </SecondaryColumn>
-      </TwoColumns>
-    </Container>
-  </CVContext.Provider>
+  <ThemeProvider>
+    <CVContext.Provider value={gcms}>
+      <Background opacity={0.2} color={colors.main} />
+      <Container>
+        <Header>
+          <TitleSection />
+          <AccountSection />
+        </Header>
+        <TwoColumns>
+          <MainColumn>
+            <ExperienceSection />
+            <ProjectsSection />
+          </MainColumn>
+          <SecondaryColumn>
+            <EducationSection />
+            <StrengthsSection />
+          </SecondaryColumn>
+        </TwoColumns>
+      </Container>
+    </CVContext.Provider>
+  </ThemeProvider>
 );
 
 export default CVPage;

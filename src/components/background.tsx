@@ -1,8 +1,9 @@
 import {
-  useRef, useEffect, FC, LegacyRef,
+  useRef, useEffect, LegacyRef, useMemo,
 } from 'react';
 import styled from '@emotion/styled';
 import { useMatchMedia } from '../hooks/useMatchMedia';
+import { Theme, withTheme } from '../stores/theme';
 
 type CanvasProps = {
   opacity?: number,
@@ -188,46 +189,51 @@ const Canvas = styled.canvas<{
   }),
 );
 
-export const Background: FC<
-Partial<RendererProps> & CanvasProps
-> = ({
-  every = 150,
-  variance = 50,
-  size = 4,
-  speed = 1.5,
-  tolerance = 50,
-  color = '#444444',
-  edge = false,
-  opacity,
-}) => {
-  const ref = useRef<HTMLCanvasElement>();
-  const renderOnce = useMatchMedia(['prefers-reduced-motion', 'reduce']);
-  useEffect(
-    () => {
-      if (ref.current) {
-        const renderer = makeRenderer(ref.current, {
-          every,
-          variance,
-          size,
-          speed,
-          tolerance,
-          color,
-          edge,
-        });
-        if (renderOnce) {
-          renderer.renderOnce();
-          return undefined;
+export const Background = withTheme(
+  ({
+    every = 150,
+    variance = 50,
+    size = 4,
+    speed = 1.5,
+    tolerance = 50,
+    color = '#444444',
+    edge = false,
+    opacity,
+    theme: { main: themeColor },
+  }: Partial<RendererProps> & CanvasProps & Theme) => {
+    const ref = useRef<HTMLCanvasElement>();
+    const renderOnce = useMatchMedia(['prefers-reduced-motion', 'reduce']);
+    const renderColor = useMemo(
+      () => themeColor || color,
+      [themeColor, color],
+    );
+    useEffect(
+      () => {
+        if (ref.current) {
+          const renderer = makeRenderer(ref.current, {
+            every,
+            variance,
+            size,
+            speed,
+            tolerance,
+            color: renderColor,
+            edge,
+          });
+          if (renderOnce) {
+            renderer.renderOnce();
+            return undefined;
+          }
+          renderer.start();
+          return renderer.stop;
         }
-        renderer.start();
-        return renderer.stop;
-      }
-      return undefined;
-    },
-    [ref, renderOnce],
-  );
-  return (
-    <Canvas ref={ref as LegacyRef<HTMLCanvasElement>} {...{ opacity }} />
-  );
-};
+        return undefined;
+      },
+      [ref, renderOnce],
+    );
+    return (
+      <Canvas ref={ref as LegacyRef<HTMLCanvasElement>} {...{ opacity }} />
+    );
+  },
+);
 
 export default Background;

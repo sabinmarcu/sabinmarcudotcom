@@ -4,15 +4,17 @@ import styled from '@emotion/styled';
 import { mdiCalendarBlank } from '@mdi/js';
 import { rem } from 'polished';
 import { FC, useMemo } from 'react';
-import { colors } from '../common';
 import { DetailsItemIconRaw, DetailsItemRaw } from './DetailsItem';
 import { IntervalType } from '../types';
+import { Theme, withTheme } from '../../stores/theme';
 
-export const IntervalWrapper = styled.div(
-  {
-    color: colors.faded,
-    fontSize: rem(16),
-  },
+export const IntervalWrapper = withTheme(
+  styled.div<Theme>(
+    ({ theme: { faded } }) => ({
+      color: faded,
+      fontSize: rem(16),
+    }),
+  ),
 );
 
 const intervalFormat = 'MMM YYYY';

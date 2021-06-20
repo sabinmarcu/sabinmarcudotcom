@@ -7,7 +7,8 @@ import {
   ClickStateProps,
 } from '../../style/mixins';
 import { makeStylerSet } from '../../utils/styles';
-import { accentMixin, colors } from '../common';
+import { accentMixin } from '../common';
+import { Theme, withTheme } from '../../stores/theme';
 
 export type HeadingProps = Partial<{
   isTitle: boolean,
@@ -17,7 +18,7 @@ export type HeadingProps = Partial<{
   inline: boolean,
 }> & AccentStateProps & ClickStateProps;
 
-const { makeStyler, combineStylers } = makeStylerSet<HeadingProps>();
+const { makeStyler, combineStylers } = makeStylerSet<HeadingProps & Theme>();
 
 const makeStyles = combineStylers(
   makeStyler(
@@ -40,28 +41,30 @@ const makeStyles = combineStylers(
     ({ isTitle }) => !!isTitle,
   ),
   makeStyler(
-    {
-      color: colors.main,
-      borderBottom: `solid 4px ${colors.main}`,
+    ({ theme: { main } }) => ({
+      color: main,
+      borderBottom: `solid 4px ${main}`,
       paddingBottom: rem(5),
       '&:not(:first-of-type)': {
         marginTop: rem(16),
       },
-    },
+    }),
     ({ section }) => !!section,
   ),
 );
 
-export const Heading = styled.h1<HeadingProps>(
-  `
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: ${rem(22)};  
-    margin-bottom: ${rem(6)};
-    quotes: "“" "”" "‘" "’";
-  `,
-  makeStyles,
-  accentMixin,
-  clickState,
+export const Heading = withTheme(
+  styled.h1<HeadingProps & Theme>(
+    `
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: ${rem(22)};  
+      margin-bottom: ${rem(6)};
+      quotes: "“" "”" "‘" "’";
+    `,
+    makeStyles,
+    accentMixin,
+    clickState,
+  ),
 );

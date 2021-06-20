@@ -1,8 +1,12 @@
 import styled from '@emotion/styled';
 import { rem } from 'polished';
-import { colors } from '../common';
+import { Theme, withTheme } from '../../stores/theme';
 
-export const Description = styled.p`
-  color: ${colors.faded};
-  font-size: ${rem(20)};
-`;
+export const Description = withTheme(
+  styled.p<Theme>(
+    ({ theme: { faded } }) => `
+      color: ${faded};
+      font-size: ${rem(20)};
+    `,
+  ),
+);

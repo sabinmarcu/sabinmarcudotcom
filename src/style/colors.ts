@@ -10,6 +10,6 @@ export type Colors = {
   accent: string,
   faded: string,
   border: string,
-}
+};
 
 export default {};
