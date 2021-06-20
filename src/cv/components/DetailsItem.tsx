@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { rem } from 'polished';
 import { FC } from 'react';
 import { Icon } from '@mdi/react';
-import { Theme, withTheme } from '../../stores/theme';
+import { ThemeColorsProp, withThemeColors } from '../../stores/theme';
 
 export const DetailsItemRaw = styled.div`
   padding-right: ${rem(27)};
@@ -19,18 +19,18 @@ export const DetailsItemRaw = styled.div`
   }
 `;
 
-export const DetailsItemIconRaw = withTheme(
+export const DetailsItemIconRaw = withThemeColors(
   styled.span<Partial<{
     faded: boolean,
     padding: string | number,
-  }> & Theme>(
+  }> & ThemeColorsProp>(
     `
       display: flex;
       flex-flow: row;
       align-items: center;
     `,
-    ({ faded, padding = 6, theme: colors }) => ({
-      color: colors[faded ? 'faded' : 'accent'],
+    ({ faded, padding = 6, themeColors: colors }) => ({
+      color: colors[faded ? 'faded' : 'primary'],
       paddingRight: rem(typeof padding === 'string'
         ? parseInt(padding, 10)
         : padding),

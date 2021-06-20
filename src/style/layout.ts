@@ -1,4 +1,8 @@
-export const CV = {
+export type Layout = {
+  maxWidth: number
+};
+
+export const CV: Layout = {
   maxWidth: 1200,
 };
 

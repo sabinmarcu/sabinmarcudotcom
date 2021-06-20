@@ -1,22 +1,21 @@
 import styled from '@emotion/styled';
 import { rem } from 'polished';
-import { Theme, withTheme } from '../../stores/theme';
-import { layout } from '../common';
+import { ThemeProp, withTheme } from '../../stores/theme';
 
 export const ListItem = styled.article();
 
 export const List = withTheme(
   styled.section<Partial<{
     plain: boolean,
-  }> & Theme>(
+  }> & ThemeProp>(
     `
       display: grid;
     `,
-    ({ plain, theme: { border } }) => (
+    ({ plain, theme: { colors: { border }, layout: { maxWidth } } }) => (
       !plain
         ? {
           [ListItem as any]: {
-            padding: `${rem(layout.maxWidth * 0.02)} 0`,
+            padding: `${rem(maxWidth * 0.02)} 0`,
           },
           '> *': {
             borderTop: `dashed 1px ${border}`,
@@ -27,7 +26,7 @@ export const List = withTheme(
         }
         : {
           [ListItem as any]: {
-            padding: `${rem(layout.maxWidth * 0.01)} 0`,
+            padding: `${rem(maxWidth * 0.01)} 0`,
           },
         }
     ),

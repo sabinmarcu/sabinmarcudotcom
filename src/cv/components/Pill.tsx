@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
 import { rem } from 'polished';
-import { Theme, withTheme } from '../../stores/theme';
+import { ThemeColorsProp, withThemeColors } from '../../stores/theme';
 import { clickState, ClickStateProps } from '../../style/mixins';
-import { colors } from '../common';
 
 export const PillList = styled.div<Partial<{
   inline: boolean,
@@ -26,11 +25,11 @@ export const PillGroup = styled.div(`
   overflow: hidden;
 `);
 
-export const Pill = withTheme(
+export const Pill = withThemeColors(
   styled.div<
   Partial<{
     oneLine: boolean,
-  } & ClickStateProps> & Theme
+  } & ClickStateProps> & ThemeColorsProp
   >(
     `
       display: inline-flex;
@@ -46,7 +45,7 @@ export const Pill = withTheme(
         justify-content: center;
       }
     `,
-    ({ oneLine, theme: { border } }) => (oneLine
+    ({ oneLine, themeColors: { border } }) => (oneLine
       ? `
         justify-content: space-between;
         width: 100%;
@@ -61,10 +60,14 @@ export const Pill = withTheme(
   ),
 );
 
-export const PillSeparator = styled.span`
-  display: block;
-  margin: 0 ${rem(5)};
-  height: 100%;
-  width: 1px;
-  background: ${colors.border};
-`;
+export const PillSeparator = withThemeColors(
+  styled.span<ThemeColorsProp>(
+    ({ themeColors: { border } }) => `
+      display: block;
+      margin: 0 ${rem(5)};
+      height: 100%;
+      width: 1px;
+      background: ${border};
+    `,
+  ),
+);

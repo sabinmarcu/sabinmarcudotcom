@@ -6,11 +6,11 @@ import { rem } from 'polished';
 import { FC, useMemo } from 'react';
 import { DetailsItemIconRaw, DetailsItemRaw } from './DetailsItem';
 import { IntervalType } from '../types';
-import { Theme, withTheme } from '../../stores/theme';
+import { ThemeColorsProp, withThemeColors } from '../../stores/theme';
 
-export const IntervalWrapper = withTheme(
-  styled.div<Theme>(
-    ({ theme: { faded } }) => ({
+export const IntervalWrapper = withThemeColors(
+  styled.div<ThemeColorsProp>(
+    ({ themeColors: { faded } }) => ({
       color: faded,
       fontSize: rem(16),
     }),

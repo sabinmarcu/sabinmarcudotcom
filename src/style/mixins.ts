@@ -12,6 +12,6 @@ export type AccentStateProps = { accent?: boolean };
 
 export const accentState = (colors: Colors) => ({ accent }: AccentStateProps) => (
   accent
-    ? { color: colors.accent }
+    ? { color: colors.secondary }
     : {}
 );

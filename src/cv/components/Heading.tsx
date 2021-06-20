@@ -8,7 +8,7 @@ import {
 } from '../../style/mixins';
 import { makeStylerSet } from '../../utils/styles';
 import { accentMixin } from '../common';
-import { Theme, withTheme } from '../../stores/theme';
+import { ThemeColorsProp, withThemeColors } from '../../stores/theme';
 
 export type HeadingProps = Partial<{
   isTitle: boolean,
@@ -18,7 +18,7 @@ export type HeadingProps = Partial<{
   inline: boolean,
 }> & AccentStateProps & ClickStateProps;
 
-const { makeStyler, combineStylers } = makeStylerSet<HeadingProps & Theme>();
+const { makeStyler, combineStylers } = makeStylerSet<HeadingProps & ThemeColorsProp>();
 
 const makeStyles = combineStylers(
   makeStyler(
@@ -41,9 +41,9 @@ const makeStyles = combineStylers(
     ({ isTitle }) => !!isTitle,
   ),
   makeStyler(
-    ({ theme: { main } }) => ({
-      color: main,
-      borderBottom: `solid 4px ${main}`,
+    ({ themeColors: { primary } }) => ({
+      color: primary,
+      borderBottom: `solid 4px ${primary}`,
       paddingBottom: rem(5),
       '&:not(:first-of-type)': {
         marginTop: rem(16),
@@ -53,8 +53,8 @@ const makeStyles = combineStylers(
   ),
 );
 
-export const Heading = withTheme(
-  styled.h1<HeadingProps & Theme>(
+export const Heading = withThemeColors(
+  styled.h1<HeadingProps & ThemeColorsProp>(
     `
       display: flex;
       align-items: center;
