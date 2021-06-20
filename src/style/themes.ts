@@ -3,6 +3,8 @@ import {
   CVLight,
   Colors,
   DualColors,
+  DefaultLight,
+  DefaultDark,
 } from './colors';
 import { CV as CVLayout, Layout } from './layout';
 
@@ -20,6 +22,14 @@ export const CVTheme: InputTheme = {
   colors: {
     light: CVLight,
     dark: CVDark,
+  },
+  layout: CVLayout,
+};
+
+export const DefaultTheme: InputTheme = {
+  colors: {
+    light: DefaultLight,
+    dark: DefaultDark,
   },
   layout: CVLayout,
 };

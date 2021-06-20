@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useMatchMedia } from '../hooks/useMatchMedia';
 import { Colors } from '../style/colors';
-import { CVTheme, InputTheme, Theme } from '../style/themes';
+import { DefaultTheme, InputTheme, Theme } from '../style/themes';
 import { HOCProp, makeStore } from '../utils/makeStore';
 
 export type Options = {
@@ -10,11 +10,11 @@ export type Options = {
 
 const store = makeStore<Theme, InputTheme, Options>()({
   name: 'theme',
-  defaultValue: CVTheme,
+  defaultValue: DefaultTheme,
   handler: ({ defaultValue, preferSystemTheme }) => {
     const globalDarkTheme = useMatchMedia(['prefers-color-scheme', 'dark']);
     const theme = useMemo(() => {
-      const newTheme = { ...(defaultValue || CVTheme) };
+      const newTheme = { ...(defaultValue || DefaultTheme) };
       let colors: Colors;
       if ('light' in newTheme.colors) {
         if (preferSystemTheme && globalDarkTheme) {

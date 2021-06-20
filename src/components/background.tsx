@@ -8,7 +8,7 @@ import {
 } from '../stores/theme';
 
 type CanvasProps = {
-  opacity: number,
+  opacity?: number,
 };
 
 type RendererProps = {
@@ -215,7 +215,7 @@ export const Background = ({
   color = '#444444',
   edge = false,
   opacity = 0.3,
-}: Partial<RendererProps> & CanvasProps) => {
+}: Partial<RendererProps> & Partial<CanvasProps>) => {
   const ref = useRef<HTMLCanvasElement>();
   const renderOnce = useMatchMedia(['prefers-reduced-motion', 'reduce']);
   const themeColors = useThemeColors();

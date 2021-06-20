@@ -12,13 +12,14 @@ type HandlerParams<INPUT, OPTIONS> = {
 } & OPTIONS;
 type HandlerType<T, INPUT, OPTIONS> = (params: HandlerParams<INPUT, OPTIONS>) => T;
 
+type ProviderType<OPTIONS, INPUT> = FC<OPTIONS & { value?: INPUT }>;
 type ProviderFactory<T, INPUT, OPTIONS> = (
   params: HandlerParams<INPUT, OPTIONS>,
   options?: {
     name?: string,
     handler?: HandlerType<T, INPUT, OPTIONS>
   }
-) => FC<OPTIONS>;
+) => ProviderType<OPTIONS, INPUT>;
 
 type HookFuncType<T, R extends any = any> = (input: T) => R;
 type HOCPropType<T, K extends keyof any, V extends HookFuncType<T>> = { [key in K]: ReturnType<V> };
@@ -67,11 +68,16 @@ export const makeStore = <
       handler: overrideHandler,
     } = options || {};
     const useProvider = overrideHandler || useStoreProvider;
-    const Provider: FC<OPTIONS> = ({ children, ...renderOptions }) => {
+    const Provider: ProviderType<OPTIONS, INPUT> = ({
+      children,
+      value: renderValue,
+      ...renderOptions
+    }) => {
       const renderParams = useMemo(
         () => ({
           ...params,
           ...renderOptions,
+          defaultValue: renderValue || params.defaultValue,
         }),
         [renderOptions],
       );

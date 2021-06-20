@@ -22,6 +22,7 @@ import {
 } from '../cv/components/Layout';
 
 import { Provider as ThemeProvider } from '../stores/theme';
+import { CVTheme } from '../style/themes';
 
 type GCMSType = {
   gcms: Query
@@ -30,7 +31,7 @@ type GCMSType = {
 export const CVPage: FC<PageProps<GCMSType>> = (
   { data: { gcms } },
 ) => (
-  <ThemeProvider preferSystemTheme>
+  <ThemeProvider preferSystemTheme value={CVTheme}>
     <Wrapper>
       <CVContext.Provider value={gcms}>
         <Background opacity={0.2} />
