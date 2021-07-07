@@ -19,7 +19,7 @@ export const List = withTheme(
           },
           '> *': {
             borderTop: `dashed 1px ${border}`,
-            ':first-child': {
+            ':first-of-type': {
               borderTop: 'none',
             },
           },

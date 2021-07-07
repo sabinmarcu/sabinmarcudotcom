@@ -1,7 +1,10 @@
-import { graphql, PageProps } from 'gatsby';
+import { graphql, PageProps, Link } from 'gatsby';
 
 import '../components/layout.css';
 import { FC } from 'react';
+import {
+  mdiHome,
+} from '@mdi/js';
 
 import { CVContext } from '../cv/core';
 import { AccountSection } from '../cv/sections/account';
@@ -11,6 +14,7 @@ import { ExperienceSection } from '../cv/sections/experience';
 import { ProjectsSection } from '../cv/sections/projects';
 import { Query } from '../config/schema';
 import { Header } from '../cv/components/Header';
+import { BackButton } from '../cv/components/BackButton';
 import { TitleSection } from '../cv/sections/title';
 import {
   Container,
@@ -21,15 +25,23 @@ import {
 } from '../cv/components/Layout';
 import { Update as UpdateTheme } from '../stores/theme';
 import { CVTheme } from '../style/themes';
+import Icon from '@mdi/react';
 
 type GCMSType = {
   gcms: Query
 };
 
 export const CVPage: FC<PageProps<GCMSType>> = (
-  { data: { gcms } },
+  {
+    data: { gcms },
+  },
 ) => (
   <Wrapper>
+    <Link to="/">
+      <BackButton>
+        <Icon path={mdiHome} size="2vmin" />
+      </BackButton>
+    </Link>
     <UpdateTheme value={CVTheme} preferSystemTheme />
     <CVContext.Provider value={gcms}>
       <Container>

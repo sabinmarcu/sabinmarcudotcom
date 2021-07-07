@@ -7,10 +7,15 @@ import {
   ThemeColorsProp,
   useThemeColors, withThemeColors,
 } from '../stores/theme';
+import { pageTransition, pageTransitionFunction } from '../config/constants';
 
 type CanvasProps = {
   opacity?: number,
 };
+
+type CanvasWrapperProps = {
+  color: string,
+}
 
 type RendererProps = {
   every: number,
@@ -18,7 +23,6 @@ type RendererProps = {
   size: number,
   speed: number,
   tolerance: number,
-  color: string,
   edge: boolean,
 };
 
@@ -38,7 +42,6 @@ export const makeRenderer = (
     size,
     speed,
     tolerance,
-    color,
     edge,
   } = props;
   const canvas = ref;
@@ -91,6 +94,9 @@ export const makeRenderer = (
 
   let isRendering = true;
   const render = () => {
+    const color = window 
+      ? window.getComputedStyle(canvas).getPropertyValue('color')
+      : '#888';
     if (!isRendering || !ctx) {
       return;
     }
@@ -163,7 +169,6 @@ export const makeRenderer = (
     size = typeof newProps.size !== 'undefined' ? newProps.size : size;
     speed = typeof newProps.speed !== 'undefined' ? newProps.speed : speed;
     tolerance = typeof newProps.tolerance !== 'undefined' ? newProps.tolerance : tolerance;
-    color = typeof newProps.color !== 'undefined' ? newProps.color : color;
     edge = typeof newProps.edge !== 'undefined' ? newProps.edge : edge;
   };
 
@@ -185,7 +190,7 @@ export const makeRenderer = (
 };
 
 const CanvasWrapper = withThemeColors(
-  styled.div<ThemeColorsProp>(
+  styled.div<ThemeColorsProp & CanvasWrapperProps>(
     `
       position: fixed;
       left: 0;
@@ -193,6 +198,7 @@ const CanvasWrapper = withThemeColors(
       width: 100vw;
       height: 100vh;
       z-index: 0;
+      transition: all ${pageTransition}ms ${pageTransitionFunction};
       @media print {
         display: none;
       }
@@ -200,8 +206,9 @@ const CanvasWrapper = withThemeColors(
         position: relative;
       }
     `,
-    ({ themeColors: { background } }) => ({
+    ({ themeColors: { background }, color }) => ({
       background,
+      color,
     }),
   ),
 );
@@ -211,6 +218,7 @@ const Canvas = styled.canvas<CanvasProps>(
     width: 100vw;
     height: 100vh;
     opacity: 0.3;
+    color: currentColor;
   `,
   ({ opacity = 0.3 }) => ({
     opacity,
@@ -226,7 +234,7 @@ export const Background = ({
   color = '#444444',
   edge = false,
   opacity = 0.3,
-}: Partial<RendererProps> & Partial<CanvasProps>) => {
+}: Partial<RendererProps> & Partial<CanvasProps> & Partial<CanvasWrapperProps>) => {
   const ref = useRef<HTMLCanvasElement>();
   const renderOnce = useMatchMedia(['prefers-reduced-motion', 'reduce']);
   const themeColors = useThemeColors();
@@ -244,7 +252,6 @@ export const Background = ({
           size,
           speed,
           tolerance,
-          color: renderColor,
           edge,
         });
         if (renderOnce) {
@@ -268,7 +275,6 @@ export const Background = ({
           size,
           speed,
           tolerance,
-          color: renderColor,
           edge,
         });
       }
@@ -280,13 +286,12 @@ export const Background = ({
       size,
       speed,
       tolerance,
-      renderColor,
       edge,
       opacity,
     ],
   );
   return (
-    <CanvasWrapper>
+    <CanvasWrapper color={renderColor}>
       <Canvas ref={ref as LegacyRef<HTMLCanvasElement>} {...{ opacity }} />
     </CanvasWrapper>
   );

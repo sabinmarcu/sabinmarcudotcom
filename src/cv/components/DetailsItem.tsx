@@ -22,6 +22,7 @@ export const DetailsItemRaw = styled.div`
 export const DetailsItemIconRaw = withThemeColors(
   styled.span<Partial<{
     faded: boolean,
+    text: boolean,
     padding: string | number,
   }> & ThemeColorsProp>(
     `
@@ -29,8 +30,13 @@ export const DetailsItemIconRaw = withThemeColors(
       flex-flow: row;
       align-items: center;
     `,
-    ({ faded, padding = 6, themeColors: colors }) => ({
-      color: colors[faded ? 'faded' : 'primary'],
+    ({
+      faded,
+      text,
+      padding = 6,
+      themeColors: colors,
+    }) => ({
+      color: colors[(faded && 'faded') || (text && 'text') || 'primary'],
       paddingRight: rem(typeof padding === 'string'
         ? parseInt(padding, 10)
         : padding),

@@ -6,6 +6,8 @@ const rules = {
   'import/prefer-default-export': [0],
   'react/require-default-props': [0],
   'react/no-unused-prop-types': [0],
+  semi: [2, 'always'],
+  'no-bitwise': [0],
 };
 
 module.exports = {
@@ -23,6 +25,13 @@ module.exports = {
         project: './tsconfig.json',
       },
       rules,
+    },
+    {
+      files: ['./*.js'],
+      rules: {
+        'import/extensions': [0],
+        'import/no-unresolved': [0],
+      },
     },
   ],
 };
