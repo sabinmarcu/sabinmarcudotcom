@@ -35,6 +35,7 @@ jobs:
       env:
         GRAPHCMS_URL: ${{ secrets.GRAPHCMS_URL }}
         SIMPLELOCALIZE_KEY: ${{ secrets.SIMPLELOCALIZE_KEY }}
+        TYPEKIT_ID: ${{ secrets.TYPEKIT_ID }}
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
