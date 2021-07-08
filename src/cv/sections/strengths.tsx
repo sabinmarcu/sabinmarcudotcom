@@ -5,6 +5,7 @@ import {
   FC,
   ComponentProps,
 } from 'react';
+import { FormattedMessage } from 'gatsby-plugin-react-intl';
 
 import { Icon } from '@mdi/react';
 import {
@@ -36,7 +37,7 @@ const StyledTextField: FC<ComponentProps<typeof TextField>> = (props) => {
   )
 }
 
-export const StrengthsSection = ({ title = 'Strengths ' }) => {
+export const StrengthsSection = () => {
   const { skills } = useCV();
   const isPrint = useMatchMedia('!print');
   const [showStars, setShowStars] = useLocalStorage('showStars', false);
@@ -93,8 +94,11 @@ export const StrengthsSection = ({ title = 'Strengths ' }) => {
   }
   return (
     <>
-      <Heading section isTitle>
-        {title}
+      <Heading section isTitle>        
+        <FormattedMessage
+          defaultMessage="Strenghts"
+          description="strengths section"
+        />
         {!isPrint
           && (
           <DetailsItemIconRaw onClick={toggleStars}>
@@ -148,7 +152,12 @@ export const StrengthsSection = ({ title = 'Strengths ' }) => {
       </PillList>
       {groupedSkills.dictlang && groupedSkills.dictlang.length > 0 && (
         <>
-          <Heading section isTitle>Languages</Heading>
+          <Heading section isTitle>
+            <FormattedMessage
+              defaultMessage="Languages"
+              description="languages section"
+            />
+          </Heading>
           <PillList>
             <PillGroup>
               {groupedSkills.dictlang.map(({
