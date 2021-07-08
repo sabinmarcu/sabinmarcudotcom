@@ -36,6 +36,7 @@ jobs:
       run: yarn run build
       env:
         GRAPHCMS_URL: ${{ secrets.GRAPHCMS_URL }}
+        SIMPLELOCALIZE_KEY: ${{ secrets.SIMPLELOCALIZE_KEY }}
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
