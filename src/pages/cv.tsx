@@ -67,16 +67,16 @@ export const CVPage: FC<PageProps<GCMSType>> = (
 export default CVPage;
 
 export const query = graphql`
-  query {
+  query($language: gcms_Locale!) {
     gcms {
-      workExperiences {
+      workExperiences(locales:[$language, en]) {
         id
         name
         showName
         description {
           markdown
         }
-        projects {
+        projects(locales:[$language, en]) {
           id
           name
         }
@@ -84,21 +84,21 @@ export const query = graphql`
           latitude
           longitude
         }
-        positions {
+        positions(locales:[$language, en]) {
           name
           id
           from
           to
         }
       }
-      skills {
+      skills(locales:[$language, en]) {
         id
         name
         ability
         category
         featured
       }
-      projects {
+      projects(locales:[$language, en]) {
         id
         name
         from
@@ -106,7 +106,7 @@ export const query = graphql`
         description {
           markdown
         }
-        workExperience {
+        workExperience(locales:[$language, en]) {
           name
           id
         }
@@ -114,13 +114,13 @@ export const query = graphql`
           latitude
           longitude
         }
-        skills {
+        skills(locales:[$language, en]) {
           name
           id
           ability
         }
       }
-      accounts(first: 1) {
+      accounts(locales:[$language, en], first: 1) {
         name
         phoneNumber
         twitter
@@ -132,7 +132,7 @@ export const query = graphql`
         linkedIn
         location
       }
-      educations {
+      educations(locales:[$language, en]) {
         id
         institution
         start

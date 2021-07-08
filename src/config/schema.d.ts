@@ -3346,6 +3346,9 @@ export type MutationUpsertSkillArgs = {
 
 export type MutationPublishSkillArgs = {
   where: SkillWhereUniqueInput;
+  locales?: Maybe<Array<Locale>>;
+  publishBase?: Maybe<Scalars['Boolean']>;
+  withDefaultLocale?: Maybe<Scalars['Boolean']>;
   to?: Array<Stage>;
 };
 
@@ -3353,6 +3356,8 @@ export type MutationPublishSkillArgs = {
 export type MutationUnpublishSkillArgs = {
   where: SkillWhereUniqueInput;
   from?: Array<Stage>;
+  locales?: Maybe<Array<Locale>>;
+  unpublishBase?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -3386,6 +3391,9 @@ export type MutationPublishManySkillsConnectionArgs = {
   last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['ID']>;
   after?: Maybe<Scalars['ID']>;
+  locales?: Maybe<Array<Locale>>;
+  publishBase?: Maybe<Scalars['Boolean']>;
+  withDefaultLocale?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -3398,6 +3406,8 @@ export type MutationUnpublishManySkillsConnectionArgs = {
   last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['ID']>;
   after?: Maybe<Scalars['ID']>;
+  locales?: Maybe<Array<Locale>>;
+  unpublishBase?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -3415,12 +3425,17 @@ export type MutationDeleteManySkillsArgs = {
 export type MutationPublishManySkillsArgs = {
   where?: Maybe<SkillManyWhereInput>;
   to?: Array<Stage>;
+  locales?: Maybe<Array<Locale>>;
+  publishBase?: Maybe<Scalars['Boolean']>;
+  withDefaultLocale?: Maybe<Scalars['Boolean']>;
 };
 
 
 export type MutationUnpublishManySkillsArgs = {
   where?: Maybe<SkillManyWhereInput>;
   from?: Array<Stage>;
+  locales?: Maybe<Array<Locale>>;
+  unpublishBase?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -4617,6 +4632,10 @@ export type Skill = Node & {
   __typename?: 'Skill';
   /** System stage field */
   stage: Stage;
+  /** System Locale field */
+  locale: Locale;
+  /** Get the other localizations for this document */
+  localizations: Array<Skill>;
   /** Get the document in other stages */
   documentInStages: Array<Skill>;
   /** The unique identifier */
@@ -4643,10 +4662,21 @@ export type Skill = Node & {
 };
 
 
+export type SkillLocalizationsArgs = {
+  locales?: Array<Locale>;
+  includeCurrent?: Scalars['Boolean'];
+};
+
+
 export type SkillDocumentInStagesArgs = {
   stages?: Array<Stage>;
   includeCurrent?: Scalars['Boolean'];
   inheritLocale?: Scalars['Boolean'];
+};
+
+
+export type SkillCreatedAtArgs = {
+  variation?: SystemDateTimeFieldVariation;
 };
 
 
@@ -4655,8 +4685,18 @@ export type SkillCreatedByArgs = {
 };
 
 
+export type SkillUpdatedAtArgs = {
+  variation?: SystemDateTimeFieldVariation;
+};
+
+
 export type SkillUpdatedByArgs = {
   locales?: Maybe<Array<Locale>>;
+};
+
+
+export type SkillPublishedAtArgs = {
+  variation?: SystemDateTimeFieldVariation;
 };
 
 
@@ -4716,11 +4756,31 @@ export type SkillConnection = {
 export type SkillCreateInput = {
   createdAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
+  /** name input for default locale (en) */
   name: Scalars['String'];
   category: SkillCategory;
   ability: Scalars['Float'];
   featured: Scalars['Boolean'];
   project?: Maybe<ProjectCreateManyInlineInput>;
+  /** Inline mutations for managing document localizations excluding the default locale */
+  localizations?: Maybe<SkillCreateLocalizationsInput>;
+};
+
+export type SkillCreateLocalizationDataInput = {
+  createdAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+  name: Scalars['String'];
+};
+
+export type SkillCreateLocalizationInput = {
+  /** Localization input */
+  data: SkillCreateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type SkillCreateLocalizationsInput = {
+  /** Create localizations for the newly-created document */
+  create?: Maybe<Array<SkillCreateLocalizationInput>>;
 };
 
 export type SkillCreateManyInlineInput = {
@@ -4823,25 +4883,6 @@ export type SkillManyWhereInput = {
   /** All values greater than or equal the given value. */
   publishedAt_gte?: Maybe<Scalars['DateTime']>;
   publishedBy?: Maybe<UserWhereInput>;
-  name?: Maybe<Scalars['String']>;
-  /** All values that are not equal to given value. */
-  name_not?: Maybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  name_in?: Maybe<Array<Scalars['String']>>;
-  /** All values that are not contained in given list. */
-  name_not_in?: Maybe<Array<Scalars['String']>>;
-  /** All values containing the given string. */
-  name_contains?: Maybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  name_not_contains?: Maybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  name_starts_with?: Maybe<Scalars['String']>;
-  /** All values not starting with the given string. */
-  name_not_starts_with?: Maybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  name_ends_with?: Maybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  name_not_ends_with?: Maybe<Scalars['String']>;
   category?: Maybe<SkillCategory>;
   /** All values that are not equal to given value. */
   category_not?: Maybe<SkillCategory>;
@@ -4892,11 +4933,33 @@ export enum SkillOrderByInput {
 }
 
 export type SkillUpdateInput = {
+  /** name input for default locale (en) */
   name?: Maybe<Scalars['String']>;
   category?: Maybe<SkillCategory>;
   ability?: Maybe<Scalars['Float']>;
   featured?: Maybe<Scalars['Boolean']>;
   project?: Maybe<ProjectUpdateManyInlineInput>;
+  /** Manage document localizations */
+  localizations?: Maybe<SkillUpdateLocalizationsInput>;
+};
+
+export type SkillUpdateLocalizationDataInput = {
+  name?: Maybe<Scalars['String']>;
+};
+
+export type SkillUpdateLocalizationInput = {
+  data: SkillUpdateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type SkillUpdateLocalizationsInput = {
+  /** Localizations to create */
+  create?: Maybe<Array<SkillCreateLocalizationInput>>;
+  /** Localizations to update */
+  update?: Maybe<Array<SkillUpdateLocalizationInput>>;
+  upsert?: Maybe<Array<SkillUpsertLocalizationInput>>;
+  /** Localizations to delete */
+  delete?: Maybe<Array<Locale>>;
 };
 
 export type SkillUpdateManyInlineInput = {
@@ -4956,6 +5019,12 @@ export type SkillUpsertInput = {
   create: SkillCreateInput;
   /** Update document if it exists */
   update: SkillUpdateInput;
+};
+
+export type SkillUpsertLocalizationInput = {
+  update: SkillUpdateLocalizationDataInput;
+  create: SkillCreateLocalizationDataInput;
+  locale: Locale;
 };
 
 export type SkillUpsertWithNestedWhereUniqueInput = {
@@ -5094,7 +5163,6 @@ export type SkillWhereInput = {
 /** References Skill record uniquely */
 export type SkillWhereUniqueInput = {
   id?: Maybe<Scalars['ID']>;
-  name?: Maybe<Scalars['String']>;
 };
 
 /** Stage system enumeration */
