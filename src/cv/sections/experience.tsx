@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { useCV } from '../core';
 import { ExperienceItem } from '../components/ExperienceItem';
 import { Heading } from '../components/Heading';
@@ -44,7 +45,12 @@ export const ExperienceSection = () => {
   );
   return (
     <>
-      <Heading section isTitle>Experience</Heading>
+      <Heading section isTitle>
+        <FormattedMessage
+          defaultMessage="Experience"
+          description="experience section"
+        />
+      </Heading>
       <List>
         {filteredWorkExperiences.map(({ id, ...rest }) => (
           <ExperienceItem key={id} {...{ ...rest, id }} />

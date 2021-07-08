@@ -1,3 +1,4 @@
+import { FormattedMessage } from 'react-intl';
 import { useCV } from '../core';
 import { Heading } from '../components/Heading';
 import { List } from '../components/List';
@@ -10,7 +11,12 @@ export const ProjectsSection = () => {
   }
   return (
     <>
-      <Heading section isTitle>Projects</Heading>
+      <Heading section isTitle>
+        <FormattedMessage
+          defaultMessage="Projects"
+          description="projects section"
+        />
+      </Heading>
       <List>
         {projects.map(({ id, ...rest }) => (
           <ProjectItem key={id} {...{ ...rest, id }} />
