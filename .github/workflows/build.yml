@@ -6,8 +6,6 @@ name: Build Site
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
   repository_dispatch:
     types: [ graphcms, simplelocalize ]
 
