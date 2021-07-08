@@ -1,4 +1,5 @@
-import { graphql, PageProps, Link } from 'gatsby';
+import { graphql, PageProps } from 'gatsby';
+import { Link } from 'gatsby-plugin-react-intl';
 
 import '../components/layout.css';
 import { FC } from 'react';
