@@ -44,7 +44,12 @@ export const ExperienceSection = () => {
   );
   return (
     <>
-      <Heading section isTitle>Experience</Heading>
+      <Heading section isTitle>
+        <FormattedMessage
+          defaultMessage="Experience"
+          description="experience section"
+        />
+      </Heading>
       <List>
         {filteredWorkExperiences.map(({ id, ...rest }) => (
           <ExperienceItem key={id} {...{ ...rest, id }} />
