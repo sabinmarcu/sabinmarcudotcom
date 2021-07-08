@@ -6,6 +6,7 @@ import {
   mdiHome,
 } from '@mdi/js';
 
+import Icon from '@mdi/react';
 import { CVContext } from '../cv/core';
 import { AccountSection } from '../cv/sections/account';
 import { EducationSection } from '../cv/sections/education';
@@ -25,7 +26,6 @@ import {
 } from '../cv/components/Layout';
 import { Update as UpdateTheme } from '../stores/theme';
 import { CVTheme } from '../style/themes';
-import Icon from '@mdi/react';
 
 type GCMSType = {
   gcms: Query

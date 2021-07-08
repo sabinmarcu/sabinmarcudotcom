@@ -35,4 +35,7 @@ exports.onCreateBabelConfig = ({ actions }) => {
       runtime: 'automatic',
     },
   });
+  actions.setBabelPlugin({
+    name: 'babel-plugin-formatjs',
+  });
 };

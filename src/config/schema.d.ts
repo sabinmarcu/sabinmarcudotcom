@@ -2412,7 +2412,8 @@ export type ImageTransformationInput = {
 /** Locale system enumeration */
 export enum Locale {
   /** System locale */
-  En = 'en'
+  En = 'en',
+  Ro = 'ro'
 }
 
 /** Representing a geolocation point with latitude and longitude */

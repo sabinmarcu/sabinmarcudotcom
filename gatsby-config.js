@@ -10,6 +10,16 @@ module.exports = {
     author: '@sabinmarcu',
   },
   plugins: [
+    {
+      resolve: 'gatsby-plugin-react-intl',
+      options: {
+        path: `${__dirname}/src/i18n`,
+        languages: ['en', 'ro'],
+        defaultLanguage: 'en',
+        redirect: true,
+        redirectDefaultLanguageToRoot: true,
+      },
+    },
     'gatsby-plugin-emotion',
     {
       resolve: 'gatsby-plugin-web-font-loader',

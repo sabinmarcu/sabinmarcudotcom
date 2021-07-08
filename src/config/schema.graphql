@@ -136,6 +136,9 @@ directive @mark(
 
   """The name of the associated RichText type"""
   richTextType: String
+
+  """Marks relation fields that do not have a reverse side counterpart"""
+  isUnidirectional: Boolean
 ) on OBJECT | FIELD_DEFINITION | ENUM_VALUE | ENUM | INPUT_FIELD_DEFINITION | INPUT_OBJECT | ARGUMENT_DEFINITION
 
 directive @permission(
@@ -1362,7 +1365,7 @@ type Asset implements Node {
   """Get the other localizations for this document"""
   localizations(
     """Potential locales that should be returned"""
-    locales: [Locale!]! = [en]
+    locales: [Locale!]! = [en, ro]
 
     """Decides if the current locale should be included or not"""
     includeCurrent: Boolean! = false
@@ -3499,6 +3502,7 @@ scalar Json
 enum Locale {
   """System locale"""
   en
+  ro
 }
 
 """Representing a geolocation point with latitude and longitude"""

@@ -17,7 +17,14 @@ module.exports = {
     es6: true,
   },
   rules,
+  plugins: [
+    'formatjs',
+  ],
   overrides: [
+    {
+      files: ['src/config/schema.d.ts'],
+      rules: {},
+    },
     {
       files: ['*.ts', '*.tsx'],
       extends: 'airbnb-typescript',
