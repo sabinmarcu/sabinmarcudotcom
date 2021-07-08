@@ -1,4 +1,4 @@
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'gatsby-plugin-react-intl';
 import { useCV } from '../core';
 import { Heading } from '../components/Heading';
 import { List } from '../components/List';
