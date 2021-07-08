@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { useCV } from '../core';
 import { ExperienceItem } from '../components/ExperienceItem';
 import { Heading } from '../components/Heading';
