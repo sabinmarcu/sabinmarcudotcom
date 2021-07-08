@@ -1,3 +1,4 @@
+import { FormattedMessage } from 'react-intl';
 import { useCV } from '../core';
 import { Heading } from '../components/Heading';
 import { List } from '../components/List';
@@ -10,7 +11,12 @@ export const EducationSection = () => {
   }
   return (
     <>
-      <Heading section isTitle>Education</Heading>
+      <Heading section isTitle>
+        <FormattedMessage
+          defaultMessage="Education"
+          description="education section"
+        />
+      </Heading>
       <List>
         {educations.map(({
           id, institution, degree, start, end,
