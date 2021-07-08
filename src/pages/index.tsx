@@ -1,4 +1,4 @@
-import { Link } from 'gatsby';
+import { Link } from 'gatsby-plugin-react-intl';
 import { FormattedMessage } from 'react-intl';
 
 import Layout from '../components/layout';
