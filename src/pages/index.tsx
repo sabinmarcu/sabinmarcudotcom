@@ -1,5 +1,5 @@
 import { Link } from 'gatsby-plugin-react-intl';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'gatsby-plugin-react-intl';
 
 import Layout from '../components/layout';
 import Image from '../components/image';
