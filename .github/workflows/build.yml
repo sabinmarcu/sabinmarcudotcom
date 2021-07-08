@@ -9,7 +9,7 @@ on:
   pull_request:
     branches: [ master ]
   repository_dispatch:
-    types: [ graphcms ]
+    types: [ graphcms, simplelocalize ]
 
 jobs:
   build:
