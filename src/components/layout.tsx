@@ -13,7 +13,7 @@ import { getPageTransition } from '../config/pages';
 import Header from './header';
 import './layout.css';
 
-const Layout: FC<any> = ({ children, location: { pathname } }) => {
+const Layout: FC<any> = ({ children, location }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -28,8 +28,8 @@ const Layout: FC<any> = ({ children, location: { pathname } }) => {
     <>
       <Header siteTitle={data.site.siteMetadata.title} />
       <PageTransition
-        location={pathname}
-        Transition={getPageTransition(pathname)}
+        location={location?.pathname}
+        Transition={getPageTransition(location?.pathname)}
       >
         {children}
       </PageTransition>
