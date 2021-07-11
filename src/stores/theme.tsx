@@ -3,7 +3,7 @@ import { FC, useMemo, useEffect } from 'react';
 import { useLocation } from '@reach/router';
 import { determineActiveTheme } from '../config/themes';
 import { useMatchMedia } from '../hooks/useMatchMedia';
-import { Colors, DualColors } from '../style/colors';
+import { Colors } from '../style/colors';
 import {
   DefaultTheme, InputTheme, Options, Theme,
 } from '../style/themes';
@@ -26,7 +26,6 @@ const store = makeStore<Theme, InputTheme, Options>()({
       [pathname, updateStore, defaultValue],
     );
     const theme = useMemo(() => {
-      console.log('Theme change', (defaultValue?.colors as DualColors).light?.primary ?? (defaultValue?.colors as Colors).primary ?? 'unknown');
       const newTheme = { ...(defaultValue || DefaultTheme) };
       let colors: Colors;
       if ('light' in newTheme.colors) {

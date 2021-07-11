@@ -52,3 +52,13 @@ export const lerpColor = (
     `#${(((1 << 24) + (rr << 16) + (rg << 8) + rb) | 0).toString(16).slice(1)}`,
   );
 };
+
+export const matchUrl = <T extends unknown>(
+  url: string,
+  dict: Record<string, T>,
+  defaultValue: T,
+  prefixes: string[] = [],
+): T => Object.entries(dict)
+    .find(
+      ([key]) => new RegExp(`^(/(${prefixes.join('|')}))?${key}`).test(url),
+    )?.[1] ?? defaultValue;

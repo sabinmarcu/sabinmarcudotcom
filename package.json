@@ -70,6 +70,7 @@
     "@types/react": "^17.0.4",
     "@types/react-dom": "^17.0.3",
     "@types/react-helmet": "^6.1.1",
+    "@types/webpack-env": "^1.16.2",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "babel-plugin-formatjs": "^10.3.2",
     "dotenv": "^8.2.0",
@@ -83,7 +84,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "prepare": "curl -s https://get.simplelocalize.io/install | bash",
+    "prepare": "which simplelocalize || curl -s https://get.simplelocalize.io/install | bash",
     "build": "gatsby build",
     "prebuild": "run-p \"prebuild:*\"",
     "prebuild:graphql": "yarn graphql",

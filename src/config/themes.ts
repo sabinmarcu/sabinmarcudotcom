@@ -4,6 +4,8 @@ import {
   InputTheme,
   Options,
 } from '../style/themes';
+import { matchUrl } from '../utils/func';
+import { languages } from './languages';
 
 type ThemePreset = {
   value: InputTheme,
@@ -22,5 +24,4 @@ export const themeOverrides: Record<string, ThemePreset> = {
 
 export const determineActiveTheme = (
   pathname: string,
-): { value: InputTheme } & Partial<Options> => Object.entries(themeOverrides)
-  .find(([key]) => new RegExp(`^(/[^/]+)?${key}`).test(pathname))?.[1] || defaultTheme;
+) => matchUrl(pathname, themeOverrides, defaultTheme, languages);
