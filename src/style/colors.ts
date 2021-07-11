@@ -19,8 +19,8 @@ export const CVLight: Colors = {
 };
 
 export const DefaultDark: Colors = {
-  primary: '#0080d0',
-  secondary: '#1f789c',
+  primary: '#663399',
+  secondary: '#72243D',
   text: '#ccc',
   background: '#222',
   paper: '#444',

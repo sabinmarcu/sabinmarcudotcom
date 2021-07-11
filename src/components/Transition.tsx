@@ -6,7 +6,7 @@ import {
 } from 'react-transition-group';
 import {
   pageTransition,
-  pageTransitionFunction
+  pageTransitionFunction,
 } from '../config/constants';
 
 export type TransitionProps = {

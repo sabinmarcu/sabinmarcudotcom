@@ -15,7 +15,7 @@ type CanvasProps = {
 
 type CanvasWrapperProps = {
   color: string,
-}
+};
 
 type RendererProps = {
   every: number,
@@ -94,7 +94,7 @@ export const makeRenderer = (
 
   let isRendering = true;
   const render = () => {
-    const color = window 
+    const color = window
       ? window.getComputedStyle(canvas).getPropertyValue('color')
       : '#888';
     if (!isRendering || !ctx) {

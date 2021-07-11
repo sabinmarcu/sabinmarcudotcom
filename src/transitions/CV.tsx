@@ -29,19 +29,19 @@ export const CVTransition: FC<TransitionProps> = styled.section<TransitionProps>
       case 'entering': return {
         [BackButtonRaw as any]: {
           opacity: 0,
-        }
+        },
       };
       case 'entered': return {
         [BackButtonRaw as any]: {
           opacity: 1,
-          transition: `opacity ${timeout}ms ${timeout}ms ${transition}`
-        }
+          transition: `opacity ${timeout}ms ${timeout}ms ${transition}`,
+        },
       };
       case 'exiting': return {
         [BackButtonRaw as any]: {
           opacity: 0,
-          transition: `opacity ${timeout * backButtonDelay}ms ${transition}`
-        }
+          transition: `opacity ${timeout * backButtonDelay}ms ${transition}`,
+        },
       };
       default: return 'background: red';
     }

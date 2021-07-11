@@ -2,9 +2,9 @@ import styled from '@emotion/styled';
 import Color from 'color';
 import { ThemeColorsProp, withThemeColors } from '../../stores/theme';
 
-export const BackButtonRaw =  styled.div<ThemeColorsProp>(
-  ({ themeColors: { text } }) => ({ 
-    color: text
+export const BackButtonRaw = styled.div<ThemeColorsProp>(
+  ({ themeColors: { text } }) => ({
+    color: text,
   }),
   ({ themeColors: { text } }) => {
     const color = new Color(text);
@@ -16,7 +16,7 @@ export const BackButtonRaw =  styled.div<ThemeColorsProp>(
         top: 0;
         bottom: 0;
         right: 0;
-        background: linear-gradient(to right,  ${color.fade(.8)} 0%, ${color.fade(1)} 100%);
+        background: linear-gradient(to right,  ${color.fade(0.8)} 0%, ${color.fade(1)} 100%);
         transform: translateX(-50%);
         opacity: 0.8;
         transition: all 0.3s ease-in-out;
@@ -27,7 +27,7 @@ export const BackButtonRaw =  styled.div<ThemeColorsProp>(
           opacity: 1;
         }
       }
-    `; 
+    `;
   },
   `
     position: fixed;
@@ -40,7 +40,7 @@ export const BackButtonRaw =  styled.div<ThemeColorsProp>(
     bottom: 0;
     width: 7.5vmin;
     cursor: pointer;
-  `
+  `,
 );
 
 export const BackButton = withThemeColors(BackButtonRaw);

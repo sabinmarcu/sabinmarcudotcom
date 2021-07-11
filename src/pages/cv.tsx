@@ -25,8 +25,6 @@ import {
   TwoColumns,
   Wrapper,
 } from '../cv/components/Layout';
-import { Update as UpdateTheme } from '../stores/theme';
-import { CVTheme } from '../style/themes';
 
 type GCMSType = {
   gcms: Query
@@ -43,7 +41,6 @@ export const CVPage: FC<PageProps<GCMSType>> = (
         <Icon path={mdiHome} size="2vmin" />
       </BackButton>
     </Link>
-    <UpdateTheme value={CVTheme} preferSystemTheme />
     <CVContext.Provider value={gcms}>
       <Container>
         <Header>

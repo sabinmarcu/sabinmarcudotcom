@@ -13,12 +13,18 @@ import {
 import { deepEqual } from './func';
 import { capitalize, PrefixType, prefix } from './text';
 
+type UpdateStoreType<INPUT, OPTIONS> = (
+  params: ProviderParamType<INPUT, OPTIONS>
+) => undefined | (() => void);
 type HandlerParams<INPUT, OPTIONS> = {
   defaultValue?: INPUT | undefined,
 } & OPTIONS;
-type HandlerType<T, INPUT, OPTIONS> = (params: HandlerParams<INPUT, OPTIONS>) => T;
+type HandlerParamsWithUpdate<INPUT, OPTIONS> = {
+  updateStore: UpdateStoreType<INPUT, OPTIONS>,
+} & HandlerParams<INPUT, OPTIONS>;
+type HandlerType<T, INPUT, OPTIONS> = (params: HandlerParamsWithUpdate<INPUT, OPTIONS>) => T;
 type HandlerUpdateType<INPUT, OPTIONS> = {
-  __updateStoreHandler: (params: ProviderParamType<INPUT, OPTIONS>) => undefined | (() => void)
+  __updateStoreHandler: UpdateStoreType<INPUT, OPTIONS>,
 };
 
 type ProviderParamType<INPUT, OPTIONS> = OPTIONS & { value?: INPUT };
@@ -88,6 +94,7 @@ export const makeStore = <
     const handlerData = h({
       ...props,
       ...handlerProps,
+      updateStore: cyaSetHandlerProps,
     });
     const data: T & HandlerUpdateType<INPUT, OPTIONS> = useMemo(
       () => ({

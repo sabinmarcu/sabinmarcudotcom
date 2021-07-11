@@ -1,20 +1,32 @@
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useEffect } from 'react';
+import { useLocation } from '@reach/router';
+import { determineActiveTheme } from '../config/themes';
 import { useMatchMedia } from '../hooks/useMatchMedia';
-import { Colors } from '../style/colors';
-import { DefaultTheme, InputTheme, Theme } from '../style/themes';
+import { Colors, DualColors } from '../style/colors';
+import {
+  DefaultTheme, InputTheme, Options, Theme,
+} from '../style/themes';
 import { HOCProp, makeStore } from '../utils/makeStore';
-
-export type Options = {
-  preferSystemTheme?: boolean,
-};
+import { pageTransition } from '../config/constants';
 
 const store = makeStore<Theme, InputTheme, Options>()({
   name: 'theme',
   defaultValue: DefaultTheme,
-  handler: ({ defaultValue, preferSystemTheme }) => {
+  handler: ({ defaultValue, preferSystemTheme, updateStore }) => {
     const globalDarkTheme = useMatchMedia(['prefers-color-scheme', 'dark']);
+    const { pathname } = useLocation();
+    useEffect(
+      () => {
+        const newTheme = determineActiveTheme(pathname);
+        if (defaultValue !== newTheme.value) {
+          setTimeout(updateStore, pageTransition, newTheme);
+        }
+      },
+      [pathname, updateStore, defaultValue],
+    );
     const theme = useMemo(() => {
+      console.log('Theme change', (defaultValue?.colors as DualColors).light?.primary ?? (defaultValue?.colors as Colors).primary ?? 'unknown');
       const newTheme = { ...(defaultValue || DefaultTheme) };
       let colors: Colors;
       if ('light' in newTheme.colors) {
@@ -78,10 +90,11 @@ const MUIThemeCustomizer: FC = ({ children }) => {
     </ThemeProvider>
   );
 };
-export const Provider: FC = ({ children }) => (
-  <SiteThemeProvider>
+export const Provider: FC<{ pathname: string }> = ({ children, pathname }) => (
+  <SiteThemeProvider {...determineActiveTheme(pathname)}>
     <MUIThemeCustomizer>
       {children}
     </MUIThemeCustomizer>
   </SiteThemeProvider>
 );
+Provider.displayName = 'Site Theme Store';

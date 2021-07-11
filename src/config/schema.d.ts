@@ -3463,6 +3463,9 @@ export type MutationUpsertWorkExperienceArgs = {
 
 export type MutationPublishWorkExperienceArgs = {
   where: WorkExperienceWhereUniqueInput;
+  locales?: Maybe<Array<Locale>>;
+  publishBase?: Maybe<Scalars['Boolean']>;
+  withDefaultLocale?: Maybe<Scalars['Boolean']>;
   to?: Array<Stage>;
 };
 
@@ -3470,6 +3473,8 @@ export type MutationPublishWorkExperienceArgs = {
 export type MutationUnpublishWorkExperienceArgs = {
   where: WorkExperienceWhereUniqueInput;
   from?: Array<Stage>;
+  locales?: Maybe<Array<Locale>>;
+  unpublishBase?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -3503,6 +3508,9 @@ export type MutationPublishManyWorkExperiencesConnectionArgs = {
   last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['ID']>;
   after?: Maybe<Scalars['ID']>;
+  locales?: Maybe<Array<Locale>>;
+  publishBase?: Maybe<Scalars['Boolean']>;
+  withDefaultLocale?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -3515,6 +3523,8 @@ export type MutationUnpublishManyWorkExperiencesConnectionArgs = {
   last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['ID']>;
   after?: Maybe<Scalars['ID']>;
+  locales?: Maybe<Array<Locale>>;
+  unpublishBase?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -3532,12 +3542,17 @@ export type MutationDeleteManyWorkExperiencesArgs = {
 export type MutationPublishManyWorkExperiencesArgs = {
   where?: Maybe<WorkExperienceManyWhereInput>;
   to?: Array<Stage>;
+  locales?: Maybe<Array<Locale>>;
+  publishBase?: Maybe<Scalars['Boolean']>;
+  withDefaultLocale?: Maybe<Scalars['Boolean']>;
 };
 
 
 export type MutationUnpublishManyWorkExperiencesArgs = {
   where?: Maybe<WorkExperienceManyWhereInput>;
   from?: Array<Stage>;
+  locales?: Maybe<Array<Locale>>;
+  unpublishBase?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -5536,6 +5551,10 @@ export type WorkExperience = Node & {
   __typename?: 'WorkExperience';
   /** System stage field */
   stage: Stage;
+  /** System Locale field */
+  locale: Locale;
+  /** Get the other localizations for this document */
+  localizations: Array<WorkExperience>;
   /** Get the document in other stages */
   documentInStages: Array<WorkExperience>;
   /** The unique identifier */
@@ -5563,10 +5582,21 @@ export type WorkExperience = Node & {
 };
 
 
+export type WorkExperienceLocalizationsArgs = {
+  locales?: Array<Locale>;
+  includeCurrent?: Scalars['Boolean'];
+};
+
+
 export type WorkExperienceDocumentInStagesArgs = {
   stages?: Array<Stage>;
   includeCurrent?: Scalars['Boolean'];
   inheritLocale?: Scalars['Boolean'];
+};
+
+
+export type WorkExperienceCreatedAtArgs = {
+  variation?: SystemDateTimeFieldVariation;
 };
 
 
@@ -5575,8 +5605,18 @@ export type WorkExperienceCreatedByArgs = {
 };
 
 
+export type WorkExperienceUpdatedAtArgs = {
+  variation?: SystemDateTimeFieldVariation;
+};
+
+
 export type WorkExperienceUpdatedByArgs = {
   locales?: Maybe<Array<Locale>>;
+};
+
+
+export type WorkExperiencePublishedAtArgs = {
+  variation?: SystemDateTimeFieldVariation;
 };
 
 
@@ -5640,7 +5680,27 @@ export type WorkExperienceCreateInput = {
   positions?: Maybe<WorkPositionCreateManyInlineInput>;
   location?: Maybe<Array<LocationInput>>;
   projects?: Maybe<ProjectCreateManyInlineInput>;
+  /** description input for default locale (en) */
   description?: Maybe<Scalars['RichTextAST']>;
+  /** Inline mutations for managing document localizations excluding the default locale */
+  localizations?: Maybe<WorkExperienceCreateLocalizationsInput>;
+};
+
+export type WorkExperienceCreateLocalizationDataInput = {
+  createdAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+  description?: Maybe<Scalars['RichTextAST']>;
+};
+
+export type WorkExperienceCreateLocalizationInput = {
+  /** Localization input */
+  data: WorkExperienceCreateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type WorkExperienceCreateLocalizationsInput = {
+  /** Create localizations for the newly-created document */
+  create?: Maybe<Array<WorkExperienceCreateLocalizationInput>>;
 };
 
 export type WorkExperienceCreateManyInlineInput = {
@@ -5794,7 +5854,29 @@ export type WorkExperienceUpdateInput = {
   positions?: Maybe<WorkPositionUpdateManyInlineInput>;
   location?: Maybe<Array<LocationInput>>;
   projects?: Maybe<ProjectUpdateManyInlineInput>;
+  /** description input for default locale (en) */
   description?: Maybe<Scalars['RichTextAST']>;
+  /** Manage document localizations */
+  localizations?: Maybe<WorkExperienceUpdateLocalizationsInput>;
+};
+
+export type WorkExperienceUpdateLocalizationDataInput = {
+  description?: Maybe<Scalars['RichTextAST']>;
+};
+
+export type WorkExperienceUpdateLocalizationInput = {
+  data: WorkExperienceUpdateLocalizationDataInput;
+  locale: Locale;
+};
+
+export type WorkExperienceUpdateLocalizationsInput = {
+  /** Localizations to create */
+  create?: Maybe<Array<WorkExperienceCreateLocalizationInput>>;
+  /** Localizations to update */
+  update?: Maybe<Array<WorkExperienceUpdateLocalizationInput>>;
+  upsert?: Maybe<Array<WorkExperienceUpsertLocalizationInput>>;
+  /** Localizations to delete */
+  delete?: Maybe<Array<Locale>>;
 };
 
 export type WorkExperienceUpdateManyInlineInput = {
@@ -5817,7 +5899,24 @@ export type WorkExperienceUpdateManyInlineInput = {
 export type WorkExperienceUpdateManyInput = {
   showName?: Maybe<Scalars['Boolean']>;
   location?: Maybe<Array<LocationInput>>;
+  /** description input for default locale (en) */
   description?: Maybe<Scalars['RichTextAST']>;
+  /** Optional updates to localizations */
+  localizations?: Maybe<WorkExperienceUpdateManyLocalizationsInput>;
+};
+
+export type WorkExperienceUpdateManyLocalizationDataInput = {
+  description?: Maybe<Scalars['RichTextAST']>;
+};
+
+export type WorkExperienceUpdateManyLocalizationInput = {
+  data: WorkExperienceUpdateManyLocalizationDataInput;
+  locale: Locale;
+};
+
+export type WorkExperienceUpdateManyLocalizationsInput = {
+  /** Localizations to update */
+  update?: Maybe<Array<WorkExperienceUpdateManyLocalizationInput>>;
 };
 
 export type WorkExperienceUpdateManyWithNestedWhereInput = {
@@ -5854,6 +5953,12 @@ export type WorkExperienceUpsertInput = {
   create: WorkExperienceCreateInput;
   /** Update document if it exists */
   update: WorkExperienceUpdateInput;
+};
+
+export type WorkExperienceUpsertLocalizationInput = {
+  update: WorkExperienceUpdateLocalizationDataInput;
+  create: WorkExperienceCreateLocalizationDataInput;
+  locale: Locale;
 };
 
 export type WorkExperienceUpsertWithNestedWhereUniqueInput = {

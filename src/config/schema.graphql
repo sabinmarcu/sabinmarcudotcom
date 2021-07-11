@@ -4441,6 +4441,15 @@ type Mutation {
     """Document to publish"""
     where: WorkExperienceWhereUniqueInput!
 
+    """Optional localizations to publish"""
+    locales: [Locale!]
+
+    """Whether to publish the base document"""
+    publishBase: Boolean = true
+
+    """Whether to include the default locale when publishBase is set"""
+    withDefaultLocale: Boolean = true
+
     """Publishing target stage"""
     to: [Stage!]! = [PUBLISHED]
   ): WorkExperience
@@ -4456,6 +4465,17 @@ type Mutation {
 
     """Stages to unpublish document from"""
     from: [Stage!]! = [PUBLISHED]
+
+    """
+    Optional locales to unpublish. Unpublishing the default locale will
+    completely remove the document from the selected stages
+    """
+    locales: [Locale!]
+
+    """
+    Unpublish complete document including default localization and relations from stages. Can be disabled.
+    """
+    unpublishBase: Boolean = true
   ): WorkExperience
 
   """Update many WorkExperience documents"""
@@ -4498,6 +4518,15 @@ type Mutation {
     last: Int
     before: ID
     after: ID
+
+    """Document localizations to publish"""
+    locales: [Locale!]
+
+    """Whether to publish the base document"""
+    publishBase: Boolean = true
+
+    """Whether to include the default locale when publishBase is true"""
+    withDefaultLocale: Boolean = true
   ): WorkExperienceConnection!
 
   """
@@ -4517,6 +4546,12 @@ type Mutation {
     last: Int
     before: ID
     after: ID
+
+    """Locales to unpublish"""
+    locales: [Locale!]
+
+    """Whether to unpublish the base document and default localization"""
+    unpublishBase: Boolean = true
   ): WorkExperienceConnection!
 
   """Update many workExperiences"""
@@ -4541,6 +4576,15 @@ type Mutation {
 
     """Stages to publish documents to"""
     to: [Stage!]! = [PUBLISHED]
+
+    """Document localizations to publish"""
+    locales: [Locale!]
+
+    """Whether to publish the base document"""
+    publishBase: Boolean = true
+
+    """Whether to include the default locale when publishBase is true"""
+    withDefaultLocale: Boolean = true
   ): BatchPayload! @deprecated(reason: "Please use the new paginated many mutation (publishManyWorkExperiencesConnection)")
 
   """Unpublish many WorkExperience documents"""
@@ -4550,6 +4594,12 @@ type Mutation {
 
     """Stages to unpublish documents from"""
     from: [Stage!]! = [PUBLISHED]
+
+    """Locales to unpublish"""
+    locales: [Locale!]
+
+    """Whether to unpublish the base document and default localization"""
+    unpublishBase: Boolean = true
   ): BatchPayload! @deprecated(reason: "Please use the new paginated many mutation (unpublishManyWorkExperiencesConnection)")
 
   """Create one workPosition"""
@@ -6010,12 +6060,9 @@ type Query {
     """
     Defines which locales should be returned.
     
-    Note that `WorkExperience` is a model without localized fields and will not
-    be affected directly by this argument, however the locales will be passed on
-    to any relational fields in the query's subtree for filtering.
-    For related models with localized fields in the query's subtree, the first
-    locale matching the provided list of locales will be returned, entries with
-    non matching locales will be filtered out.
+    Note that `WorkExperience` will be affected directly by this argument, as
+    well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
     
     This argument may be overwritten by another locales definition in a
     relational child field, this will effectively use the overwritten argument
@@ -6032,12 +6079,9 @@ type Query {
     """
     Defines which locales should be returned.
     
-    Note that `WorkExperience` is a model without localized fields and will not
-    be affected directly by this argument, however the locales will be passed on
-    to any relational fields in the query's subtree for filtering.
-    For related models with localized fields in the query's subtree, the first
-    locale matching the provided list of locales will be returned, entries with
-    non matching locales will be filtered out.
+    Note that `WorkExperience` will be affected directly by this argument, as
+    well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
     
     This argument may be overwritten by another locales definition in a
     relational child field, this will effectively use the overwritten argument
@@ -6060,12 +6104,9 @@ type Query {
     """
     Defines which locales should be returned.
     
-    Note that `WorkExperience` is a model without localized fields and will not
-    be affected directly by this argument, however the locales will be passed on
-    to any relational fields in the query's subtree for filtering.
-    For related models with localized fields in the query's subtree, the first
-    locale matching the provided list of locales will be returned, entries with
-    non matching locales will be filtered out.
+    Note that `WorkExperience` will be affected directly by this argument, as
+    well as any other related models with localized fields in the query's subtree.
+    The first locale matching the provided list will be returned, entries with non matching locales will be filtered out.
     
     This argument may be overwritten by another locales definition in a
     relational child field, this will effectively use the overwritten argument
@@ -7414,6 +7455,18 @@ type WorkExperience implements Node {
   """System stage field"""
   stage: Stage!
 
+  """System Locale field"""
+  locale: Locale!
+
+  """Get the other localizations for this document"""
+  localizations(
+    """Potential locales that should be returned"""
+    locales: [Locale!]! = [en, ro]
+
+    """Decides if the current locale should be included or not"""
+    includeCurrent: Boolean! = false
+  ): [WorkExperience!]!
+
   """Get the document in other stages"""
   documentInStages(
     """Potential stages that should be returned"""
@@ -7432,7 +7485,13 @@ type WorkExperience implements Node {
   id: ID!
 
   """The time the document was created"""
-  createdAt: DateTime!
+  createdAt(
+    """
+    Variation of DateTime field to return, allows value from base document,
+    current localization, or combined by returning the newer value of both
+    """
+    variation: SystemDateTimeFieldVariation! = COMBINED
+  ): DateTime!
 
   """User that created this document"""
   createdBy(
@@ -7452,7 +7511,13 @@ type WorkExperience implements Node {
   ): User
 
   """The time the document was updated"""
-  updatedAt: DateTime!
+  updatedAt(
+    """
+    Variation of DateTime field to return, allows value from base document,
+    current localization, or combined by returning the newer value of both
+    """
+    variation: SystemDateTimeFieldVariation! = COMBINED
+  ): DateTime!
 
   """User that last updated this document"""
   updatedBy(
@@ -7472,7 +7537,13 @@ type WorkExperience implements Node {
   ): User
 
   """The time the document was published. Null on documents in draft stage."""
-  publishedAt: DateTime
+  publishedAt(
+    """
+    Variation of DateTime field to return, allows value from base document,
+    current localization, or combined by returning the newer value of both
+    """
+    variation: SystemDateTimeFieldVariation! = COMBINED
+  ): DateTime
 
   """User that last published this document"""
   publishedBy(
@@ -7581,7 +7652,31 @@ input WorkExperienceCreateInput {
   positions: WorkPositionCreateManyInlineInput
   location: [LocationInput!]
   projects: ProjectCreateManyInlineInput
+
+  """description input for default locale (en)"""
   description: RichTextAST
+
+  """
+  Inline mutations for managing document localizations excluding the default locale
+  """
+  localizations: WorkExperienceCreateLocalizationsInput
+}
+
+input WorkExperienceCreateLocalizationDataInput {
+  createdAt: DateTime
+  updatedAt: DateTime
+  description: RichTextAST
+}
+
+input WorkExperienceCreateLocalizationInput {
+  """Localization input"""
+  data: WorkExperienceCreateLocalizationDataInput!
+  locale: Locale!
+}
+
+input WorkExperienceCreateLocalizationsInput {
+  """Create localizations for the newly-created document"""
+  create: [WorkExperienceCreateLocalizationInput!]
 }
 
 input WorkExperienceCreateManyInlineInput {
@@ -7780,7 +7875,33 @@ input WorkExperienceUpdateInput {
   positions: WorkPositionUpdateManyInlineInput
   location: [LocationInput!]
   projects: ProjectUpdateManyInlineInput
+
+  """description input for default locale (en)"""
   description: RichTextAST
+
+  """Manage document localizations"""
+  localizations: WorkExperienceUpdateLocalizationsInput
+}
+
+input WorkExperienceUpdateLocalizationDataInput {
+  description: RichTextAST
+}
+
+input WorkExperienceUpdateLocalizationInput {
+  data: WorkExperienceUpdateLocalizationDataInput!
+  locale: Locale!
+}
+
+input WorkExperienceUpdateLocalizationsInput {
+  """Localizations to create"""
+  create: [WorkExperienceCreateLocalizationInput!]
+
+  """Localizations to update"""
+  update: [WorkExperienceUpdateLocalizationInput!]
+  upsert: [WorkExperienceUpsertLocalizationInput!]
+
+  """Localizations to delete"""
+  delete: [Locale!]
 }
 
 input WorkExperienceUpdateManyInlineInput {
@@ -7811,7 +7932,26 @@ input WorkExperienceUpdateManyInlineInput {
 input WorkExperienceUpdateManyInput {
   showName: Boolean
   location: [LocationInput!]
+
+  """description input for default locale (en)"""
   description: RichTextAST
+
+  """Optional updates to localizations"""
+  localizations: WorkExperienceUpdateManyLocalizationsInput
+}
+
+input WorkExperienceUpdateManyLocalizationDataInput {
+  description: RichTextAST
+}
+
+input WorkExperienceUpdateManyLocalizationInput {
+  data: WorkExperienceUpdateManyLocalizationDataInput!
+  locale: Locale!
+}
+
+input WorkExperienceUpdateManyLocalizationsInput {
+  """Localizations to update"""
+  update: [WorkExperienceUpdateManyLocalizationInput!]
 }
 
 input WorkExperienceUpdateManyWithNestedWhereInput {
@@ -7856,6 +7996,12 @@ input WorkExperienceUpsertInput {
 
   """Update document if it exists"""
   update: WorkExperienceUpdateInput!
+}
+
+input WorkExperienceUpsertLocalizationInput {
+  update: WorkExperienceUpdateLocalizationDataInput!
+  create: WorkExperienceCreateLocalizationDataInput!
+  locale: Locale!
 }
 
 input WorkExperienceUpsertWithNestedWhereUniqueInput {

@@ -33,3 +33,7 @@ export const DefaultTheme: InputTheme = {
   },
   layout: CVLayout,
 };
+
+export type Options = {
+  preferSystemTheme?: boolean,
+};
