@@ -56,7 +56,7 @@ const Header: FC<{
 }> = ({
   siteTitle,
 }) => {
-  const [scroll, setScroll] = useState<number>(window.scrollY);
+  const [scroll, setScroll] = useState<number>(window?.scrollY);
   const prevScroll = usePrevious(scroll);
   const setScrollRef = useRef<typeof setScroll>();
   useEffect(
@@ -69,10 +69,10 @@ const Header: FC<{
     () => {
       const handler = () => {
         const { current: setter } = setScrollRef;
-        setter?.(window.scrollY);
+        setter?.(window?.scrollY);
       };
-      window.addEventListener('scroll', handler);
-      return () => window.removeEventListener('scroll', handler);
+      window?.addEventListener('scroll', handler);
+      return () => window?.removeEventListener('scroll', handler);
     },
     [],
   );

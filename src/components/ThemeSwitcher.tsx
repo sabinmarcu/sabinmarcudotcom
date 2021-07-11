@@ -70,7 +70,7 @@ export const ThemeSwitcher: FC = () => {
   );
   return (
     <>
-      <Tooltip title="Select theme mode">
+      <Tooltip title="Select color scheme">
         <StyledButton {...button}>
           <MenuIcon />
         </StyledButton>
