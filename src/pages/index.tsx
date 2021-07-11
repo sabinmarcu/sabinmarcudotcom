@@ -1,12 +1,10 @@
-import { Link } from 'gatsby-plugin-react-intl';
-import { FormattedMessage } from 'gatsby-plugin-react-intl';
+import { Link, FormattedMessage } from 'gatsby-plugin-react-intl';
 
-import Layout from '../components/layout';
 import Image from '../components/image';
 import SEO from '../components/seo';
 
 const IndexPage = () => (
-  <Layout>
+  <>
     <SEO title="Home" />
     <h1>
       <FormattedMessage
@@ -23,7 +21,7 @@ const IndexPage = () => (
     <Link to="/cv/">Go to CV [WIP]</Link>
     <br />
     <Link to="/using-typescript/">Go to &quot;Using TypeScript&quot;</Link>
-  </Layout>
+  </>
 );
 
 export default IndexPage;

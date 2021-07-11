@@ -33,7 +33,7 @@ export const CVPage: FC<PageProps<GCMSType>> = (
     data: { gcms },
   },
 ) => (
-  <Layout>
+  <>
     <Wrapper>
       <Link to="/">
         <BackButton>
@@ -59,7 +59,7 @@ export const CVPage: FC<PageProps<GCMSType>> = (
         </Container>
       </CVContext.Provider>
     </Wrapper>
-  </Layout>
+  </>
 );
 
 export default CVPage;

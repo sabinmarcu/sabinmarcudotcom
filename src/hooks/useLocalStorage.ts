@@ -1,5 +1,5 @@
 import {
-  useState, useEffect, Dispatch, SetStateAction,
+  useState, useEffect, Dispatch, SetStateAction, useMemo, useCallback,
 } from 'react';
 
 import {
@@ -8,15 +8,19 @@ import {
 import { usePrevious } from './usePrevious';
 
 export const useLocalStorage = <T>(
-  key: string,
+  localStorageKey: string,
   defaultValue?: T,
 ): [T | undefined, Dispatch<SetStateAction<T | undefined>>] => {
-  const prevKey = usePrevious(key);
-  const [initialLoad, setInitialLoad] = useState<boolean>(false);
+  const key = useMemo(
+    () => makeKey(localStorageKey),
+    [localStorageKey],
+  );
+  const previousKey = usePrevious(key);
   const [value, setValue] = useState<T>();
-  useEffect(() => {
-    if (!initialLoad || prevKey !== key) {
-      const val = localStorage.getItem(makeKey(key));
+  const previousValue = usePrevious(value);
+  const initValue = useCallback(
+    () => {
+      const val = localStorage.getItem(key);
       if (val) {
         try {
           logState('⚙ LocalStorage Get', key, val);
@@ -28,50 +32,26 @@ export const useLocalStorage = <T>(
       } else {
         setValue(defaultValue);
       }
-      setInitialLoad(true);
-    }
-  }, [initialLoad, key, defaultValue]);
-  useEffect(() => {
-    if (!initialLoad) {
-      return undefined;
-    }
-    let shouldUpdate = true;
-    try {
-      let existingValue: string | T | null = localStorage.getItem(makeKey(key));
-      try {
-        existingValue = JSON.parse(existingValue as string);
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error(e);
-      } finally {
-        if (existingValue && existingValue === value) {
-          shouldUpdate = false;
-        }
+    },
+    [key, value],
+  );
+  useEffect(
+    () => {
+      if (previousKey !== key) {
+        initValue();
       }
-    } finally {
-      if (shouldUpdate) {
-        if (typeof value === 'undefined') {
-          logState('⚙ LocalStorage Remove', key, value);
-          localStorage.removeItem(makeKey(key));
-        } else {
-          logState('⚙ LocalStorage Set', key, value);
-          const evt = document.createEvent('StorageEvent');
-          // @ts-ignore
-          evt.initStorageEvent(
-            'storage',
-            false, false,
-            makeKey(key),
-            null,
-            JSON.stringify(value),
-            window.location,
-            window.localStorage,
-          );
-          window.dispatchEvent(evt);
-        }
+    },
+    [previousKey, key],
+  );
+  useEffect(
+    () => {
+      if (value !== previousValue) {
+        logState('⚙ LocalStorage Set', key, value);
+        localStorage.setItem(key, JSON.stringify(value));
       }
-    }
-    return undefined;
-  }, [key, value, initialLoad]);
+    },
+    [previousValue, value],
+  );
   useEffect(() => {
     const handler = ({
       storageArea,
@@ -84,7 +64,7 @@ export const useLocalStorage = <T>(
       }
       const isValidKey = isKey(k);
       const isLocalStorage = storageArea === localStorage;
-      const isRightKey = k === makeKey(key);
+      const isRightKey = k === key;
       if (!(isLocalStorage && isValidKey && isRightKey)) {
         return;
       }

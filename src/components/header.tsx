@@ -1,9 +1,12 @@
 import styled from '@emotion/styled';
 import { Link } from 'gatsby';
 import { FC } from 'react';
+import { pageTransition, pageTransitionFunction } from '../config/constants';
 import {
   ThemeColorsProp,
-  ThemeLayoutProp, withThemeColors, withThemeLayout,
+  ThemeLayoutProp,
+  withThemeColors,
+  withThemeLayout,
 } from '../stores/theme';
 import { ThemeSwitcher } from './ThemeSwitcher';
 
@@ -14,6 +17,7 @@ const HeaderWrapper = withThemeColors<ThemeColorsProp>(
       top: 0;
       left: 0;
       right: 0;
+      transition: background ${pageTransition}ms ${pageTransitionFunction};
     `,
     ({ themeColors: { primary } }) => ({
       background: primary,
