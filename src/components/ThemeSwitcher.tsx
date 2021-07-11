@@ -10,6 +10,7 @@ import ThemeLightDarkIcon from 'mdi-react/ThemeLightDarkIcon';
 import Brightness4Icon from 'mdi-react/Brightness4Icon';
 import Brightness6Icon from 'mdi-react/Brightness6Icon';
 import { MdiReactIconComponentType } from 'mdi-react';
+import { useIntl } from 'gatsby-plugin-react-intl';
 import { ThemeColorsProp, useThemeVariant, withThemeColors } from '../stores/theme';
 import { ThemeVariant } from '../style/colors';
 import { useMenu } from '../hooks/useMenu';
@@ -42,6 +43,7 @@ const VariantMap: Record<ThemeVariant, MdiReactIconComponentType> = {
 
 export const ThemeSwitcher: FC = () => {
   const { onClose, menu, button } = useMenu<HTMLButtonElement>();
+  const { formatMessage } = useIntl();
   const { variant, setVariant } = useThemeVariant();
   const MenuIcon = useMemo(
     () => VariantMap[variant || 'system'],
@@ -70,7 +72,7 @@ export const ThemeSwitcher: FC = () => {
   );
   return (
     <>
-      <Tooltip title="Select color scheme">
+      <Tooltip title={formatMessage({ defaultMessage: 'Select color scheme' })}>
         <StyledButton {...button}>
           <MenuIcon />
         </StyledButton>
@@ -81,7 +83,7 @@ export const ThemeSwitcher: FC = () => {
             <Brightness4Icon />
           </StyledListItemIcon>
           <ListItemText>
-            Light
+            {formatMessage({ defaultMessage: 'Light' })}
           </ListItemText>
         </MenuItem>
         <MenuItem onClick={selectDarkVariant}>
@@ -89,16 +91,16 @@ export const ThemeSwitcher: FC = () => {
             <Brightness6Icon />
           </StyledListItemIcon>
           <ListItemText>
-            Dark
+            {formatMessage({ defaultMessage: 'Dark' })}
           </ListItemText>
         </MenuItem>
-        <Tooltip title="Allow system to decide">
+        <Tooltip title={formatMessage({ defaultMessage: 'Allow system to decide' })}>
           <MenuItem onClick={selectSystemVariant}>
             <StyledListItemIcon>
               <ThemeLightDarkIcon />
             </StyledListItemIcon>
             <ListItemText>
-              System
+              {formatMessage({ defaultMessage: 'System' })}
             </ListItemText>
           </MenuItem>
         </Tooltip>

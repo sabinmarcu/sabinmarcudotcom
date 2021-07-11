@@ -72,7 +72,7 @@ const LanguageItem = ({
 };
 
 export const LanguageSwitcher: FC = () => {
-  const { locale, defaultLocale } = useIntl();
+  const { locale, defaultLocale, formatMessage } = useIntl();
   const countryCode = useMemo(
     () => findCountry(locale),
     [locale],
@@ -91,7 +91,7 @@ export const LanguageSwitcher: FC = () => {
   );
   return (
     <>
-      <Tooltip title="Select language">
+      <Tooltip title={formatMessage({ defaultMessage: 'Select language' })}>
         <StyledButton {...button}>
           <StyledFlag
             countryCode={countryCode}
