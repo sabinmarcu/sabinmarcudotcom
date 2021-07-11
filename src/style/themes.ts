@@ -5,6 +5,7 @@ import {
   DualColors,
   DefaultLight,
   DefaultDark,
+  ShadowTypes,
 } from './colors';
 import { CV as CVLayout, Layout } from './layout';
 
@@ -33,3 +34,6 @@ export const DefaultTheme: InputTheme = {
   },
   layout: CVLayout,
 };
+
+export type ShadowsType = { shadows: Record<ShadowTypes, string> };
+export type ThemeWithShadows = Theme & ShadowsType;

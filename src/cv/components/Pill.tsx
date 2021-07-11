@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { rem } from 'polished';
+import { pageTransition, pageTransitionFunction } from '../../config/constants';
 import { ThemeColorsProp, withThemeColors } from '../../stores/theme';
 import { clickState, ClickStateProps } from '../../style/mixins';
 
@@ -55,6 +56,7 @@ export const Pill = withThemeColors(
         justify-content: center;
         border: solid 1px ${border};
         border-radius: ${rem(12)};
+        transition: all ${pageTransition}ms ${pageTransitionFunction};
       `),
     clickState,
   ),

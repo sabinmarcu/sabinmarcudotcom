@@ -3,14 +3,14 @@ import { Link } from 'gatsby';
 import { FC } from 'react';
 import { pageTransition, pageTransitionFunction } from '../config/constants';
 import {
-  ThemeColorsProp,
+  ThemeProp,
   ThemeLayoutProp,
-  withThemeColors,
+  withTheme,
   withThemeLayout,
 } from '../stores/theme';
 import { ThemeSwitcher } from './ThemeSwitcher';
 
-const HeaderWrapper = withThemeColors<ThemeColorsProp>(
+const HeaderWrapper = withTheme<ThemeProp>(
   styled.header(
     `
       position: sticky;
@@ -18,9 +18,11 @@ const HeaderWrapper = withThemeColors<ThemeColorsProp>(
       left: 0;
       right: 0;
       transition: background ${pageTransition}ms ${pageTransitionFunction};
+      z-index: 1000;
     `,
-    ({ themeColors: { primary } }) => ({
+    ({ theme: { colors: { primary }, shadows: { header } } }) => ({
       background: primary,
+      boxShadow: header,
     }),
   ),
 );
@@ -33,7 +35,7 @@ const HeaderContainer = withThemeLayout<ThemeLayoutProp>(
       flex-flow: row nowrap;
       align-items: center;
       justify-content: space-between;
-      padding: 1rem 0;
+      padding: 1rem 1.25rem;
     `,
     ({ themeLayout: { maxWidth } }) => ({
       maxWidth,

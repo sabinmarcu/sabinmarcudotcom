@@ -17,8 +17,8 @@ const StyledButton = withThemeColors<
 ThemeColorsProp & ComponentProps<typeof IconButton>
 >(
   styled(IconButton)(
-    ({ themeColors: { text } }) => ({
-      color: text,
+    ({ themeColors: { textContrast } }) => ({
+      color: textContrast,
     }),
   ),
 );

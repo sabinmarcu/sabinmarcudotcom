@@ -9,6 +9,7 @@ import {
 } from '../../style/mixins';
 import { makeStylerSet } from '../../utils/styles';
 import { ThemeColorsProp, withThemeColors } from '../../stores/theme';
+import { pageTransition, pageTransitionFunction } from '../../config/constants';
 
 export type HeadingProps = Partial<{
   isTitle: boolean,
@@ -62,6 +63,7 @@ export const Heading = withThemeColors(
       font-size: ${rem(22)};  
       margin-bottom: ${rem(6)};
       quotes: "“" "”" "‘" "’";
+      transition: all ${pageTransition}ms ${pageTransitionFunction};
     `,
     makeStyles,
     accentState,

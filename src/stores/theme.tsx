@@ -5,19 +5,31 @@ import {
 import { useLocation } from '@reach/router';
 import { determineActiveTheme } from '../config/themes';
 import { useMatchMedia } from '../hooks/useMatchMedia';
-import { Colors, ColorVariant, ThemeVariant } from '../style/colors';
 import {
-  DefaultTheme, InputTheme, Theme,
+  Colors, ColorVariant, Shadows, ShadowTypes, ThemeVariant,
+} from '../style/colors';
+import {
+  DefaultTheme, InputTheme, ThemeWithShadows,
 } from '../style/themes';
 import { HOCProp, makeStore } from '../utils/makeStore';
 import { pageTransition } from '../config/constants';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export type ThemeStore = {
-  theme: Theme,
+  theme: ThemeWithShadows,
   variant: ThemeVariant | undefined,
   setVariant: (variant: ThemeVariant) => void,
 };
+
+const pickShadows = (variant: ColorVariant): Record<ShadowTypes, string> => Object.entries(Shadows)
+  .map(([key, { light, dark }]) => [
+    key,
+    variant === 'light' ? light : dark,
+  ])
+  .reduce(
+    (acc, [key, value]) => ({ ...acc, [key]: value }),
+    {} as any,
+  );
 
 const store = makeStore<ThemeStore, InputTheme>()({
   name: 'theme',
@@ -38,6 +50,7 @@ const store = makeStore<ThemeStore, InputTheme>()({
     const theme = useMemo(() => {
       const newTheme = { ...(defaultValue || DefaultTheme) };
       let colors: Colors;
+      let shadows: Record<ShadowTypes, string>;
       if ('light' in newTheme.colors) {
         let nextVariant: ColorVariant;
         if (variant === 'system') {
@@ -46,11 +59,14 @@ const store = makeStore<ThemeStore, InputTheme>()({
           nextVariant = variant || 'dark';
         }
         colors = newTheme.colors[nextVariant];
+        shadows = pickShadows(nextVariant);
       } else {
+        shadows = pickShadows('light');
         colors = newTheme.colors;
       }
       return {
         colors,
+        shadows,
         layout: newTheme.layout,
       };
     }, [defaultValue, globalDarkTheme, variant]);

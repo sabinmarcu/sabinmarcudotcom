@@ -22,7 +22,6 @@ import {
   TwoColumns,
   Wrapper,
 } from '../cv/components/Layout';
-import Layout from '../components/layout';
 
 type GCMSType = {
   gcms: Query
