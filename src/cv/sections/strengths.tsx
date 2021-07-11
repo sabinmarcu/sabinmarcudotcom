@@ -7,12 +7,9 @@ import {
 } from 'react';
 import { FormattedMessage } from 'gatsby-plugin-react-intl';
 
-import { Icon } from '@mdi/react';
-import {
-  mdiStar,
-  mdiStarHalfFull,
-  mdiStarOutline,
-} from '@mdi/js';
+import StarIcon from 'mdi-react/StarIcon';
+import StarHalfFullIcon from 'mdi-react/StarHalfFullIcon';
+import StarOutlineIcon from 'mdi-react/StarOutlineIcon';
 
 import { TextField } from '@material-ui/core';
 
@@ -32,10 +29,11 @@ import { useThemeColors } from '../../stores/theme';
 
 const StyledTextField: FC<ComponentProps<typeof TextField>> = (props) => {
   const colors = useThemeColors();
+  const { style } = props;
   return (
-    <TextField {...props} style={{...props.style, background: colors.background }}/>
-  )
-}
+    <TextField {...props} style={{ ...style, background: colors.background }} />
+  );
+};
 
 export const StrengthsSection = () => {
   const { skills } = useCV();
@@ -76,11 +74,11 @@ export const StrengthsSection = () => {
               const diff = rest.ability - idx;
               if (diff > 0) {
                 if (diff >= 1) {
-                  return [idx, mdiStar];
+                  return [idx, StarIcon];
                 }
-                return [idx, mdiStarHalfFull];
+                return [idx, StarHalfFullIcon];
               }
-              return [idx, mdiStarOutline];
+              return [idx, StarOutlineIcon];
             }),
           }],
         }),
@@ -92,9 +90,13 @@ export const StrengthsSection = () => {
   if (!groupedSkills) {
     return null;
   }
+  const RenderIcon = useMemo(
+    () => (showStars ? StarIcon : StarOutlineIcon),
+    [showStars],
+  );
   return (
     <>
-      <Heading section isTitle>        
+      <Heading section isTitle>
         <FormattedMessage
           defaultMessage="Strenghts"
           description="strengths section"
@@ -102,7 +104,7 @@ export const StrengthsSection = () => {
         {!isPrint
           && (
           <DetailsItemIconRaw onClick={toggleStars}>
-            <Icon path={showStars ? mdiStar : mdiStarOutline} size="1em" />
+            <RenderIcon />
           </DetailsItemIconRaw>
           )}
       </Heading>
@@ -138,9 +140,9 @@ export const StrengthsSection = () => {
                   {shouldShowStars && (
                   <div>
                     <PillSeparator />
-                      {stars.map(([key, star]) => (
+                      {stars.map(([key, Star]) => (
                         <DetailsItemIconRaw key={key} padding="0">
-                          <Icon path={star} size="1.2rem" />
+                          <Star />
                         </DetailsItemIconRaw>
                       ))}
                   </div>
@@ -170,9 +172,9 @@ export const StrengthsSection = () => {
                   <span>{name}</span>
                   <div>
                     <PillSeparator />
-                    {stars.map(([key, star]) => (
+                    {stars.map(([key, Star]) => (
                       <DetailsItemIconRaw key={key} padding="0">
-                        <Icon path={star} size="1.2rem" />
+                        <Star />
                       </DetailsItemIconRaw>
                     ))}
                   </div>

@@ -38,10 +38,10 @@ export const DefaultLight: Colors = {
   border: '#ccc',
 };
 
-export type DualColors = {
-  light: Colors,
-  dark: Colors,
-};
+export type ThemeVariant = 'light' | 'dark' | 'system';
+export type ColorVariant = Exclude<ThemeVariant, 'system'>;
+
+export type DualColors = Record<ColorVariant, Colors>;
 
 export type Colors = {
   primary: string,

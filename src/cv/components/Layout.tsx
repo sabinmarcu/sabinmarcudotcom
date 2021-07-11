@@ -43,7 +43,6 @@ export const TwoColumns = withThemeLayout(
 export const Wrapper = withThemeColors(
   styled.section<ThemeColorsProp>(
     ({ themeColors: { text } }) => `
-      width: 100vw;
       overflow-x: hidden;
       color: ${text};
     `,

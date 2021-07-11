@@ -3,11 +3,8 @@ import { Link } from 'gatsby-plugin-react-intl';
 
 import '../components/layout.css';
 import { FC } from 'react';
-import {
-  mdiHome,
-} from '@mdi/js';
+import HomeIcon from 'mdi-react/HomeIcon';
 
-import Icon from '@mdi/react';
 import { CVContext } from '../cv/core';
 import { AccountSection } from '../cv/sections/account';
 import { EducationSection } from '../cv/sections/education';
@@ -25,6 +22,7 @@ import {
   TwoColumns,
   Wrapper,
 } from '../cv/components/Layout';
+import Layout from '../components/layout';
 
 type GCMSType = {
   gcms: Query
@@ -35,31 +33,33 @@ export const CVPage: FC<PageProps<GCMSType>> = (
     data: { gcms },
   },
 ) => (
-  <Wrapper>
-    <Link to="/">
-      <BackButton>
-        <Icon path={mdiHome} size="2vmin" />
-      </BackButton>
-    </Link>
-    <CVContext.Provider value={gcms}>
-      <Container>
-        <Header>
-          <TitleSection />
-          <AccountSection />
-        </Header>
-        <TwoColumns>
-          <MainColumn>
-            <ExperienceSection />
-            <ProjectsSection />
-          </MainColumn>
-          <SecondaryColumn>
-            <EducationSection />
-            <StrengthsSection />
-          </SecondaryColumn>
-        </TwoColumns>
-      </Container>
-    </CVContext.Provider>
-  </Wrapper>
+  <Layout>
+    <Wrapper>
+      <Link to="/">
+        <BackButton>
+          <HomeIcon />
+        </BackButton>
+      </Link>
+      <CVContext.Provider value={gcms}>
+        <Container>
+          <Header>
+            <TitleSection />
+            <AccountSection />
+          </Header>
+          <TwoColumns>
+            <MainColumn>
+              <ExperienceSection />
+              <ProjectsSection />
+            </MainColumn>
+            <SecondaryColumn>
+              <EducationSection />
+              <StrengthsSection />
+            </SecondaryColumn>
+          </TwoColumns>
+        </Container>
+      </CVContext.Provider>
+    </Wrapper>
+  </Layout>
 );
 
 export default CVPage;

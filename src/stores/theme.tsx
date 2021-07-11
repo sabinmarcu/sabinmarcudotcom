@@ -1,20 +1,30 @@
-import { createMuiTheme, ThemeProvider } from '@material-ui/core';
-import { FC, useMemo, useEffect } from 'react';
+import { createMuiTheme, StylesProvider, ThemeProvider } from '@material-ui/core';
+import {
+  FC, useMemo, useEffect,
+} from 'react';
 import { useLocation } from '@reach/router';
 import { determineActiveTheme } from '../config/themes';
 import { useMatchMedia } from '../hooks/useMatchMedia';
-import { Colors } from '../style/colors';
+import { Colors, ColorVariant, ThemeVariant } from '../style/colors';
 import {
-  DefaultTheme, InputTheme, Options, Theme,
+  DefaultTheme, InputTheme, Theme,
 } from '../style/themes';
 import { HOCProp, makeStore } from '../utils/makeStore';
 import { pageTransition } from '../config/constants';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
-const store = makeStore<Theme, InputTheme, Options>()({
+export type ThemeStore = {
+  theme: Theme,
+  variant: ThemeVariant | undefined,
+  setVariant: (variant: ThemeVariant) => void,
+};
+
+const store = makeStore<ThemeStore, InputTheme>()({
   name: 'theme',
   defaultValue: DefaultTheme,
-  handler: ({ defaultValue, preferSystemTheme, updateStore }) => {
+  handler: ({ defaultValue, updateStore }) => {
     const globalDarkTheme = useMatchMedia(['prefers-color-scheme', 'dark']);
+    const [variant, setVariant] = useLocalStorage<ThemeVariant>('themeVariant', 'system');
     const { pathname } = useLocation();
     useEffect(
       () => {
@@ -29,11 +39,13 @@ const store = makeStore<Theme, InputTheme, Options>()({
       const newTheme = { ...(defaultValue || DefaultTheme) };
       let colors: Colors;
       if ('light' in newTheme.colors) {
-        if (preferSystemTheme && globalDarkTheme) {
-          colors = newTheme.colors.dark;
+        let nextVariant: ColorVariant;
+        if (variant === 'system') {
+          nextVariant = globalDarkTheme ? 'dark' : 'light';
         } else {
-          colors = newTheme.colors.light;
+          nextVariant = variant || 'dark';
         }
+        colors = newTheme.colors[nextVariant];
       } else {
         colors = newTheme.colors;
       }
@@ -41,19 +53,25 @@ const store = makeStore<Theme, InputTheme, Options>()({
         colors,
         layout: newTheme.layout,
       };
-    }, [defaultValue, globalDarkTheme, preferSystemTheme]);
-    return theme;
+    }, [defaultValue, globalDarkTheme, variant]);
+    return { theme, variant, setVariant };
   },
   selectors: {
-    theme: (theme) => theme,
-    themeColors: ({ colors }) => colors,
-    themeLayout: ({ layout }) => layout,
+    theme: ({ theme }) => theme,
+    themeVariant: ({ variant, setVariant }) => ({ variant, setVariant }),
+    themeColors: ({ theme: { colors } }) => colors,
+    themeLayout: ({ theme: { layout } }) => layout,
   },
 });
 
 export default store;
 export const { Update } = store;
-export const { useTheme, useThemeColors, useThemeLayout } = store.hooks;
+export const {
+  useTheme,
+  useThemeColors,
+  useThemeLayout,
+  useThemeVariant,
+} = store.hooks;
 export const { withTheme, withThemeColors, withThemeLayout } = store.hocs;
 export type ThemeProp = HOCProp<typeof withTheme>;
 export type ThemeColorsProp = HOCProp<typeof withThemeColors>;
@@ -92,7 +110,9 @@ const MUIThemeCustomizer: FC = ({ children }) => {
 export const Provider: FC<{ pathname: string }> = ({ children, pathname }) => (
   <SiteThemeProvider {...determineActiveTheme(pathname)}>
     <MUIThemeCustomizer>
-      {children}
+      <StylesProvider injectFirst>
+        {children}
+      </StylesProvider>
     </MUIThemeCustomizer>
   </SiteThemeProvider>
 );

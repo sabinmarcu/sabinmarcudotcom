@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { rem } from 'polished';
 import { FC } from 'react';
-import { Icon } from '@mdi/react';
+import { MdiReactIconComponentType } from 'mdi-react';
 import { ThemeColorsProp, withThemeColors } from '../../stores/theme';
 
 export const DetailsItemRaw = styled.div`
@@ -46,12 +46,12 @@ export const DetailsItemIconRaw = withThemeColors(
 );
 
 export const DetailsItem: FC<{
-  icon: string,
-}> = ({ icon, children }) => (
+  Icon: MdiReactIconComponentType,
+}> = ({ Icon, children }) => (
   <DetailsItemRaw>
-    {icon && (
+    {Icon && (
       <DetailsItemIconRaw>
-        <Icon path={icon} size="1.2rem" />
+        <Icon />
       </DetailsItemIconRaw>
     )}
     {children}

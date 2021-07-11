@@ -1,9 +1,8 @@
-import Icon from '@mdi/react';
 import moment from 'moment';
 import styled from '@emotion/styled';
-import { mdiCalendarBlank } from '@mdi/js';
 import { rem } from 'polished';
 import { FC, useMemo } from 'react';
+import CalendarBlankIcon from 'mdi-react/CalendarBlankIcon';
 import { DetailsItemIconRaw, DetailsItemRaw } from './DetailsItem';
 import { IntervalType } from '../types';
 import { ThemeColorsProp, withThemeColors } from '../../stores/theme';
@@ -32,7 +31,7 @@ export const Interval: FC<IntervalType> = ({ start, end }) => {
     <IntervalWrapper>
       <DetailsItemRaw>
         <DetailsItemIconRaw>
-          <Icon path={mdiCalendarBlank} size="1.2rem" />
+          <CalendarBlankIcon />
         </DetailsItemIconRaw>
         {intervalString}
       </DetailsItemRaw>

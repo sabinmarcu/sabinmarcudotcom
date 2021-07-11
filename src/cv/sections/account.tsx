@@ -1,12 +1,10 @@
-import {
-  mdiAt,
-  mdiPhone,
-  mdiMapMarker,
-  mdiLink,
-  mdiTwitter,
-  mdiLinkedin,
-  mdiGithub,
-} from '@mdi/js';
+import AtIcon from 'mdi-react/AtIcon';
+import PhoneIcon from 'mdi-react/PhoneIcon';
+import MapMarkerIcon from 'mdi-react/MapMarkerIcon';
+import LinkIcon from 'mdi-react/LinkIcon';
+import TwitterIcon from 'mdi-react/TwitterIcon';
+import LinkedinIcon from 'mdi-react/LinkedinIcon';
+import GithubIcon from 'mdi-react/GithubIcon';
 
 import { useCV } from '../core';
 import { DetailsItem } from '../components/DetailsItem';
@@ -20,7 +18,7 @@ export const AccountSection = () => {
   return (
     <HeaderDetails>
       {account.email && (
-        <DetailsItem icon={mdiAt}>
+        <DetailsItem Icon={AtIcon}>
           <a href={`mailto:${account.email}`}>
             {account.email}
           </a>
@@ -28,42 +26,42 @@ export const AccountSection = () => {
       )}
       {account.phoneNumber
         && account.phoneNumber.map((number) => (
-          <DetailsItem key={number} icon={mdiPhone}>
+          <DetailsItem key={number} Icon={PhoneIcon}>
             <a href={`tel:${number}`}>
               {number}
             </a>
           </DetailsItem>
         ))}
       {account.location && (
-        <DetailsItem icon={mdiMapMarker}>
+        <DetailsItem Icon={MapMarkerIcon}>
           <a href={`https://maps.google.com/?q=${account.location}`}>
             {account.location}
           </a>
         </DetailsItem>
       )}
       {account.website && (
-        <DetailsItem icon={mdiLink}>
+        <DetailsItem Icon={LinkIcon}>
           <a href={`http://${account.website}`}>
             {account.website}
           </a>
         </DetailsItem>
       )}
       {account.twitter && (
-        <DetailsItem icon={mdiTwitter}>
+        <DetailsItem Icon={TwitterIcon}>
           <a href={`http://twitter.com/${account.twitter.substr(1)}`}>
             {account.twitter}
           </a>
         </DetailsItem>
       )}
       {account.linkedIn && (
-        <DetailsItem icon={mdiLinkedin}>
+        <DetailsItem Icon={LinkedinIcon}>
           <a href={`http://${account.linkedIn}`}>
             {account.linkedIn}
           </a>
         </DetailsItem>
       )}
       {account.github && (
-        <DetailsItem icon={mdiGithub}>
+        <DetailsItem Icon={GithubIcon}>
           <a href={`http://${account.github}`}>
             {account.github}
           </a>
