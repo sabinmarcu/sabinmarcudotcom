@@ -50,13 +50,14 @@ const HeaderContainer = withThemeLayout<ThemeLayoutProp>(
     }),
   ),
 );
+const wnd = typeof window === 'undefined' ? null : window;
 
 const Header: FC<{
   siteTitle: string,
 }> = ({
   siteTitle,
 }) => {
-  const [scroll, setScroll] = useState<number>(window?.scrollY);
+  const [scroll, setScroll] = useState<number>(wnd?.scrollY ?? 0);
   const prevScroll = usePrevious(scroll);
   const setScrollRef = useRef<typeof setScroll>();
   useEffect(
@@ -69,10 +70,10 @@ const Header: FC<{
     () => {
       const handler = () => {
         const { current: setter } = setScrollRef;
-        setter?.(window?.scrollY);
+        setter?.(wnd?.scrollY ?? 0);
       };
-      window?.addEventListener('scroll', handler);
-      return () => window?.removeEventListener('scroll', handler);
+      wnd?.addEventListener('scroll', handler);
+      return () => wnd?.removeEventListener('scroll', handler);
     },
     [],
   );
