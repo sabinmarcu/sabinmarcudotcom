@@ -59,8 +59,6 @@ module.exports = {
         name: 'Sabin Marcu',
         short_name: 'sabinmarcu',
         start_url: '/',
-        background_color: '#663399',
-        theme_color: '#663399',
         display: 'minimal-ui',
         icon: 'src/images/Logo.svg', // This path is relative to the root of the site.
       },
