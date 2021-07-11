@@ -38,6 +38,9 @@ module.exports = {
       rules: {
         'import/extensions': [0],
         'import/no-unresolved': [0],
+        'import/no-extraneous-dependencies': [0],
+        'global-require': [0],
+        'import/no-dynamic-require': [0],
       },
     },
   ],

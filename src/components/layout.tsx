@@ -7,11 +7,13 @@
 
 import { FC } from 'react';
 import { useStaticQuery, graphql } from 'gatsby';
+import { PageTransition } from './Transition';
+import { getPageTransition } from '../config/pages';
 
 import Header from './header';
 import './layout.css';
 
-const Layout: FC = ({ children }) => {
+const Layout: FC<any> = ({ children, location: { pathname } }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -25,7 +27,12 @@ const Layout: FC = ({ children }) => {
   return (
     <>
       <Header siteTitle={data.site.siteMetadata.title} />
-      {children}
+      <PageTransition
+        location={pathname}
+        Transition={getPageTransition(pathname)}
+      >
+        {children}
+      </PageTransition>
     </>
   );
 };

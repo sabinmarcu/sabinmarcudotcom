@@ -8,6 +8,7 @@ import {
   withTheme,
   withThemeLayout,
 } from '../stores/theme';
+import { LanguageSwitcher } from './LanguageSwitcher';
 import { ThemeSwitcher } from './ThemeSwitcher';
 
 const HeaderWrapper = withTheme<ThemeProp>(
@@ -57,7 +58,10 @@ const Header: FC<{ siteTitle: string }> = ({ siteTitle }) => (
           {siteTitle}
         </Link>
       </h1>
-      <ThemeSwitcher />
+      <div>
+        <ThemeSwitcher />
+        <LanguageSwitcher />
+      </div>
     </HeaderContainer>
   </HeaderWrapper>
 );

@@ -1,9 +1,7 @@
 import { graphql, PageProps } from 'gatsby';
-import { Link } from 'gatsby-plugin-react-intl';
 
 import '../components/layout.css';
 import { FC } from 'react';
-import HomeIcon from 'mdi-react/HomeIcon';
 
 import { CVContext } from '../cv/core';
 import { AccountSection } from '../cv/sections/account';
@@ -13,7 +11,6 @@ import { ExperienceSection } from '../cv/sections/experience';
 import { ProjectsSection } from '../cv/sections/projects';
 import { Query } from '../config/schema';
 import { Header } from '../cv/components/Header';
-import { BackButton } from '../cv/components/BackButton';
 import { TitleSection } from '../cv/sections/title';
 import {
   Container,
@@ -22,6 +19,7 @@ import {
   TwoColumns,
   Wrapper,
 } from '../cv/components/Layout';
+import SEO from '../components/seo';
 
 type GCMSType = {
   gcms: Query
@@ -33,12 +31,8 @@ export const CVPage: FC<PageProps<GCMSType>> = (
   },
 ) => (
   <>
+    <SEO title="CV" />
     <Wrapper>
-      <Link to="/">
-        <BackButton>
-          <HomeIcon />
-        </BackButton>
-      </Link>
       <CVContext.Provider value={gcms}>
         <Container>
           <Header>

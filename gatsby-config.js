@@ -1,7 +1,7 @@
-/* eslint-disable import/no-extraneous-dependencies */
-
 require('dotenv').config();
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` });
+
+const languages = require('./src/config/langs.json');
 
 module.exports = {
   siteMetadata: {
@@ -11,10 +11,16 @@ module.exports = {
   },
   plugins: [
     {
+      resolve: 'gatsby-plugin-layout',
+      options: {
+        component: require.resolve(`${__dirname}/src/components/layout.tsx`),
+      },
+    },
+    {
       resolve: 'gatsby-plugin-react-intl',
       options: {
         path: `${__dirname}/src/i18n`,
-        languages: ['en', 'ro'],
+        languages: languages.map(({ locale }) => locale),
         defaultLanguage: 'en',
         redirect: true,
         redirectDefaultLanguageToRoot: true,

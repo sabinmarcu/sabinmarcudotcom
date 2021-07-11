@@ -1,9 +1,9 @@
 import {
-  IconButton, ListItemIcon, ListItemText, Menu, MenuItem,
+  IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Tooltip,
 } from '@material-ui/core';
 import styled from '@emotion/styled';
 import {
-  ComponentProps, FC, useCallback, useMemo, useRef, useState,
+  ComponentProps, FC, useCallback, useMemo,
 } from 'react';
 
 import ThemeLightDarkIcon from 'mdi-react/ThemeLightDarkIcon';
@@ -12,8 +12,9 @@ import Brightness6Icon from 'mdi-react/Brightness6Icon';
 import { MdiReactIconComponentType } from 'mdi-react';
 import { ThemeColorsProp, useThemeVariant, withThemeColors } from '../stores/theme';
 import { ThemeVariant } from '../style/colors';
+import { useMenu } from '../hooks/useMenu';
 
-const StyledButton = withThemeColors<
+export const StyledButton = withThemeColors<
 ThemeColorsProp & ComponentProps<typeof IconButton>
 >(
   styled(IconButton)(
@@ -23,7 +24,7 @@ ThemeColorsProp & ComponentProps<typeof IconButton>
   ),
 );
 
-const StyledListItemIcon = withThemeColors<
+export const StyledListItemIcon = withThemeColors<
 ThemeColorsProp & ComponentProps<typeof ListItemIcon>
 >(
   styled(ListItemIcon)(
@@ -40,16 +41,7 @@ const VariantMap: Record<ThemeVariant, MdiReactIconComponentType> = {
 };
 
 export const ThemeSwitcher: FC = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const onClick = useCallback(
-    () => setMenuOpen(true),
-    [setMenuOpen],
-  );
-  const onClose = useCallback(
-    () => setMenuOpen(false),
-    [setMenuOpen],
-  );
-  const anchor = useRef<HTMLButtonElement>(null);
+  const { onClose, menu, button } = useMenu<HTMLButtonElement>();
   const { variant, setVariant } = useThemeVariant();
   const MenuIcon = useMemo(
     () => VariantMap[variant || 'system'],
@@ -78,14 +70,12 @@ export const ThemeSwitcher: FC = () => {
   );
   return (
     <>
-      <StyledButton ref={anchor} onClick={onClick}>
-        <MenuIcon />
-      </StyledButton>
-      <Menu
-        anchorEl={anchor.current}
-        open={menuOpen}
-        onClose={onClose}
-      >
+      <Tooltip title="Select theme mode">
+        <StyledButton {...button}>
+          <MenuIcon />
+        </StyledButton>
+      </Tooltip>
+      <Menu {...menu}>
         <MenuItem onClick={selectLightVariant}>
           <StyledListItemIcon>
             <Brightness4Icon />
@@ -102,14 +92,16 @@ export const ThemeSwitcher: FC = () => {
             Dark
           </ListItemText>
         </MenuItem>
-        <MenuItem onClick={selectSystemVariant}>
-          <StyledListItemIcon>
-            <ThemeLightDarkIcon />
-          </StyledListItemIcon>
-          <ListItemText>
-            System
-          </ListItemText>
-        </MenuItem>
+        <Tooltip title="Allow system to decide">
+          <MenuItem onClick={selectSystemVariant}>
+            <StyledListItemIcon>
+              <ThemeLightDarkIcon />
+            </StyledListItemIcon>
+            <ListItemText>
+              System
+            </ListItemText>
+          </MenuItem>
+        </Tooltip>
       </Menu>
     </>
   );

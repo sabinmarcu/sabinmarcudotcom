@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "dependencies": {
+    "@cospired/i18n-iso-languages": "^3.0.0",
     "@emotion/css": "^11.1.3",
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.3.0",
@@ -28,6 +29,7 @@
     "gatsby": "^3.4.0",
     "gatsby-image": "^3.4.0",
     "gatsby-plugin-emotion": "^6.4.0",
+    "gatsby-plugin-layout": "^2.9.0",
     "gatsby-plugin-manifest": "^3.4.0",
     "gatsby-plugin-offline": "^4.4.0",
     "gatsby-plugin-react-helmet": "^4.4.0",
@@ -46,6 +48,7 @@
     "polished": "^4.1.2",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
+    "react-country-flag": "^2.3.1",
     "react-dom": "^17.0.2",
     "react-helmet": "^6.1.0",
     "react-intl": "^5.20.4",
