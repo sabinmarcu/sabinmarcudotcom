@@ -107,7 +107,7 @@
     "graphql:types": "graphql-codegen --config codegen.yml",
     "i18n": "run-s \"i18n:*\"",
     "i18n:extract": "run-s \"i18n:extract:*\"",
-    "i18n:extract:run": "yarn formatjs extract 'src/**/!(*.d).ts*' --out-file lang.json --format simple",
+    "i18n:extract:run": "yarn formatjs extract 'src/**/!(*.d).ts*' --out-file lang.json",
     "i18n:extract:print": "echo 'Exported Translations:' && cat lang.json",
     "i18n:upload": "env-cmd --use-shell simplelocalize upload --apiKey '$SIMPLELOCALIZE_KEY' --uploadPath lang.json --uploadFormat simplelocalize-json --languageKey en",
     "i18n:download": "env-cmd --use-shell simplelocalize download --apiKey '$SIMPLELOCALIZE_KEY' --downloadFormat single-language-json --downloadPath ./src/i18n/{lang}.json"
