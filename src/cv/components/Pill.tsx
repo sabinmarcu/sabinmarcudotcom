@@ -56,8 +56,12 @@ export const Pill = withThemeColors(
         justify-content: center;
         border: solid 1px ${border};
         border-radius: ${rem(12)};
-        transition: all ${pageTransition}ms ${pageTransitionFunction};
       `),
+    {
+      transition: ['background', 'border', 'color'].map(
+        (it) => `${it} ${pageTransition}ms ${pageTransitionFunction}`,
+      ).join(', '),
+    },
     clickState,
   ),
 );
