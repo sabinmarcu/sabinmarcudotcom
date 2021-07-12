@@ -18,7 +18,13 @@ const IndexPage = () => (
       <Image />
     </div>
     <Link to="/page-2/">Go to page 2</Link>
-    <Link to="/cv/">Go to CV [WIP]</Link>
+    <Link to="/cv/">
+      <FormattedMessage
+        defaultMessage="To CV"
+        description="cv link"
+      />
+      [WIP]
+    </Link>
     <br />
     <Link to="/using-typescript/">Go to &quot;Using TypeScript&quot;</Link>
   </>
