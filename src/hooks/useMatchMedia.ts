@@ -6,7 +6,7 @@ import {
 } from 'react';
 
 export const useMatchMedia = (
-  ...mediaQueries: (string|[string, string])[]
+  ...mediaQueries: (string | [string, string])[]
 ) => {
   const [matches, setMatches] = useState<boolean>(false);
   const queries = useMemo(

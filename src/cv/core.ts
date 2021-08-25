@@ -10,7 +10,7 @@ import { Query } from '../config/schema';
 try {
   smoothscroll.polyfill();
 } catch (e) {
-  /* noop - catching for static build */ 
+  /* noop - catching for static build */
 }
 
 export const CVContext = createContext<Query>({} as Query);

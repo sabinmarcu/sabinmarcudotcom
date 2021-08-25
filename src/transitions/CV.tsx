@@ -7,7 +7,7 @@ export const CVTransition: FC<TransitionProps> = styled.section<TransitionProps>
   ({ status, timeout, transition }) => {
     switch (status) {
       case 'entering': return `
-        position: absolute !important; 
+        position: absolute !important;
         transform: translateX(30vw);
         opacity: 0;
       `;
