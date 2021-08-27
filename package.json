@@ -93,7 +93,7 @@
     "postinstall": "run-p \"postinstall:*\"",
     "postinstall:simplelocalize": "which simplelocalize || curl -s https://get.simplelocalize.io/install | bash",
     "postinstall:husky": "husky install",
-    "build": "gatsby build",
+    "build": "yarn run prebuild && gatsby build",
     "prebuild": "run-p \"prebuild:*\"",
     "prebuild:graphql": "yarn graphql",
     "prebuild:i18n": "yarn i18n",
