@@ -1,1 +1,5 @@
-{"componentChunkName":"component---src-pages-index-tsx","path":"/","result":{"pageContext":{"language":"en","intl":{"language":"en","languages":["ro","en"],"messages":{"rf16N4":"Languages","g+fXiI":"Strenghts","R7Ue2x":"Select color scheme","iMEhV1":"Education","tOdNiY":"Dark","RMoBmK":"Hi everyone!","1iYXoT":"Projects","eVlu1R":"Select language","2hhBUM":"Experience","3cc4Ct":"Light","3Kebyo":"Allow system to decide","+CwN9C":"System","nL6kHv":"To CV"},"routed":false,"originalPath":"/","redirect":true,"redirectDefaultLanguageToRoot":true,"defaultLanguage":"en","ignoredPaths":[]}}},"staticQueryHashes":["1132682437","3649515864","63159454"]}
+{
+    "componentChunkName": "component---src-pages-index-tsx",
+    "path": "/",
+    "result": {"pageContext":{"language":"en","intl":{"language":"en","languages":["ro","en"],"messages":{"rf16N4":"Languages","g+fXiI":"Strenghts","R7Ue2x":"Select color scheme","iMEhV1":"Education","tOdNiY":"Dark","RMoBmK":"Hi everyone!","1iYXoT":"Projects","eVlu1R":"Select language","2hhBUM":"Experience","3cc4Ct":"Light","3Kebyo":"Allow system to decide","+CwN9C":"System","nL6kHv":"To CV"},"routed":false,"originalPath":"/","redirect":true,"redirectDefaultLanguageToRoot":true,"defaultLanguage":"en","fallbackLanguage":"","ignoredPaths":[]}}},
+    "staticQueryHashes": ["1132682437","3649515864","63159454"]}

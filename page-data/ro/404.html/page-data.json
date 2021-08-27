@@ -1,0 +1,5 @@
+{
+    "componentChunkName": "component---src-pages-404-tsx",
+    "path": "/ro/404.html",
+    "result": {"pageContext":{"language":"ro","intl":{"language":"ro","languages":["ro","en"],"messages":{"rf16N4":"Limbi","g+fXiI":"Tehnologii","R7Ue2x":"Alege schema de culoare","iMEhV1":"Educație","tOdNiY":"Mod întunecat","RMoBmK":"Salut Tuturor!","1iYXoT":"Proiecte","eVlu1R":"Alege limba","2hhBUM":"Experiență","3cc4Ct":"Mod luminos","3Kebyo":"Permite sistemului de operare să decidă","+CwN9C":"Sistem de Operare","nL6kHv":"Cåtre CV"},"routed":true,"originalPath":"/404.html","redirect":true,"redirectDefaultLanguageToRoot":true,"defaultLanguage":"en","fallbackLanguage":"","ignoredPaths":[]}}},
+    "staticQueryHashes": ["3649515864","63159454"]}
