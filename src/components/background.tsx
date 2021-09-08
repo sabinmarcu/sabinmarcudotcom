@@ -201,6 +201,9 @@ const CanvasWrapper = withThemeColors(
       height: 100vh;
       z-index: 0;
       transition: all ${pageTransition}ms ${pageTransitionFunction};
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+      }
       @media print {
         display: none;
       }

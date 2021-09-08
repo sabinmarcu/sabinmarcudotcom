@@ -62,6 +62,11 @@ export const Pill = withThemeColors(
         (it) => `${it} ${pageTransition}ms ${pageTransitionFunction}`,
       ).join(', '),
     },
+    `
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+      }
+    `,
     clickState,
   ),
 );

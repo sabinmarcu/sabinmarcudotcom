@@ -60,10 +60,13 @@ export const Heading = withThemeColors(
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: ${rem(22)};  
+      font-size: ${rem(22)};
       margin-bottom: ${rem(6)};
       quotes: "“" "”" "‘" "’";
       transition: all ${pageTransition}ms ${pageTransitionFunction};
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+      }
     `,
     makeStyles,
     accentState,

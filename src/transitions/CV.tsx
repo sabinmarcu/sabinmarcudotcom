@@ -15,10 +15,16 @@ export const CVTransition: FC<TransitionProps> = styled.section<TransitionProps>
         transform: none;
         opacity: 1;
         transition: all ${timeout}ms ${transition};
+        @media (prefers-reduced-motion: reduce) {
+          transition: none;
+        }
       `;
       case 'exiting': return `
         opacity: 0;
         transition: all ${timeout}ms ${timeout * backButtonDelay}ms ${transition};
+        @media (prefers-reduced-motion: reduce) {
+          transition: none;
+        }
       `;
       default: return '';
     }
