@@ -1,4 +1,7 @@
-import { createMuiTheme, StylesProvider, ThemeProvider } from '@material-ui/core';
+import {
+  createTheme, ThemeProvider, Theme, StyledEngineProvider, adaptV4Theme,
+} from '@material-ui/core';
+import StylesProvider from '@material-ui/styles/StylesProvider';
 import {
   FC, useMemo, useEffect,
 } from 'react';
@@ -14,6 +17,11 @@ import {
 import { HOCProp, makeStore } from '../utils/makeStore';
 import { pageTransition } from '../config/constants';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+
+declare module '@material-ui/styles/defaultTheme' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface DefaultTheme extends Theme {}
+}
 
 export type ThemeStore = {
   theme: ThemeWithShadows,
@@ -97,7 +105,7 @@ const { Provider: SiteThemeProvider } = store;
 const MUIThemeCustomizer: FC = ({ children }) => {
   const colors = useThemeColors();
   const muiTheme = useMemo(
-    () => createMuiTheme({
+    () => createTheme(adaptV4Theme({
       palette: {
         primary: {
           main: colors.primary,
@@ -114,13 +122,15 @@ const MUIThemeCustomizer: FC = ({ children }) => {
           secondary: colors.faded,
         },
       },
-    }),
+    })),
     [colors],
   );
   return (
-    <ThemeProvider theme={muiTheme}>
-      {children}
-    </ThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={muiTheme}>
+        {children}
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 };
 export const Provider: FC<{ pathname: string }> = ({ children, pathname }) => (
