@@ -1,3 +1,4 @@
+import { useMediaQuery } from '@material-ui/core';
 import { FC } from 'react';
 import {
   Transition as ReactTransition,
@@ -26,18 +27,26 @@ export const PageTransition: FC<{
   Transition,
   timeout = pageTransition,
   transition = pageTransitionFunction,
-}) => (
-  <TransitionGroup>
-    <ReactTransition key={location} timeout={timeout}>
-      {(status) => (
-        <Transition
-          status={status}
-          timeout={timeout}
-          transition={transition}
-        >
-          {children}
-        </Transition>
-      )}
-    </ReactTransition>
-  </TransitionGroup>
-);
+}) => {
+  const reducedMotion = useMediaQuery(
+    '(prefers-reduced-motion: reduce)',
+  );
+  if (reducedMotion) {
+    return <>{children}</>;
+  }
+  return (
+    <TransitionGroup>
+      <ReactTransition key={location} timeout={timeout}>
+        {(status) => (
+          <Transition
+            status={status}
+            timeout={timeout}
+            transition={transition}
+          >
+            {children}
+          </Transition>
+        )}
+      </ReactTransition>
+    </TransitionGroup>
+  );
+};
