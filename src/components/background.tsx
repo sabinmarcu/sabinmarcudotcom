@@ -230,6 +230,7 @@ const Canvas = styled.canvas<CanvasProps>(
   }),
 );
 
+const wnd = typeof window === 'undefined' ? null : window;
 export const Background = ({
   every = 150,
   variance = 50,
@@ -277,8 +278,8 @@ export const Background = ({
         return undefined;
       }
       const renderFunc = debounce(renderer.renderOnce, 500);
-      window.addEventListener('resize', renderFunc);
-      return () => window.removeEventListener('resize', renderFunc);
+      wnd?.addEventListener('resize', renderFunc);
+      return () => wnd?.removeEventListener('resize', renderFunc);
     },
     [renderer, renderOnce],
   );
