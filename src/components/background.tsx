@@ -288,7 +288,7 @@ export const Background = ({
       if (!renderer || !renderOnce) {
         return undefined;
       }
-      setTimeout(renderer.renderOnce, 500);
+      renderer.renderOnce();
       return undefined;
     },
     [renderer, renderOnce, renderColor],
