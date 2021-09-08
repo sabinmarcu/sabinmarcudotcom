@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Link } from 'gatsby';
+import { Link } from 'gatsby-plugin-react-intl';
 import {
   FC, useEffect, useMemo, useRef, useState,
 } from 'react';
