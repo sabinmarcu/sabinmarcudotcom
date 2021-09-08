@@ -2,12 +2,13 @@ import {
   useRef, useEffect, LegacyRef, useMemo, useState,
 } from 'react';
 import styled from '@emotion/styled';
-import { useMatchMedia } from '../hooks/useMatchMedia';
+import { debounce } from '@material-ui/core';
 import {
   ThemeColorsProp,
   useThemeColors, withThemeColors,
 } from '../stores/theme';
 import { pageTransition, pageTransitionFunction } from '../config/constants';
+import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
 
 type CanvasProps = {
   opacity?: number,
@@ -182,6 +183,7 @@ export const makeRenderer = (
       isRendering = false;
     },
     renderOnce: () => {
+      isRendering = true;
       render();
       isRendering = false;
     },
@@ -236,7 +238,7 @@ export const Background = ({
   opacity = 0.3,
 }: Partial<RendererProps> & Partial<CanvasProps> & Partial<CanvasWrapperProps>) => {
   const ref = useRef<HTMLCanvasElement>();
-  const renderOnce = useMatchMedia(['prefers-reduced-motion', 'reduce']);
+  const renderOnce = usePrefersReducedMotion();
   const themeColors = useThemeColors();
   const renderColor = useMemo(
     () => themeColors?.primary || color,
@@ -254,17 +256,38 @@ export const Background = ({
           tolerance,
           edge,
         });
+        setRenderer(newRenderer);
         if (renderOnce) {
           newRenderer.renderOnce();
           return undefined;
         }
         newRenderer.start();
-        setRenderer(newRenderer);
         return newRenderer.stop;
       }
       return undefined;
     },
     [ref, renderOnce],
+  );
+  useEffect(
+    () => {
+      if (!renderer || !renderOnce) {
+        return undefined;
+      }
+      const renderFunc = debounce(renderer.renderOnce, 500);
+      window.addEventListener('resize', renderFunc);
+      return () => window.removeEventListener('resize', renderFunc);
+    },
+    [renderer, renderOnce],
+  );
+  useEffect(
+    () => {
+      if (!renderer || !renderOnce) {
+        return undefined;
+      }
+      setTimeout(renderer.renderOnce, 500);
+      return undefined;
+    },
+    [renderer, renderOnce, renderColor],
   );
   useEffect(
     () => {

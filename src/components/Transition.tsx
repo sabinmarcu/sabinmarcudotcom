@@ -1,4 +1,3 @@
-import { useMediaQuery } from '@material-ui/core';
 import { FC } from 'react';
 import {
   Transition as ReactTransition,
@@ -9,6 +8,7 @@ import {
   pageTransition,
   pageTransitionFunction,
 } from '../config/constants';
+import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
 
 export type TransitionProps = {
   status: TransitionStatus,
@@ -28,9 +28,7 @@ export const PageTransition: FC<{
   timeout = pageTransition,
   transition = pageTransitionFunction,
 }) => {
-  const reducedMotion = useMediaQuery(
-    '(prefers-reduced-motion: reduce)',
-  );
+  const reducedMotion = usePrefersReducedMotion();
   if (reducedMotion) {
     return <>{children}</>;
   }

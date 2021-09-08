@@ -1,4 +1,3 @@
-import { useMediaQuery } from '@material-ui/core';
 import {
   createContext,
   useContext,
@@ -7,6 +6,7 @@ import {
 } from 'react';
 import smoothscroll from 'smoothscroll-polyfill';
 import { Query } from '../config/schema';
+import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
 
 try {
   smoothscroll.polyfill();
@@ -34,9 +34,7 @@ export const useScrollToPageId = (
   id: string,
   type: ContentTypes,
 ) => {
-  const prefersReducedMotion = useMediaQuery(
-    '(prefers-reduced-motion: reduce)',
-  );
+  const prefersReducedMotion = usePrefersReducedMotion();
   const pageId = useMemo(
     () => makePageId(id, type),
     [id, type],
