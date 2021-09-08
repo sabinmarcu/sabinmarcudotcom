@@ -17,6 +17,7 @@ import {
 import { HOCProp, makeStore } from '../utils/makeStore';
 import { pageTransition } from '../config/constants';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
 
 declare module '@material-ui/styles/defaultTheme' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -43,6 +44,7 @@ const store = makeStore<ThemeStore, InputTheme>()({
   name: 'theme',
   defaultValue: DefaultTheme,
   handler: ({ defaultValue, updateStore }) => {
+    const reducedMotion = usePrefersReducedMotion();
     const globalDarkTheme = useMatchMedia(['prefers-color-scheme', 'dark']);
     const [variant, setVariant] = useLocalStorage<ThemeVariant>('themeVariant', 'system');
     const { pathname } = useLocation();
@@ -50,10 +52,14 @@ const store = makeStore<ThemeStore, InputTheme>()({
       () => {
         const newTheme = determineActiveTheme(pathname);
         if (defaultValue !== newTheme.value) {
-          setTimeout(updateStore, pageTransition, newTheme);
+          if (reducedMotion) {
+            updateStore(newTheme);
+          } else {
+            setTimeout(updateStore, pageTransition, newTheme);
+          }
         }
       },
-      [pathname, updateStore, defaultValue],
+      [pathname, updateStore, defaultValue, reducedMotion],
     );
     const theme = useMemo(() => {
       const newTheme = { ...(defaultValue || DefaultTheme) };
