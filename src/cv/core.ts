@@ -1,3 +1,4 @@
+import { useMediaQuery } from '@material-ui/core';
 import {
   createContext,
   useContext,
@@ -33,6 +34,9 @@ export const useScrollToPageId = (
   id: string,
   type: ContentTypes,
 ) => {
+  const prefersReducedMotion = useMediaQuery(
+    '(prefers-reduced-motion: reduce)',
+  );
   const pageId = useMemo(
     () => makePageId(id, type),
     [id, type],
@@ -46,10 +50,13 @@ export const useScrollToPageId = (
       const element = doc.getElementById(pageId);
       if (element) {
         e.preventDefault();
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        element.scrollIntoView({
+          behavior: prefersReducedMotion ? 'auto' : 'smooth',
+          block: 'center',
+        });
       }
     },
-    [pageId],
+    [pageId, prefersReducedMotion],
   );
   return handler;
 };

@@ -22,10 +22,13 @@ const HeaderWrapper = withTheme<ThemeProp & { hide: boolean }>(
       left: 0;
       right: 0;
       transition: background ${pageTransition}ms ${pageTransitionFunction}, transform 350ms ease-out;
-      z-index: 1000;      
+      z-index: 1000;
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+      }
       @media print {
         display: none;
-      } 
+      }
     `,
     ({ theme: { colors: { primary }, shadows: { header } } }) => ({
       background: primary,
